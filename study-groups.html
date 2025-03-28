@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Groups - Campus Hub</title>
+  <meta name="description" content="Find or create study groups for your courses">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="index.html" class="nav-logo">Campus Hub</a>
+        <div class="nav-links">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="events.html" class="nav-link">Events</a>
+          <a href="study-groups.html" class="nav-link">Study Groups</a>
+          <a href="course-reviews.html" class="nav-link">Course Reviews</a>
+          <a href="course-notes.html" class="nav-link">Notes</a>
+          <a href="campus-news.html" class="nav-link">News</a>
+          <a href="club-activities.html" class="nav-link">Clubs</a>
+        </div>
+        <a href="signin.html" class="auth-btn">Sign In</a>
+        <button class="mobile-menu-toggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-header">
+    <div class="container">
+      <h1 class="page-title">Study Groups</h1>
+      <p class="page-description">Find peers to study with, or create your own study group. Learning is better together.</p>
+    </div>
+  </section>
+
+  <main class="container">
+    <div class="listing-controls">
+      <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" class="search-input" placeholder="Search by course, subject, or study topic...">
+      </div>
+      <div class="filter-controls">
+        <button class="filter-btn">
+          <i class="fas fa-filter"></i>
+          Filter
+        </button>
+        <button class="filter-btn">
+          <i class="fas fa-sort"></i>
+          Sort
+        </button>
+      </div>
+      <a href="create-study-group.html" class="add-new-btn">
+        <i class="fas fa-plus"></i>
+        Create Group
+      </a>
+    </div>
+
+    <div class="item-list">
+      <article class="item-card animate-fadeIn">
+        <div class="item-content">
+          <div class="item-meta">
+            <span class="item-tag">Mathematics</span>
+            <span class="item-date">Meets: Tuesdays 6-8 PM</span>
+          </div>
+          <h2 class="item-title">Calculus II Study Group</h2>
+          <p class="item-desc">Working through practice problems and preparing for the midterm exam. All levels welcome.</p>
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <span class="badge bg-secondary">5 members</span>
+            <a href="view-group.html" class="module-link">View Group <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="item-card animate-fadeIn" style="animation-delay: 0.1s;">
+        <div class="item-content">
+          <div class="item-meta">
+            <span class="item-tag">Computer Science</span>
+            <span class="item-date">Meets: Wednesdays 4-6 PM</span>
+          </div>
+          <h2 class="item-title">Data Structures & Algorithms</h2>
+          <p class="item-desc">Weekly meeting to solve coding problems and discuss algorithmic approaches. Bring your laptop!</p>
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <span class="badge bg-secondary">8 members</span>
+            <a href="view-group.html" class="module-link">View Group <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="item-card animate-fadeIn" style="animation-delay: 0.2s;">
+        <div class="item-content">
+          <div class="item-meta">
+            <span class="item-tag">Biology</span>
+            <span class="item-date">Meets: Mondays 5-7 PM</span>
+          </div>
+          <h2 class="item-title">Human Anatomy Lab Prep</h2>
+          <p class="item-desc">Preparing for the lab practical exams. We'll review specimen identification and key concepts.</p>
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <span class="badge bg-secondary">12 members</span>
+            <a href="view-group.html" class="module-link">View Group <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="item-card animate-fadeIn" style="animation-delay: 0.3s;">
+        <div class="item-content">
+          <div class="item-meta">
+            <span class="item-tag">Business</span>
+            <span class="item-date">Meets: Thursdays 7-9 PM</span>
+          </div>
+          <h2 class="item-title">Financial Accounting</h2>
+          <p class="item-desc">Working through problem sets and case studies. Seeking members with strong Excel skills.</p>
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <span class="badge bg-secondary">6 members</span>
+            <a href="view-group.html" class="module-link">View Group <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="item-card animate-fadeIn" style="animation-delay: 0.4s;">
+        <div class="item-content">
+          <div class="item-meta">
+            <span class="item-tag">Chemistry</span>
+            <span class="item-date">Meets: Fridays 3-5 PM</span>
+          </div>
+          <h2 class="item-title">Organic Chemistry I</h2>
+          <p class="item-desc">Review reaction mechanisms and nomenclature. We have a great track record of improving grades!</p>
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <span class="badge bg-secondary">9 members</span>
+            <a href="view-group.html" class="module-link">View Group <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="item-card animate-fadeIn" style="animation-delay: 0.5s;">
+        <div class="item-content">
+          <div class="item-meta">
+            <span class="item-tag">Psychology</span>
+            <span class="item-date">Meets: Saturdays 2-4 PM</span>
+          </div>
+          <h2 class="item-title">Research Methods Discussion</h2>
+          <p class="item-desc">Discussing research designs, statistical methods, and critiquing published studies.</p>
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <span class="badge bg-secondary">7 members</span>
+            <a href="view-group.html" class="module-link">View Group <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="pagination">
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn">4</button>
+      <button class="page-btn">5</button>
+      <button class="page-btn"><i class="fas fa-ellipsis-h"></i></button>
+      <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3 class="footer-title">Campus Hub</h3>
+          <p>Your all-in-one platform for a connected and enriched campus experience.</p>
+        </div>
+        <div class="footer-column">
+          <h3 class="footer-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li class="footer-link"><a href="events.html">Events Calendar</a></li>
+            <li class="footer-link"><a href="study-groups.html">Study Group Finder</a></li>
+            <li class="footer-link"><a href="course-reviews.html">Course Reviews</a></li>
+            <li class="footer-link"><a href="course-notes.html">Course Notes</a></li>
+            <li class="footer-link"><a href="campus-news.html">Campus News</a></li>
+            <li class="footer-link"><a href="club-activities.html">Club Activities</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3 class="footer-title">Resources</h3>
+          <ul class="footer-links">
+            <li class="footer-link"><a href="privacy-policy.html">Privacy Policy</a></li>
+            <li class="footer-link"><a href="terms-of-service.html">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3 class="footer-title">Contact</h3>
+          <ul class="footer-links">
+            <li class="footer-link"><a href="mailto:studentcc@uob.edu.bh">studentcc@uob.edu.bh</a></li>
+            <li class="footer-link"><a href="tel:+97317155355">+973 17155355</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright">&copy; 2025 Campus Hub. All rights reserved.</p>
+        <div class="social-links">
+          <a href="https://x.com/uobedubh" class="social-link"><i class="fab fa-twitter"></i></a>
+          <a href="https://www.instagram.com/uobedubh/?hl=en" class="social-link"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.linkedin.com/company/university-of-bahrain-uob-" class="social-link"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+</body>
+</html>
