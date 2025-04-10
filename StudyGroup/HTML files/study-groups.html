@@ -23,7 +23,8 @@
           <a href="course-notes.html" class="nav-link">Notes</a>
           <a href="campus-news.html" class="nav-link">News</a> 
         </div>
-        <a href="signin.html" class="auth-btn">Sign In</a>
+        <a href="signin.html" class="btn btn-outline-primary auth-btn">Sign In</a>
+        
         <button class="mobile-menu-toggle">
           <i class="fas fa-bars"></i>
         </button>
@@ -31,8 +32,9 @@
     </div>
   </header>
 
-  <section class="page-header">
-    <div class="container">
+  <section class="page-header" style="position: relative; background: url('../images/cs.jpg') no-repeat center center/cover; color: white; text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5);"></div>
+    <div class="container" style="position: relative; z-index: 1;">
       <h1 class="page-title">Study Groups</h1>
       <p class="page-description">Find peers to study with, or create your own study group. Learning is better together.</p>
     </div>
@@ -45,115 +47,187 @@
         <input type="text" class="search-input" 
         placeholder="Search by course, subject, or study topic...">
       </div>
-      <div class="filter-controls">
-        <button class="filter-btn">
-          <i class="fas fa-filter"></i>
-          Filter
-        </button>
-        <button class="filter-btn">
-          <i class="fas fa-sort"></i>
-          Sort
-        </button>
+      <div class="col-md-6 d-flex justify-content-between align-items-center">
+        <div class="filter-actions">
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal"><i class="fas fa-filter"></i> Filter Data</button>
+          <button class="btn btn-secondary ms-2" id="resetFilters"><i class="fas fa-undo"></i> Reset Filters</button>
+        </div>
+        <a href="create-study-group.html" class="btn btn-success create-btn "><i class="fas fa-plus"></i> Create your own Study Group</a>
       </div>
-      <a href="create-study-group.html" class="add-new-btn">
-        <i class="fas fa-plus"></i>
-        Create Group
-      </a>
     </div>
 
-    <div class="item-list">
-      <article class="item-card animate-fadeIn">
-        <div class="item-content">
-          <div class="item-meta">
-            <span class="item-tag">Computer Science</span>
-            <span class="item-date">Meets: Tuesdays 6-8 PM</span>
-          </div>
-          <h2 class="item-title">ITCS 333 Study Group</h2>
-          <p class="item-desc">Preparing for the midterm exam. Make sure to bring your laptop </p>
-          <div class="d-flex justify-content-between align-items-center mt-2">
-            <span class="badge bg-secondary">5 members</span>
-            <a href="view-group.html" class="module-link">View Group <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </div>
-      </article>
-
-      <article class="item-card animate-fadeIn" style="animation-delay: 0.1s;">
-        <div class="item-content">
-          <div class="item-meta">
-            <span class="item-tag">Computer Science</span>
-            <span class="item-date">Meets: Sundays 4-6 PM</span>
-          </div>
-          <h2 class="item-title">ITCS 214 Data Structures</h2>
-          <p class="item-desc">Weekly meeting to solve coding problems and discuss different approaches. Bring your laptop!</p>
-          <div class="d-flex justify-content-between align-items-center mt-2">
-            <span class="badge bg-secondary">8 members</span>
-            <a href="view-group.html" class="module-link">View Group <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </div>
-      </article>
-
-      <article class="item-card animate-fadeIn" style="animation-delay: 0.2s;">
-        <div class="item-content">
-          <div class="item-meta">
-            <span class="item-tag">Computer Science</span>
-            <span class="item-date">Meets: Mondays 5-7 PM</span>
-          </div>
-          <h2 class="item-title">ITCS 347 Algorithm Designs</h2>
-          <p class="item-desc">Weekly meetings to write Algorithms and discuss different approaches.</p>
-          <div class="d-flex justify-content-between align-items-center mt-2">
-            <span class="badge bg-secondary">12 members</span>
-            <a href="view-group.html" class="module-link">View Group <i class="fas fa-arrow-right"></i></a>
-          </div>
-          
-        </div>
-      </article>
-
-      <article class="item-card animate-fadeIn" style="animation-delay: 0.3s;">
-        <div class="item-content">
-          <div class="item-meta">
-            <span class="item-tag">Computer Science</span>
-            <span class="item-date">Meets: Thursdays 7-9 PM</span>
-          </div>
-          <h2 class="item-title">ITCS 114 Programming II</h2>
-            <p class="item-desc">Engaging in discussions on various types of loops. Seeking members with a solid understanding of loop structures.</p>
-          <div class="d-flex justify-content-between align-items-center mt-2">
-            <span class="badge bg-secondary">6 members</span>
-            <a href="view-group.html" class="module-link">View Group <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </div>
-      </article>
-
-      <article class="item-card animate-fadeIn" style="animation-delay: 0.4s;">
-        <div class="item-content">
-          <div class="item-meta">
-            <span class="item-tag">English</span>
-            <span class="item-date">Meets: Fridays 3-5 PM</span>
-          </div>
-          <h2 class="item-title">ENGL219 English Report Writing</h2>
-            <p class="item-desc">Seeking individuals with strong proficiency in English grammar to assist in enhancing our understanding and skills.</p>
-          <div class="d-flex justify-content-between align-items-center mt-2">
-            <span class="badge bg-secondary">9 members</span>
-            <a href="view-group.html" class="module-link">View Group <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </div>
-      </article>
-
-      <article class="item-card animate-fadeIn" style="animation-delay: 0.5s;">
-        <div class="item-content">
-          <div class="item-meta">
-            <span class="item-tag">Mathematics</span>
-            <span class="item-date">Meets: Saturdays 2-4 PM</span>
-          </div>
-          <h2 class="item-title">MATHS102</h2>
-          <p class="item-desc">Weekly meetings to practice the problems from the book and assisting each other in solving the homework</p>
-          <div class="d-flex justify-content-between align-items-center mt-2">
-            <span class="badge bg-secondary">7 members</span>
-            <a href="view-group.html" class="module-link">View Group <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </div>
-      </article>
+    <div class="tabs-container text-center">
+      <ul class="nav nav-tabs justify-content-center" id="studyGroupTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="search-tab" data-bs-toggle="tab" data-bs-target="#search" type="button" role="tab" aria-controls="search" aria-selected="true" onclick="selectTab(this)">Search</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="joined-tab" data-bs-toggle="tab" data-bs-target="#joined" type="button" role="tab" aria-controls="joined" aria-selected="false" onclick="selectTab(this)">Joined</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="my-groups-tab" data-bs-toggle="tab" data-bs-target="#my-groups" type="button" role="tab" aria-controls="my-groups" aria-selected="false" onclick="selectTab(this)">My Groups</button>
+      </li>
+      </ul>
+      <div class="tab-content" id="studyGroupTabsContent">
+      <div class="tab-pane fade show active" id="search" role="tabpanel" aria-labelledby="search-tab">
+      </div>
+      <div class="tab-pane fade" id="joined" role="tabpanel" aria-labelledby="joined-tab">
+      </div>
+      <div class="tab-pane fade" id="my-groups" role="tabpanel" aria-labelledby="my-groups-tab">
+        <p>Manage your own study groups here.</p>
+      </div>
+      </div>
     </div>
+<br>
+    
+   
+    <div class="row row-cols-1 row-cols-md-3">
+      <div class="col mb-4">
+      <div class="card shadow-sm">
+        <img src="../images/itcs333.webp" class="card-img-top">
+        <div class="card-header">
+        <h5 class="card-title">ITCS333 Study Group</h5>
+        </div>
+        <div class="card-body">
+        <p class="card-text">Preparing for the midterm exam. Revising the core concepts of javascript. Make sure to bring your laptops as well!</p>
+        <div class="d-flex align-items-center">
+          <span class="me-2">Members:</span>
+          <div class="d-flex">
+            <i class="fas fa-user text-success me-2 mb-2"></i>
+            <i class="fas fa-user text-success me-2 mb-2"></i>
+            <i class="fas fa-user text-success me-2 mb-2"></i>
+            <i class="fas fa-user text-success me-2 mb-2"></i>
+            <i class="fas fa-user text-success me-2 mb-2"></i>
+            <i class="fas fa-user text-success me-2 mb-2"></i>
+            <i class="fas fa-user text-secondary me-2 mb-2"></i>
+          </div>
+        </div> <br>
+        <div class="d-flex justify-content-between">
+          <a href="view-group.html" class="btn btn-primary">View Group</a>
+          <a href="view-group.html" class="btn btn-success">Join</a>
+        </div>
+        </div>
+      </div>
+      </div>
+      <div class="col mb-4">
+      <div class="card shadow-sm">
+        <img src="../images/datastr.avif" class="card-img-top">
+        <div class="card-header">
+        <h5 class="card-title">ITCS214 Study Group</h5>
+        </div>
+        <div class="card-body">
+        <p class="card-text">Preparing for the midterm exam. Revising the core concepts of javascript. Make sure to bring your laptops as well!</p>
+        <div class="d-flex align-items-center">
+          <span class="me-2">Members:</span>
+          <div class="d-flex">
+            <i class="fas fa-user text-success me-2 mb-2"></i>
+            <i class="fas fa-user text-secondary me-2 mb-2"></i>
+            <i class="fas fa-user text-secondary me-2 mb-2"></i>
+             <i class="fas fa-user text-secondary me-2 mb-2"></i>
+          </div>
+        </div> <br>
+        <div class="d-flex justify-content-between">
+          <a href="view-group.html" class="btn btn-primary">View Group</a>
+          <a href="view-group.html" class="btn btn-success">Join</a>
+        </div>
+        </div>
+      </div>
+      </div>
+      <div class="col mb-4">
+      <div class="card shadow-sm">
+        <img src="../images/eng.avif" class="card-img-top">
+        <div class="card-header">
+        <h5 class="card-title">ENGL219 Study Group</h5>
+        </div>
+        <div class="card-body">
+        <p class="card-text">Preparing for the midterm exam. Revising the core concepts of javascript. Make sure to bring your laptops as well!</p>
+        <div class="d-flex align-items-center">
+          <span class="me-2">Members:</span>
+          <div class="d-flex">
+            <i class="fas fa-user text-success me-2 mb-2"></i>
+            <i class="fas fa-user text-success me-2 mb-2"></i>
+            <i class="fas fa-user text-success me-2 mb-2"></i>
+            <i class="fas fa-user text-secondary me-2 mb-2"></i>
+            <i class="fas fa-user text-secondary me-2 mb-2"></i>
+            <i class="fas fa-user text-secondary"></i>
+           
+          </div>
+        </div> <br>
+        <div class="d-flex justify-content-between">
+          <a href="view-group.html" class="btn btn-primary">View Group</a>
+          <a href="view-group.html" class="btn btn-success">Join</a>
+        </div>
+        </div>
+      </div>
+      </div>
+      <div class="col mb-4">
+      <div class="card shadow-sm">
+        <img src="../images/maths.jpg" class="card-img-top">
+        <div class="card-header">
+        <h5 class="card-title">MATHS102 Study Group</h5>
+        </div>
+        <div class="card-body">
+        <p class="card-text">Discussing advanced database concepts. Bring your notes and questions!</p>
+        <div class="d-flex align-items-center">
+          <span class="me-2">Members:</span>
+          <div class="d-flex">
+            <i class="fas fa-user text-success me-2 mb-2"></i>
+            <i class="fas fa-user text-success me-2 mb-2"></i>
+            <i class="fas fa-user text-success me-2 mb-2"></i>
+            <i class="fas fa-user text-secondary me-2 mb-2"></i>
+            <i class="fas fa-user text-secondary me-2 mb-2"></i>
+             <i class="fas fa-user text-secondary me-2 mb-2"></i>
+          </div>
+        </div> <br>        <div class="d-flex justify-content-between">
+          <a href="view-group.html" class="btn btn-primary">View Group</a>
+          <a href="view-group.html" class="btn btn-success">Join</a>
+        </div>
+        </div>
+      </div>
+      </div>
+      <div class="col mb-4">
+      <div class="card shadow-sm">
+        <img src="../images/cs.jpg" class="card-img-top">
+        <div class="card-header">
+        <h5 class="card-title">ITCS335 Study Group</h5>
+        </div>
+        <div class="card-body">
+        <p class="card-text">Preparing for the final project. Focus on teamwork and project management.</p>
+        <div class="d-flex align-items-center">
+          <span class="me-2">Members:</span>
+          <div class="d-flex">
+            <i class="fas fa-user text-success me-2 mb-2"></i>
+            <i class="fas fa-user text-success me-2 mb-2"></i>
+            <i class="fas fa-user text-success me-2 mb-2"></i>
+            <i class="fas fa-user text-success me-2 mb-2"></i>
+            <i class="fas fa-user text-success me-2 mb-2"></i>
+            <i class="fas fa-user text-success me-2 mb-2"></i>
 
+                      </div>
+        </div> <br>
+        <div class="d-flex justify-content-between">
+          <a href="view-group.html" class="btn btn-primary">View Group</a>
+            <a href="#" class="btn" style="background-color: rgb(255, 0, 0); color: white; pointer-events: none;">Group is Full</a>
+        </div>
+        </div>
+      </div>
+      </div>
+      
+    <div class="col mb-4">
+      <div class="card shadow-sm">
+        <img src="../images/study.jpg" class="card-img-top">
+        <div class="card-header">
+        <h5 class="card-title">CANT FIND A GROUP ? CREATE YOUR OWN NOW !</h5>
+        </div>
+        <div class="card-body">
+        <p class="card-text">Enter the required details and create your own group..</p>
+        <div class="d-flex align-items-center">
+          <a href="create-study-group.html" class="btn btn-success">Create a Study Group</a>
+        </div>
+        </div>
+      </div>
+      </div>
+    </div>
     <div class="pagination">
       <button class="page-btn active">1</button>
       <button class="page-btn">2</button>
