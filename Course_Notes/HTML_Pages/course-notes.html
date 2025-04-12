@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Notes - Campus Hub</title>
+  <meta name="description" content="Access shared notes and study materials from peers">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../stylesheet.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="" class="nav-logo">Campus Hub</a>
+        <div class="nav-links">
+          <a href="" class="nav-link">Home</a>
+          <a href="" class="nav-link">Events</a>
+          <a href="" class="nav-link">Study Groups</a>
+          <a href="" class="nav-link">Course Reviews</a>
+          <a href="course-notes.html" class="nav-link">Notes</a>
+          <a href="" class="nav-link">News</a>
+        </div>
+        <a href="" class="auth-btn">Sign In</a>
+        <button class="mobile-menu-toggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-header">
+    <div class="container">
+      <h1 class="page-title">Course Notes</h1>
+      <p class="page-description">Access shared notes and study materials from peers. Contribute your knowledge.</p>
+    </div>
+  </section>
+
+  <main class="container">
+    <div class="listing-controls">
+      <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" class="search-input" placeholder="Search by course, subject, or topic...">
+      </div>
+      <div class="filter-controls">
+        <button class="filter-btn">
+          <i class="fas fa-filter"></i>
+          Filter
+        </button>
+        <button class="filter-btn">
+          <i class="fas fa-sort"></i>
+          Sort
+        </button>
+      </div>
+      <a href="upload-notes.html" class="add-new-btn">
+        <i class="fas fa-plus"></i>
+        Upload Notes
+      </a>
+    </div>
+
+    <div class="item-list">
+      <article class="item-card">
+        <div class="item-content">
+          <div class="item-meta">
+            <span class="item-tag">Computer Science</span>
+            <span class="item-date">Updated: march 20, 2025</span>
+          </div>
+          <h2 class="item-title">ITCS333 - HTML tags</h2>
+          <p class="item-desc">Complete html tags in a PDF file with their examples.</p>
+          <a href="view-notes.html" class="module-link">View Notes <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </article>
+
+      <article class="item-card">
+        <div class="item-content">
+          <div class="item-meta">
+            <span class="item-tag">Physics</span>
+            <span class="item-date">Updated: Oct 3, 2024</span>
+          </div>
+          <h2 class="item-title">PHYCS432 - Quantum Mechanics Formulas</h2>
+          <p class="item-desc">Comprehensive formula sheet with solved example problems and derivations for key concepts.</p>
+          <a href="view-notes.html" class="module-link">View Notes <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </article>
+
+      <article class="item-card">
+        <div class="item-content">
+          <div class="item-meta">
+            <span class="item-tag">History</span>
+            <span class="item-date">Updated: Sep 18, 2021</span>
+          </div>
+          <h2 class="item-title">HIST328 - World War II Timeline & Analysis</h2>
+          <p class="item-desc">Detailed chronology of key events with analysis of causes, impacts, and historical significance.</p>
+          <a href="view-notes.html" class="module-link">View Notes <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </article>
+
+      <article class="item-card">
+        <div class="item-content">
+          <div class="item-meta">
+            <span class="item-tag">Computer Science</span>
+            <span class="item-date">Updated: Oct 8, 2023</span>
+          </div>
+          <h2 class="item-title">ITCS214 - Cheat Sheet</h2>
+          <p class="item-desc">Quick reference guide for common data structures with time complexity analysis and implementation notes.</p>
+          <a href="view-notes.html" class="module-link">View Notes <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </article>
+
+      <article class="item-card">
+        <div class="item-content">
+          <div class="item-meta">
+            <span class="item-tag">Psychology</span>
+            <span class="item-date">Updated: Sep 29, 2023</span>
+          </div>
+          <h2 class="item-title">PSYC211 - Developmental Key Theories</h2>
+          <p class="item-desc">Summary of major developmental theories with comparison charts and real-world applications.</p>
+          <a href="view-notes.html" class="module-link">View Notes <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </article>
+
+      <article class="item-card">
+        <div class="item-content">
+          <div class="item-meta">
+            <span class="item-tag">Economics</span>
+            <span class="item-date">Updated: Oct 5, 2022</span>
+          </div>
+          <h2 class="item-title">ECON261 - Macroeconomics Study Guide</h2>
+          <p class="item-desc">Comprehensive notes covering GDP, inflation, monetary policy, and international trade concepts.</p>
+          <a href="view-notes.html" class="module-link">View Notes <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </article>
+    </div>
+
+    <div class="pagination">
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn">4</button>
+      <button class="page-btn">5</button>
+      <button class="page-btn"><i class="fas fa-ellipsis-h"></i></button>
+      <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3 class="footer-title">Campus Hub</h3>
+          <p>Your all-in-one platform for a connected and enriched campus experience.</p>
+        </div>
+        <div class="footer-column">
+          <h3 class="footer-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li class="footer-link"><a href="">Events Calendar</a></li>
+            <li class="footer-link"><a href="">Study Group Finder</a></li>
+            <li class="footer-link"><a href="">Course Reviews</a></li>
+            <li class="footer-link"><a href="course-notes.html">Course Notes</a></li>
+            <li class="footer-link"><a href="">Campus News</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3 class="footer-title">Resources</h3>
+          <ul class="footer-links">
+            <li class="footer-link"><a href="">Privacy Policy</a></li>
+            <li class="footer-link"><a href="">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3 class="footer-title">Contact</h3>
+          <ul class="footer-links">
+            <li class="footer-link"><a href="mailto:studentcc@uob.edu.bh">studentcc@uob.edu.bh</a></li>
+            <li class="footer-link"><a href="tel:+97317155355">+973 17155355</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright">&copy; 2025 Campus Hub. All rights reserved.</p>
+        <div class="social-links">
+          <a href="https://x.com/uobedubh" class="social-link"><i class="fab fa-twitter"></i></a>
+          <a href="https://www.instagram.com/uobedubh/?hl=en" class="social-link"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.linkedin.com/company/university-of-bahrain-uob-" class="social-link"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+</body>
+</html>
