@@ -7,3 +7,4 @@ Muhannad Hasan Ateya - 202208912 -- CourseNotes
 
 Mohammed Hussain Attiya - 202208304  -- CourseReviews
 
+Ali Ahmed Isa - 202207060 -- Events Calendar
