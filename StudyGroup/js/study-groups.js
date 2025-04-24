@@ -102,7 +102,31 @@ function displayGroups(groups) {
   const paginatedGroups = groups.slice(startIndex, endIndex);
   const totalPages = Math.ceil(groups.length / GROUPS_PER_PAGE);
 
-  container.innerHTML = paginatedGroups.map(createGroupCard).join('');
+  let groupsHTML = paginatedGroups.map(createGroupCard).join('');
+  
+  // Add the "Create Your Own Group" card only on the last page
+  if (currentPage === totalPages) {
+    groupsHTML += `
+      <div class="col mb-4">
+        <div class="card shadow-sm">
+          <a href="create-study-group.html">
+            <img src="../images/study.jpg" class="card-img-top">
+          </a>
+          <div class="card-header">
+            <h5 class="card-title">CAN'T FIND A GROUP? CREATE YOUR OWN NOW!</h5>
+          </div>
+          <div class="card-body">
+            <p class="card-text">Enter the required details and create your own group..</p>
+            <div class="d-flex align-items-center">
+              <a href="create-study-group.html" class="btn btn-success">Create a Study Group</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  container.innerHTML = groupsHTML;
   
   if (paginationContainer) {
     paginationContainer.innerHTML = createPagination(totalPages);
@@ -113,6 +137,11 @@ function changePage(page) {
   if (page < 1 || page > Math.ceil(studyGroups.length / GROUPS_PER_PAGE)) return;
   currentPage = page;
   displayGroups(studyGroups);
+  // Scroll to the top of the page
+  window.scrollTo({
+    top: 200,
+    behavior: 'smooth'
+  });
 }
 
 function filterGroups(searchTerm) {
