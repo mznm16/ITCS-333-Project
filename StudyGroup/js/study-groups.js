@@ -1,6 +1,22 @@
 const API_URL = 'https://6809eb641f1a52874cde5938.mockapi.io/GroupName';
+const GROUPS_PER_PAGE = 15;
 
 let studyGroups = [];
+let currentPage = 1;
+
+function showLoading() {
+  const container = document.querySelector('.row.row-cols-1.row-cols-md-3');
+  if (container) {
+    container.innerHTML = `
+      <div class="col-12 d-flex flex-column justify-content-center align-items-center" style="min-height: 70vh;">
+        <div class="spinner-border text-primary" role="status" style="width: 10rem; height: 10rem;">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 fs-4">Loading study groups....</p>
+      </div>
+    `;
+  }
+}
 
 function createGroupCard(group) {
   const isFull = group.members >= group.maxMembers;
@@ -42,11 +58,61 @@ function createGroupCard(group) {
   `;
 }
 
+function createPagination(totalPages) {
+  let paginationHTML = `
+    <div class="pagination justify-content-center mt-4">
+      <button class="page-btn ${currentPage === 1 ? 'disabled' : ''}" onclick="changePage(${currentPage - 1})">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+  `;
+
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+      paginationHTML += `
+        <button class="page-btn ${currentPage === i ? 'active' : ''}" onclick="changePage(${i})">
+          ${i}
+        </button>
+      `;
+    } else if (i === currentPage - 3 || i === currentPage + 3) {
+      paginationHTML += `
+        <button class="page-btn disabled">
+          <i class="fas fa-ellipsis-h"></i>
+        </button>
+      `;
+    }
+  }
+
+  paginationHTML += `
+      <button class="page-btn ${currentPage === totalPages ? 'disabled' : ''}" onclick="changePage(${currentPage + 1})">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  `;
+
+  return paginationHTML;
+}
+
 function displayGroups(groups) {
   const container = document.querySelector('.row.row-cols-1.row-cols-md-3');
+  const paginationContainer = document.querySelector('.pagination');
   if (!container) return;
+
+  const startIndex = (currentPage - 1) * GROUPS_PER_PAGE;
+  const endIndex = startIndex + GROUPS_PER_PAGE;
+  const paginatedGroups = groups.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(groups.length / GROUPS_PER_PAGE);
+
+  container.innerHTML = paginatedGroups.map(createGroupCard).join('');
   
-  container.innerHTML = groups.map(createGroupCard).join('');
+  if (paginationContainer) {
+    paginationContainer.innerHTML = createPagination(totalPages);
+  }
+}
+
+function changePage(page) {
+  if (page < 1 || page > Math.ceil(studyGroups.length / GROUPS_PER_PAGE)) return;
+  currentPage = page;
+  displayGroups(studyGroups);
 }
 
 function filterGroups(searchTerm) {
@@ -55,11 +121,13 @@ function filterGroups(searchTerm) {
     (group.course && group.course.toLowerCase().includes(searchTerm.toLowerCase())) ||
     group.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  currentPage = 1;
   displayGroups(filtered);
 }
 
 async function loadStudyGroups() {
   try {
+    showLoading();
     const response = await fetch(API_URL);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -71,8 +139,8 @@ async function loadStudyGroups() {
     const container = document.querySelector('.row.row-cols-1.row-cols-md-3');
     if (container) {
       container.innerHTML = `
-        <div class="col-12 text-center">
-          <p class="text-danger">Failed to load study groups. Please try again later.</p>
+        <div class="col-12 d-flex flex-column justify-content-center align-items-center" style="min-height: 70vh;">
+          <p class="text-danger fs-4">Failed to load study groups. Please try again later.</p>
           <p class="text-muted">Error: ${error.message}</p>
           <button class="btn btn-primary mt-2" onclick="loadStudyGroups()">Retry</button>
         </div>
@@ -101,6 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const resetBtn = document.querySelector('.btn-secondary');
   if (resetBtn) {
     resetBtn.addEventListener('click', function() {
+      currentPage = 1;
       displayGroups(studyGroups);
       if (searchInput) searchInput.value = '';
     });
