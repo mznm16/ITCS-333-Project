@@ -1,12 +1,32 @@
+// Show loading state
+const itemList = document.getElementById('item-list');
+itemList.innerHTML = '<div class="loading-spinner"></div>';
+
 // Fetch the course data from the API
 fetch('https://680baf23d5075a76d98c0d14.mockapi.io/courses')
   .then(response => response.json())
   .then(courses => {
-    const itemList = document.getElementById('item-list');
     const pagination = document.querySelector('.pagination');
     let currentPage = 1;
     const itemsPerPage = 6;
     let filteredCourses = [...courses]; // Store filtered courses globally
+    let isLoading = false;
+
+    function showLoading() {
+      isLoading = true;
+      const loadingOverlay = document.createElement('div');
+      loadingOverlay.className = 'loading-overlay';
+      loadingOverlay.innerHTML = '<div class="loading-spinner"></div>';
+      itemList.appendChild(loadingOverlay);
+    }
+
+    function hideLoading() {
+      isLoading = false;
+      const loadingOverlay = itemList.querySelector('.loading-overlay');
+      if (loadingOverlay) {
+        loadingOverlay.remove();
+      }
+    }
 
     function renderPage(page, coursesToRender = filteredCourses) {
       itemList.innerHTML = '';
@@ -79,8 +99,12 @@ fetch('https://680baf23d5075a76d98c0d14.mockapi.io/courses')
 
     // Handle sort selection
     document.querySelectorAll('.sort-menu input[type="radio"]').forEach(radio => {
-      radio.addEventListener('change', (event) => {
+      radio.addEventListener('change', async (event) => {
         const sortType = event.target.value;
+        
+        showLoading();
+        // Simulate network delay for sorting
+        await new Promise(resolve => setTimeout(resolve, 500));
         
         switch(sortType) {
           case 'recent':
@@ -98,6 +122,7 @@ fetch('https://680baf23d5075a76d98c0d14.mockapi.io/courses')
         currentPage = 1;
         renderPage(currentPage);
         renderPagination();
+        hideLoading();
         
         // Close sort menu
         sortMenu.style.display = 'none';
@@ -120,9 +145,14 @@ fetch('https://680baf23d5075a76d98c0d14.mockapi.io/courses')
     });
 
     // Apply filters
-    applyFilterBtn.addEventListener('click', () => {
+    applyFilterBtn.addEventListener('click', async () => {
+      showLoading();
+      
       const selectedFilters = Array.from(document.querySelectorAll('.filter-menu input[type="checkbox"]:checked'))
         .map(checkbox => checkbox.value);
+      
+      // Simulate network delay for filtering
+      await new Promise(resolve => setTimeout(resolve, 500));
       
       if (selectedFilters.length === 0) {
         // If no filters selected, show all courses
@@ -154,6 +184,7 @@ fetch('https://680baf23d5075a76d98c0d14.mockapi.io/courses')
       currentPage = 1;
       renderPage(currentPage);
       renderPagination();
+      hideLoading();
       
       // Close the filter menu
       filterMenu.style.display = 'none';
@@ -161,4 +192,9 @@ fetch('https://680baf23d5075a76d98c0d14.mockapi.io/courses')
   })
   .catch(error => {
     console.error('Error fetching course data:', error);
+    itemList.innerHTML = `
+      <div style="text-align: center; padding: 2rem;">
+        <p style="color: var(--secondary-text);">Error loading courses. Please try again later.</p>
+      </div>
+    `;
   });
