@@ -1,261 +1,380 @@
 [
-    {
-      "item-tag": "Computer Science",
-      "item-date": "March 20, 2025",
-      "item-title": "ITCS333 - HTML tags",
-      "item-desc": "Complete html tags in a PDF file with their examples."
-    },
-    {
-      "item-tag": "Physics",
-      "item-date": "Oct 3, 2024",
-      "item-title": "PHYCS432 - Quantum Mechanics Formulas",
-      "item-desc": "Comprehensive formula sheet with solved example problems and derivations for key concepts."
-    },
-    {
-      "item-tag": "Mechanical Engineering",
-      "item-date": "Feb 15, 2024",
-      "item-title": "MECH310 - Thermodynamics",
-      "item-desc": "Fundamental thermodynamic laws, cycles, and problem-solving strategies."
-    },
-    {
-      "item-tag": "Electrical Engineering",
-      "item-date": "Jan 12, 2023",
-      "item-title": "EE210 - Circuit Theory",
-      "item-desc": "DC/AC analysis, network theorems, and practical applications."
-    },
-    {
-      "item-tag": "Biology",
-      "item-date": "Nov 1, 2023",
-      "item-title": "BIO101 - Cell Structure & Function",
-      "item-desc": "Detailed notes on cellular components and their biological roles."
-    },
-    {
-      "item-tag": "Psychology",
-      "item-date": "Sep 29, 2023",
-      "item-title": "PSYC211 - Developmental Key Theories",
-      "item-desc": "Summary of major developmental theories with real-world examples."
-    },
-    {
-      "item-tag": "Mathematics",
-      "item-date": "May 9, 2023",
-      "item-title": "MATH241 - Linear Algebra",
-      "item-desc": "Matrix operations, vector spaces, and eigenvalues/eigenvectors."
-    },
-    {
-      "item-tag": "Civil Engineering",
-      "item-date": "Jul 14, 2022",
-      "item-title": "CIVL302 - Structural Analysis",
-      "item-desc": "Statics, forces, and internal stress analysis of structures."
-    },
-    {
-      "item-tag": "Business",
-      "item-date": "Jan 5, 2024",
-      "item-title": "BUSN110 - Principles of Management",
-      "item-desc": "Organizational behavior, leadership, and planning strategies."
-    },
-    {
-      "item-tag": "Economics",
-      "item-date": "Oct 5, 2022",
-      "item-title": "ECON261 - Macroeconomics Study Guide",
-      "item-desc": "GDP, inflation, monetary and fiscal policy insights."
-    },
-    {
-      "item-tag": "Law",
-      "item-date": "Mar 18, 2023",
-      "item-title": "LAW210 - Contract Law Essentials",
-      "item-desc": "Key concepts in contracts including offer, acceptance, and breach."
-    },
-    {
-      "item-tag": "Nursing",
-      "item-date": "Apr 2, 2024",
-      "item-title": "NURS201 - Clinical Procedures",
-      "item-desc": "Step-by-step nursing procedures and patient care protocols."
-    },
-    {
-      "item-tag": "Chemistry",
-      "item-date": "Aug 12, 2023",
-      "item-title": "CHEM120 - Organic Chemistry",
-      "item-desc": "Reactions, mechanisms, and molecular structure interpretation."
-    },
-    {
-      "item-tag": "Medicine",
-      "item-date": "Dec 10, 2024",
-      "item-title": "MED301 - Human Anatomy",
-      "item-desc": "Detailed anatomy with diagrams and physiological function."
-    },
-    {
-      "item-tag": "Computer Science",
-      "item-date": "Oct 8, 2023",
-      "item-title": "ITCS214 - Data Structures Cheat Sheet",
-      "item-desc": "Time complexities and implementation notes of common structures."
-    },
-    {
-      "item-tag": "Architecture",
-      "item-date": "Jun 20, 2024",
-      "item-title": "ARCH310 - Sustainable Design",
-      "item-desc": "Principles and practices of eco-friendly architecture."
-    },
-    {
-      "item-tag": "Environmental Science",
-      "item-date": "Mar 11, 2022",
-      "item-title": "ENVS102 - Ecosystem Dynamics",
-      "item-desc": "Ecosystem components, biodiversity, and sustainability."
-    },
-    {
-      "item-tag": "Mechanical Engineering",
-      "item-date": "May 5, 2022",
-      "item-title": "MECH250 - Fluid Mechanics",
-      "item-desc": "Fluid properties, dynamics, and Bernoulli's equation."
-    },
-    {
-      "item-tag": "Computer Science",
-      "item-date": "Nov 18, 2024",
-      "item-title": "CS401 - Algorithms & Complexity",
-      "item-desc": "Sorting, searching, and NP-complete problem overview."
-    },
-    {
-      "item-tag": "Pharmacy",
-      "item-date": "Feb 10, 2023",
-      "item-title": "PHAR203 - Pharmacology Basics",
-      "item-desc": "Drug classifications, mechanisms, and dosage info."
-    },
-    {
-      "item-tag": "Sociology",
-      "item-date": "Sep 17, 2023",
-      "item-title": "SOC101 - Introduction to Sociology",
-      "item-desc": "Social norms, structures, and theories of society."
-    },
-    {
-      "item-tag": "Statistics",
-      "item-date": "Aug 30, 2023",
-      "item-title": "STAT200 - Intro to Statistics",
-      "item-desc": "Descriptive and inferential statistics with applications."
-    },
-    {
-      "item-tag": "History",
-      "item-date": "Sep 18, 2021",
-      "item-title": "HIST328 - World War II Timeline & Analysis",
-      "item-desc": "Chronological events, causes, and historical implications."
-    },
-    {
-      "item-tag": "Linguistics",
-      "item-date": "Jan 9, 2024",
-      "item-title": "LING101 - Phonetics & Phonology",
-      "item-desc": "Sounds of language and sound systems across dialects."
-    },
-    {
-      "item-tag": "Astronomy",
-      "item-date": "Apr 28, 2023",
-      "item-title": "ASTR100 - Stars & Galaxies",
-      "item-desc": "Stellar evolution, galaxies, and cosmological theories."
-    },
-    {
-      "item-tag": "Veterinary Science",
-      "item-date": "Nov 3, 2023",
-      "item-title": "VET201 - Animal Anatomy",
-      "item-desc": "Comparative anatomy of domestic and wild animals."
-    },
-    {
-      "item-tag": "Philosophy",
-      "item-date": "Dec 6, 2022",
-      "item-title": "PHIL101 - Ethics & Morality",
-      "item-desc": "Major ethical theories and practical moral dilemmas."
-    },
-    {
-      "item-tag": "Marketing",
-      "item-date": "Feb 20, 2024",
-      "item-title": "MKTG301 - Consumer Behavior",
-      "item-desc": "Buying decisions, branding, and psychological influences."
-    },
-    {
-      "item-tag": "Finance",
-      "item-date": "Jul 25, 2023",
-      "item-title": "FIN205 - Financial Accounting",
-      "item-desc": "Journal entries, ledgers, and balance sheet analysis."
-    },
-    {
-      "item-tag": "Computer Science",
-      "item-date": "Mar 3, 2025",
-      "item-title": "CS340 - Operating Systems",
-      "item-desc": "Processes, memory management, and file systems."
-    },
-    {
-      "item-tag": "Engineering",
-      "item-date": "Jun 16, 2023",
-      "item-title": "ENGR101 - Engineering Drawing",
-      "item-desc": "Technical drawing techniques and CAD basics."
-    },
-    {
-      "item-tag": "Dentistry",
-      "item-date": "May 14, 2023",
-      "item-title": "DENT210 - Oral Anatomy",
-      "item-desc": "Teeth structure, development, and dental notation."
-    },
-    {
-      "item-tag": "Medical",
-      "item-date": "Aug 20, 2023",
-      "item-title": "MED240 - Pathophysiology",
-      "item-desc": "Disease processes and physiological responses."
-    },
-    {
-      "item-tag": "Education",
-      "item-date": "Mar 30, 2024",
-      "item-title": "EDU110 - Teaching Methods",
-      "item-desc": "Strategies for effective classroom instruction."
-    },
-    {
-      "item-tag": "Art",
-      "item-date": "Oct 11, 2023",
-      "item-title": "ART120 - Modern Art Movements",
-      "item-desc": "Exploration of 19th and 20th century visual art."
-    },
-    {
-      "item-tag": "Computer Science",
-      "item-date": "Jan 10, 2024",
-      "item-title": "CS351 - Web Development",
-      "item-desc": "Frontend and backend technologies for building websites."
-    },
-    {
-      "item-tag": "Aerospace Engineering",
-      "item-date": "Apr 27, 2023",
-      "item-title": "AE400 - Aerodynamics",
-      "item-desc": "Flight principles, drag, lift, and pressure distribution."
-    },
-    {
-      "item-tag": "Geology",
-      "item-date": "May 18, 2022",
-      "item-title": "GEOL101 - Earth Materials",
-      "item-desc": "Minerals, rocks, and the rock cycle."
-    },
-    {
-      "item-tag": "Public Health",
-      "item-date": "Jun 9, 2023",
-      "item-title": "PH101 - Epidemiology",
-      "item-desc": "Study of disease distribution and control strategies."
-    },
-    {
-      "item-tag": "Computer Engineering",
-      "item-date": "Jul 7, 2023",
-      "item-title": "CE210 - Microprocessors",
-      "item-desc": "Architecture and programming of microcontrollers."
-    },
-    {
-      "item-tag": "Anthropology",
-      "item-date": "Nov 22, 2023",
-      "item-title": "ANTH120 - Cultural Anthropology",
-      "item-desc": "Human culture, rituals, and societal development."
-    },
-    {
-      "item-tag": "Computer Science",
-      "item-date": "Feb 1, 2025",
-      "item-title": "CS250 - Python Programming",
-      "item-desc": "Basics to intermediate Python with real-world examples."
-    },
-    {
-      "item-tag": "Medical",
-      "item-date": "Jan 3, 2023",
-      "item-title": "MED102 - Basic Physiology",
-      "item-desc": "Body systems and their interrelated functions."
-    }
-  ]
-  
+  {
+    "id": 1,
+    "item-tag": "Computer Science",
+    "item-date": "March 20, 2025",
+    "item-title": "ITCS333 - HTML tags",
+    "item-desc": "Complete html tags in a PDF file with their examples.",
+    "long-desc": "This comprehensive PDF document contains all HTML5 tags with detailed explanations, syntax examples, and practical use cases. It covers structural tags, formatting tags, media tags, form elements, and semantic HTML. Perfect for web development beginners and as a quick reference for experienced developers.",
+    "file-name": "html-tags-reference.pdf"
+  },
+  {
+    "id": 2,
+    "item-tag": "Physics",
+    "item-date": "Oct 3, 2024",
+    "item-title": "PHYCS432 - Quantum Mechanics Formulas",
+    "item-desc": "Comprehensive formula sheet with solved example problems and derivations for key concepts.",
+    "long-desc": "This 45-page formula compendium covers all essential quantum mechanics equations from Schrödinger's equation to quantum harmonic oscillators. Includes step-by-step derivations, 25+ solved problems with explanations, and practical applications in modern physics. Organized by topic for quick reference during exams or research.",
+    "file-name": "quantum-formulas-guide.pdf"
+  },
+  {
+    "id": 3,
+    "item-tag": "Mechanical Engineering",
+    "item-date": "Feb 15, 2024",
+    "item-title": "MECH310 - Thermodynamics",
+    "item-desc": "Fundamental thermodynamic laws, cycles, and problem-solving strategies.",
+    "long-desc": "Detailed thermodynamics handbook covering the four laws of thermodynamics, heat engines, refrigeration cycles, and entropy concepts. Features 50+ illustrated diagrams of thermodynamic processes, 30 practice problems with solutions, and real-world engineering applications. Essential for mechanical engineering students and professionals.",
+    "file-name": "thermodynamics-handbook.docx"
+  },
+  {
+    "id": 4,
+    "item-tag": "Electrical Engineering",
+    "item-date": "Jan 12, 2023",
+    "item-title": "EE210 - Circuit Theory",
+    "item-desc": "DC/AC analysis, network theorems, and practical applications.",
+    "long-desc": "Complete circuit theory guide covering DC and AC circuit analysis techniques, including Kirchhoff's laws, Thevenin/Norton equivalents, superposition, and phasor analysis. Contains circuit diagrams, MATLAB simulation examples, and 40 practice problems ranging from basic to advanced levels. Ideal for EE students and electronics hobbyists.",
+    "file-name": "circuit-theory-manual.pdf"
+  },
+  {
+    "id": 5,
+    "item-tag": "Biology",
+    "item-date": "Nov 1, 2023",
+    "item-title": "BIO101 - Cell Structure & Function",
+    "item-desc": "Detailed notes on cellular components and their biological roles.",
+    "long-desc": "Comprehensive 60-page illustrated guide to cell biology, covering all organelles (nucleus, mitochondria, ER, Golgi apparatus, etc.), membrane transport, cell signaling, and cellular reproduction. Includes high-quality microscope images, 3D renderings, and comparison tables of prokaryotic vs. eukaryotic cells. Perfect for biology majors and pre-med students.",
+    "file-name": "cell-biology-notes.pdf"
+  },
+  {
+    "id": 6,
+    "item-tag": "Psychology",
+    "item-date": "Sep 29, 2023",
+    "item-title": "PSYC211 - Developmental Key Theories",
+    "item-desc": "Summary of major developmental theories with real-world examples.",
+    "long-desc": "This psychology resource provides in-depth analysis of 15+ developmental theories including Piaget's cognitive development, Erikson's psychosocial stages, Vygotsky's sociocultural theory, and Bowlby's attachment theory. Each theory is explained with case studies, contemporary applications, and critical evaluations. Includes comparison charts and study questions.",
+    "file-name": "developmental-psychology-theories.docx"
+  },
+  {
+    "id": 7,
+    "item-tag": "Mathematics",
+    "item-date": "May 9, 2023",
+    "item-title": "MATH241 - Linear Algebra",
+    "item-desc": "Matrix operations, vector spaces, and eigenvalues/eigenvectors.",
+    "long-desc": "Complete linear algebra course notes covering systems of equations, matrix algebra, determinants, vector spaces, linear transformations, orthogonality, eigenvalues, and applications. Features 100+ worked examples, geometric interpretations, Python code snippets for computational linear algebra, and proofs of key theorems. Suitable for math and engineering students.",
+    "file-name": "linear-algebra-course-notes.pdf"
+  },
+  {
+    "id": 8,
+    "item-tag": "Civil Engineering",
+    "item-date": "Jul 14, 2022",
+    "item-title": "CIVL302 - Structural Analysis",
+    "item-desc": "Statics, forces, and internal stress analysis of structures.",
+    "long-desc": "Structural analysis textbook covering load calculations, beam analysis, truss systems, influence lines, and frame structures. Includes CAD drawings of structural elements, 35 solved engineering problems, and real-world case studies of bridge and building analysis. Comes with MATLAB scripts for structural modeling and ANSYS simulation examples.",
+    "file-name": "structural-analysis-textbook.pdf"
+  },
+  {
+    "id": 9,
+    "item-tag": "Business",
+    "item-date": "Jan 5, 2024",
+    "item-title": "BUSN110 - Principles of Management",
+    "item-desc": "Organizational behavior, leadership, and planning strategies.",
+    "long-desc": "Comprehensive management guide covering classical and modern management theories, organizational structures, leadership styles, decision-making processes, and strategic planning. Features 20 case studies from Fortune 500 companies, self-assessment tools, and templates for business plans and SWOT analyses. Essential for MBA students and new managers.",
+    "file-name": "management-principles-handbook.docx"
+  },
+  {
+    "id": 10,
+    "item-tag": "Economics",
+    "item-date": "Oct 5, 2022",
+    "item-title": "ECON261 - Macroeconomics Study Guide",
+    "item-desc": "GDP, inflation, monetary and fiscal policy insights.",
+    "long-desc": "Macroeconomics study package covering national income accounting, business cycles, unemployment, inflation, monetary systems, fiscal policy, and international trade. Includes 50+ graphs and charts of economic indicators, recent economic data analysis, and policy debate topics. Comes with Excel templates for macroeconomic modeling and forecasting.",
+    "file-name": "macroeconomics-study-pack.pdf"
+  },
+  {
+    "id": 11,
+    "item-tag": "Law",
+    "item-date": "Mar 18, 2023",
+    "item-title": "LAW210 - Contract Law Essentials",
+    "item-desc": "Key concepts in contracts including offer, acceptance, and breach.",
+    "long-desc": "Contract law reference covering formation of contracts, terms and conditions, vitiating factors, discharge of contracts, and remedies for breach. Features 30 landmark case summaries with analysis, sample contract clauses, and comparison of contract law across jurisdictions. Includes practice exam questions with model answers.",
+    "file-name": "contract-law-reference.docx"
+  },
+  {
+    "id": 12,
+    "item-tag": "Nursing",
+    "item-date": "Apr 2, 2024",
+    "item-title": "NURS201 - Clinical Procedures",
+    "item-desc": "Step-by-step nursing procedures and patient care protocols.",
+    "long-desc": "Clinical nursing manual with detailed, illustrated procedures for vital signs measurement, medication administration, wound care, catheterization, and emergency interventions. Includes checklists for each procedure, documentation guidelines, and NCLEX-style review questions. Based on current evidence-based practice guidelines and hospital protocols.",
+    "file-name": "nursing-procedures-manual.pdf"
+  },
+  {
+    "id": 13,
+    "item-tag": "Chemistry",
+    "item-date": "Aug 12, 2023",
+    "item-title": "CHEM120 - Organic Chemistry",
+    "item-desc": "Reactions, mechanisms, and molecular structure interpretation.",
+    "long-desc": "Organic chemistry resource covering functional groups, nomenclature, stereochemistry, reaction mechanisms (substitution, elimination, addition), and spectroscopy. Features 150+ reaction schemes, 3D molecular models, NMR/IR interpretation guides, and 40 mechanism problems with step-by-step solutions. Includes retrosynthesis practice problems.",
+    "file-name": "organic-chemistry-guide.pdf"
+  },
+  {
+    "id": 14,
+    "item-tag": "Medicine",
+    "item-date": "Dec 10, 2024",
+    "item-title": "MED301 - Human Anatomy",
+    "item-desc": "Detailed anatomy with diagrams and physiological function.",
+    "long-desc": "Comprehensive human anatomy atlas with full-color illustrations of all body systems, including musculoskeletal, nervous, circulatory, and visceral anatomy. Features cadaver photos matched with schematic diagrams, clinical correlations, and surface anatomy markers. Includes mnemonics for anatomical structures and USMLE-style practice questions.",
+    "file-name": "human-anatomy-atlas.pdf"
+  },
+  {
+    "id": 15,
+    "item-tag": "Computer Science",
+    "item-date": "Oct 8, 2023",
+    "item-title": "ITCS214 - Data Structures Cheat Sheet",
+    "item-desc": "Time complexities and implementation notes of common structures.",
+    "long-desc": "Data structures quick reference covering arrays, linked lists, stacks, queues, trees, graphs, and hash tables. Includes time/space complexity charts for all operations, implementation code snippets in Python/Java/C++, and comparison guides for selecting appropriate structures. Features visual representations of algorithms like BFS, DFS, and sorting methods.",
+    "file-name": "data-structures-cheatsheet.pdf"
+  },
+  {
+    "id": 16,
+    "item-tag": "Architecture",
+    "item-date": "Jun 20, 2024",
+    "item-title": "ARCH310 - Sustainable Design",
+    "item-desc": "Principles and practices of eco-friendly architecture.",
+    "long-desc": "Sustainable architecture guide covering passive design strategies, renewable energy integration, green materials selection, and LEED certification standards. Features 25 case studies of award-winning sustainable buildings, climate-specific design approaches, and CAD templates for energy-efficient designs. Includes cost-benefit analyses of green technologies.",
+    "file-name": "sustainable-architecture-guide.pptx"
+  },
+  {
+    "id": 17,
+    "item-tag": "Environmental Science",
+    "item-date": "Mar 11, 2022",
+    "item-title": "ENVS102 - Ecosystem Dynamics",
+    "item-desc": "Ecosystem components, biodiversity, and sustainability.",
+    "long-desc": "Ecosystem science textbook covering energy flow, nutrient cycling, population dynamics, community interactions, and conservation biology. Features global case studies of different biomes, climate change impacts analysis, and GIS mapping exercises. Includes fieldwork protocols for ecosystem assessment and biodiversity monitoring techniques.",
+    "file-name": "ecosystem-dynamics-textbook.pdf"
+  },
+  {
+    "id": 18,
+    "item-tag": "Mechanical Engineering",
+    "item-date": "May 5, 2022",
+    "item-title": "MECH250 - Fluid Mechanics",
+    "item-desc": "Fluid properties, dynamics, and Bernoulli's equation.",
+    "long-desc": "Fluid mechanics course pack covering fluid statics, kinematics, conservation laws, pipe flow, dimensional analysis, and turbomachinery. Includes 60+ worked problems with solutions, CFD simulation examples, and laboratory experiment guides. Features derivations of key equations and engineering application notes for pumps, turbines, and aerodynamics.",
+    "file-name": "fluid-mechanics-coursepack.pdf"
+  },
+  {
+    "id": 19,
+    "item-tag": "Computer Science",
+    "item-date": "Nov 18, 2024",
+    "item-title": "CS401 - Algorithms & Complexity",
+    "item-desc": "Sorting, searching, and NP-complete problem overview.",
+    "long-desc": "Advanced algorithms textbook covering divide-and-conquer, dynamic programming, greedy algorithms, graph algorithms, and NP-completeness. Includes pseudocode for 50+ algorithms, complexity proofs, and competitive programming techniques. Features coding challenge problems from platforms like LeetCode and Codeforces, with optimized solutions.",
+    "file-name": "algorithms-textbook.pdf"
+  },
+  {
+    "id": 20,
+    "item-tag": "Pharmacy",
+    "item-date": "Feb 10, 2023",
+    "item-title": "PHAR203 - Pharmacology Basics",
+    "item-desc": "Drug classifications, mechanisms, and dosage info.",
+    "long-desc": "Pharmacology fundamentals guide covering drug-receptor interactions, pharmacokinetics, pharmacodynamics, and major drug classes (antibiotics, CNS drugs, cardiovascular agents). Includes mechanism of action diagrams, therapeutic index calculations, adverse effect profiles, and clinical use cases. Features drug interaction tables and prescription writing exercises.",
+    "file-name": "pharmacology-basics.docx"
+  },
+  {
+    "id": 21,
+    "item-tag": "Sociology",
+    "item-date": "Sep 17, 2023",
+    "item-title": "SOC101 - Introduction to Sociology",
+    "item-desc": "Social norms, structures, and theories of society.",
+    "long-desc": "Introductory sociology reader covering classical and contemporary sociological theories, research methods, and key concepts like socialization, deviance, stratification, and social change. Features 15 ethnographic case studies, statistical data interpretation exercises, and current debates in sociological research. Includes guides for conducting sociological fieldwork.",
+    "file-name": "sociology-introduction.pdf"
+  },
+  {
+    "id": 22,
+    "item-tag": "Statistics",
+    "item-date": "Aug 30, 2023",
+    "item-title": "STAT200 - Intro to Statistics",
+    "item-desc": "Descriptive and inferential statistics with applications.",
+    "long-desc": "Statistics learning package covering data visualization, probability distributions, hypothesis testing, regression analysis, and ANOVA. Includes R and Python code examples, 40+ practice datasets, and guided interpretation exercises. Features real-world applications in business, science, and social research with step-by-step analysis walkthroughs.",
+    "file-name": "statistics-course-materials.pdf"
+  },
+  {
+    "id": 23,
+    "item-tag": "History",
+    "item-date": "Sep 18, 2021",
+    "item-title": "HIST328 - World War II Timeline & Analysis",
+    "item-desc": "Chronological events, causes, and historical implications.",
+    "long-desc": "Comprehensive WWII historical resource with detailed timeline from 1939-1945, major battle maps, political analysis of causes and consequences, and primary source documents. Features biographical sketches of key figures, comparative military technology analysis, and examination of Holocaust documentation. Includes historiography essays on different interpretations of the war.",
+    "file-name": "wwii-history-research.pdf"
+  },
+  {
+    "id": 24,
+    "item-tag": "Linguistics",
+    "item-date": "Jan 9, 2024",
+    "item-title": "LING101 - Phonetics & Phonology",
+    "item-desc": "Sounds of language and sound systems across dialects.",
+    "long-desc": "Linguistics textbook covering articulatory phonetics, IPA transcription, phonological rules, and prosodic features. Includes audio recordings of speech sounds from 50 languages, spectrogram analysis exercises, and dialect comparison studies. Features interactive articulation diagrams and problem sets for phonological analysis of unfamiliar languages.",
+    "file-name": "phonetics-phonology-textbook.pdf"
+  },
+  {
+    "id": 25,
+    "item-tag": "Astronomy",
+    "item-date": "Apr 28, 2023",
+    "item-title": "ASTR100 - Stars & Galaxies",
+    "item-desc": "Stellar evolution, galaxies, and cosmological theories.",
+    "long-desc": "Astronomy course materials covering stellar classification, life cycles of stars, galaxy types, dark matter, and the expanding universe. Features Hubble and JWST telescope images with analysis guides, planetarium software tutorials, and light curve analysis exercises. Includes current research papers on exoplanet discovery and galaxy formation theories.",
+    "file-name": "astronomy-stars-galaxies.pptx"
+  },
+  {
+    "id": 26,
+    "item-tag": "Veterinary Science",
+    "item-date": "Nov 3, 2023",
+    "item-title": "VET201 - Animal Anatomy",
+    "item-desc": "Comparative anatomy of domestic and wild animals.",
+    "long-desc": "Veterinary anatomy atlas with detailed illustrations of musculoskeletal, nervous, and visceral systems across common domestic species (canine, feline, equine, bovine). Features comparative anatomy tables, radiograph interpretation guides, and dissection videos. Includes clinical correlations for physical examination and surgical procedures.",
+    "file-name": "veterinary-anatomy-reference.pdf"
+  },
+  {
+    "id": 27,
+    "item-tag": "Philosophy",
+    "item-date": "Dec 6, 2022",
+    "item-title": "PHIL101 - Ethics & Morality",
+    "item-desc": "Major ethical theories and practical moral dilemmas.",
+    "long-desc": "Philosophy reader covering utilitarianism, deontology, virtue ethics, and contemporary moral philosophy. Features 20 classic thought experiments (trolley problems, veil of ignorance), applied ethics case studies in bioethics and AI, and primary source excerpts from key philosophers. Includes debate preparation guides and essay writing frameworks.",
+    "file-name": "ethics-philosophy-reader.docx"
+  },
+  {
+    "id": 28,
+    "item-tag": "Marketing",
+    "item-date": "Feb 20, 2024",
+    "item-title": "MKTG301 - Consumer Behavior",
+    "item-desc": "Buying decisions, branding, and psychological influences.",
+    "long-desc": "Consumer behavior textbook covering decision-making processes, cultural influences, perception and learning, and digital marketing psychology. Features 30 case studies of successful campaigns, neuromarketing research findings, and segmentation analysis tools. Includes templates for customer journey mapping and brand perception surveys.",
+    "file-name": "consumer-behavior-textbook.pdf"
+  },
+  {
+    "id": 29,
+    "item-tag": "Finance",
+    "item-date": "Jul 25, 2023",
+    "item-title": "FIN205 - Financial Accounting",
+    "item-desc": "Journal entries, ledgers, and balance sheet analysis.",
+    "long-desc": "Financial accounting workbook covering the accounting cycle, financial statement preparation, ratio analysis, and GAAP standards. Includes 50+ practice problems with solutions, sample general ledgers, and Excel templates for financial analysis. Features case studies of real company financial statements with guided interpretation exercises.",
+    "file-name": "financial-accounting-workbook.xlsx"
+  },
+  {
+    "id": 30,
+    "item-tag": "Computer Science",
+    "item-date": "Mar 3, 2025",
+    "item-title": "CS340 - Operating Systems",
+    "item-desc": "Processes, memory management, and file systems.",
+    "long-desc": "Operating systems textbook covering processes and threads, CPU scheduling, memory hierarchy, file systems, and I/O subsystems. Includes Linux kernel programming exercises, simulation projects for page replacement algorithms, and case studies of modern OS architectures. Features interview preparation questions from top tech companies with detailed answers.",
+    "file-name": "operating-systems-textbook.pdf"
+  },
+  {
+    "id": 31,
+    "item-tag": "Engineering",
+    "item-date": "Jun 16, 2023",
+    "item-title": "ENGR101 - Engineering Drawing",
+    "item-desc": "Technical drawing techniques and CAD basics.",
+    "long-desc": "Engineering graphics manual covering orthographic projection, isometric drawing, section views, and dimensioning standards. Includes AutoCAD and SolidWorks tutorials, 50+ practice drawings with solutions, and GD&T (Geometric Dimensioning and Tolerancing) reference. Features industry blueprints for reverse engineering exercises.",
+    "file-name": "engineering-drawing-manual.pdf"
+  },
+  {
+    "id": 32,
+    "item-tag": "Dentistry",
+    "item-date": "May 14, 2023",
+    "item-title": "DENT210 - Oral Anatomy",
+    "item-desc": "Teeth structure, development, and dental notation.",
+    "long-desc": "Dental anatomy reference with detailed illustrations of tooth morphology, occlusion relationships, and oral histology. Features 3D models of dental arches, tooth carving guides, and FDI/Universal numbering system practice exercises. Includes clinical correlation notes for restorative procedures and orthodontic treatment planning.",
+    "file-name": "dental-anatomy-guide.pdf"
+  },
+  {
+    "id": 33,
+    "item-tag": "Medical",
+    "item-date": "Aug 20, 2023",
+    "item-title": "MED240 - Pathophysiology",
+    "item-desc": "Disease processes and physiological responses.",
+    "long-desc": "Pathophysiology textbook covering cellular injury, inflammation, fluid/electrolyte imbalances, and system-specific disorders (cardiovascular, respiratory, endocrine). Features mechanism diagrams of disease processes, clinical presentation comparisons, and diagnostic test interpretation guides. Includes case studies with differential diagnosis exercises.",
+    "file-name": "pathophysiology-textbook.pdf"
+  },
+  {
+    "id": 34,
+    "item-tag": "Education",
+    "item-date": "Mar 30, 2024",
+    "item-title": "EDU110 - Teaching Methods",
+    "item-desc": "Strategies for effective classroom instruction.",
+    "long-desc": "Teaching methodology guide covering lesson planning, differentiated instruction, classroom management techniques, and assessment strategies. Features 20 model lesson plans across subject areas, video examples of teaching techniques, and templates for unit planning. Includes special education adaptations and technology integration ideas.",
+    "file-name": "teaching-methods-guide.docx"
+  },
+  {
+    "id": 35,
+    "item-tag": "Art",
+    "item-date": "Oct 11, 2023",
+    "item-title": "ART120 - Modern Art Movements",
+    "item-desc": "Exploration of 19th and 20th century visual art.",
+    "long-desc": "Art history survey covering Impressionism, Cubism, Surrealism, Abstract Expressionism, and contemporary movements. Features high-resolution images of 100+ key artworks, artist biographies, and comparative analysis frameworks. Includes museum visit guides, exhibition review templates, and creative response project ideas.",
+    "file-name": "modern-art-movements.pptx"
+  },
+  {
+    "id": 36,
+    "item-tag": "Computer Science",
+    "item-date": "Jan 10, 2024",
+    "item-title": "CS351 - Web Development",
+    "item-desc": "Frontend and backend technologies for building websites.",
+    "long-desc": "Full-stack web development course covering HTML5, CSS3, JavaScript, React, Node.js, and database integration. Includes 15 hands-on projects (portfolio site, e-commerce prototype, REST API), deployment guides for AWS and Heroku, and performance optimization techniques. Features industry-standard workflow with Git, Figma, and Agile methodologies.",
+    "file-name": "web-development-projects.zip"
+  },
+  {
+    "id": 37,
+    "item-tag": "Aerospace Engineering",
+    "item-date": "Apr 27, 2023",
+    "item-title": "AE400 - Aerodynamics",
+    "item-desc": "Flight principles, drag, lift, and pressure distribution.",
+    "long-desc": "Aerodynamics textbook covering airfoil theory, boundary layers, compressible flow, and aircraft performance calculations. Includes MATLAB scripts for aerodynamic simulations, wind tunnel experiment guides, and NACA airfoil data analysis. Features case studies of aircraft design challenges and computational fluid dynamics (CFD) examples.",
+    "file-name": "aerodynamics-textbook.pdf"
+  },
+  {
+    "id": 38,
+    "item-tag": "Geology",
+    "item-date": "May 18, 2022",
+    "item-title": "GEOL101 - Earth Materials",
+    "item-desc": "Minerals, rocks, and the rock cycle.",
+    "long-desc": "Geology field guide covering mineral identification, igneous/metamorphic/sedimentary rock classification, and geologic mapping techniques. Features hand specimen photos with identification keys, thin section microscopy guides, and 3D models of crystal structures. Includes field notebook templates and sample collection protocols.",
+    "file-name": "geology-field-guide.pdf"
+  },
+  {
+    "id": 39,
+    "item-tag": "Public Health",
+    "item-date": "Jun 9, 2023",
+    "item-title": "PH101 - Epidemiology",
+    "item-desc": "Study of disease distribution and control strategies.",
+    "long-desc": "Epidemiology workbook covering study designs, outbreak investigation, biostatistics, and public health interventions. Features 20 case studies of historical and contemporary disease outbreaks, R programming for epidemiological analysis, and public health communication exercises. Includes ethical considerations in disease surveillance and control.",
+    "file-name": "epidemiology-workbook.docx"
+  },
+  {
+    "id": 40,
+    "item-tag": "Computer Engineering",
+    "item-date": "Jul 7, 2023",
+    "item-title": "CE210 - Microprocessors",
+    "item-desc": "Architecture and programming of microcontrollers.",
+    "long-desc": "Microprocessor systems guide covering x86 and ARM architectures, assembly language programming, and embedded system design. Includes Arduino and Raspberry Pi projects, oscilloscope measurement guides, and peripheral interfacing examples. Features real-time operating system concepts and low-power design considerations.",
+    "file-name": "microprocessor-systems-guide.pdf"
+  },
+  {
+    "id": 41,
+    "item-tag": "Anthropology",
+    "item-date": "Nov 22, 2023",
+    "item-title": "ANTH120 - Cultural Anthropology",
+    "item-desc": "Human culture, rituals, and societal development.",
+    "long-desc": "Cultural anthropology reader covering kinship systems, economic anthropology, political organization, and symbolic anthropology. Features 15 ethnographic studies from different world cultures, fieldwork methodology guides, and ethical considerations in anthropological research. Includes multimedia resources with interviews from practicing anthropologists.",
+    "file-name": "cultural-anthropology-reader.pdf"
+  },
+  {
+    "id": 42,
+    "item-tag": "Computer Science",
+    "item-date": "Feb 1, 2025",
+    "item-title": "CS250 - Python Programming",
+    "item-desc": "Basics to intermediate Python with real-world examples.",
+    "long-desc": "Python programming course covering syntax, data structures, OOP, file handling, and popular libraries (NumPy, Pandas, Matplotlib). Includes 50 coding exercises with solutions, mini-projects (web scraper, data analyzer, simple games), and style guide for professional Python development. Features debugging techniques and unit testing with pytest.",
+    "file-name": "python-programming-course.zip"
+  }
+]

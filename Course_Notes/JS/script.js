@@ -45,7 +45,7 @@ fetch('https://680baf23d5075a76d98c0d14.mockapi.io/courses')
             </div>
             <h2 class="item-title">${course['item-title']}</h2>
             <p class="item-desc">${course['item-desc']}</p>
-            <a href="view-notes.html" class="module-link">View Notes <i class="fas fa-arrow-right"></i></a>
+            <a href="view-notes.html?id=${course.id}" class="module-link">View Notes <i class="fas fa-arrow-right"></i></a>
           </div>
         `;
         itemList.appendChild(courseCard);
