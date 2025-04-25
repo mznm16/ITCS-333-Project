@@ -6,13 +6,14 @@ fetch('https://680baf23d5075a76d98c0d14.mockapi.io/courses')
     const pagination = document.querySelector('.pagination');
     let currentPage = 1;
     const itemsPerPage = 6;
-    const totalPages = Math.ceil(courses.length / itemsPerPage);
+    let filteredCourses = [...courses]; // Store filtered courses globally
 
-    function renderPage(page) {
+    function renderPage(page, coursesToRender = filteredCourses) {
       itemList.innerHTML = '';
       const startIdx = (page - 1) * itemsPerPage;
       const endIdx = startIdx + itemsPerPage;
-      const pageCourses = courses.slice(startIdx, endIdx);
+      const pageCourses = coursesToRender.slice(startIdx, endIdx);
+      
       pageCourses.forEach(course => {
         const courseCard = document.createElement('article');
         courseCard.classList.add('item-card');
@@ -31,23 +32,132 @@ fetch('https://680baf23d5075a76d98c0d14.mockapi.io/courses')
       });
     }
 
-    function renderPagination() {
+    function renderPagination(coursesToPaginate = filteredCourses) {
+      const totalPages = Math.ceil(coursesToPaginate.length / itemsPerPage);
       pagination.innerHTML = '';
-      for (let i = 1; i <= totalPages; i++) {
-        const btn = document.createElement('button');
-        btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
-        btn.textContent = i;
-        btn.addEventListener('click', () => {
-          currentPage = i;
-          renderPage(currentPage);
-          renderPagination();
-        });
-        pagination.appendChild(btn);
+      
+      // Only show pagination if there's more than one page
+      if (totalPages > 1) {
+        for (let i = 1; i <= totalPages; i++) {
+          const btn = document.createElement('button');
+          btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
+          btn.textContent = i;
+          btn.addEventListener('click', () => {
+            currentPage = i;
+            renderPage(currentPage, coursesToPaginate);
+            renderPagination(coursesToPaginate);
+          });
+          pagination.appendChild(btn);
+        }
       }
     }
 
+    // Initial render
     renderPage(currentPage);
     renderPagination();
+
+    // Sort functionality
+    const sortButton = document.querySelector('#sortButton');
+    const sortMenu = document.querySelector('.sort-menu');
+
+    // Toggle sort menu
+    sortButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      sortMenu.style.display = sortMenu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', () => {
+      sortMenu.style.display = 'none';
+      filterMenu.style.display = 'none';
+    });
+
+    // Prevent menus from closing when clicking inside
+    sortMenu.addEventListener('click', (event) => {
+      event.stopPropagation();
+    });
+
+    // Handle sort selection
+    document.querySelectorAll('.sort-menu input[type="radio"]').forEach(radio => {
+      radio.addEventListener('change', (event) => {
+        const sortType = event.target.value;
+        
+        switch(sortType) {
+          case 'recent':
+            filteredCourses.sort((a, b) => new Date(b['item-date']) - new Date(a['item-date']));
+            break;
+          case 'alphabetical':
+            filteredCourses.sort((a, b) => a['item-title'].localeCompare(b['item-title']));
+            break;
+          case 'subject':
+            filteredCourses.sort((a, b) => a['item-tag'].localeCompare(b['item-tag']));
+            break;
+        }
+        
+        // Re-render with sorted filtered courses
+        currentPage = 1;
+        renderPage(currentPage);
+        renderPagination();
+        
+        // Close sort menu
+        sortMenu.style.display = 'none';
+      });
+    });
+
+    // Filter functionality
+    const filterButton = document.querySelector('#filterButton');
+    const filterMenu = document.querySelector('.filter-menu');
+    const applyFilterBtn = document.querySelector('.apply-filter-btn');
+
+    // Toggle filter menu
+    filterButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      filterMenu.style.display = filterMenu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    filterMenu.addEventListener('click', (event) => {
+      event.stopPropagation();
+    });
+
+    // Apply filters
+    applyFilterBtn.addEventListener('click', () => {
+      const selectedFilters = Array.from(document.querySelectorAll('.filter-menu input[type="checkbox"]:checked'))
+        .map(checkbox => checkbox.value);
+      
+      if (selectedFilters.length === 0) {
+        // If no filters selected, show all courses
+        filteredCourses = [...courses];
+      } else {
+        // Filter courses based on selected tags
+        filteredCourses = courses.filter(course => {
+          const courseTag = course['item-tag'];
+          // Check if course belongs to any of the selected filter categories
+          return selectedFilters.some(filter => {
+            if (filter === 'Science') {
+              return ['Physics', 'Chemistry', 'Biology', 'Environmental Science'].includes(courseTag);
+            } else if (filter === 'Engineering') {
+              return ['Mechanical Engineering', 'Electrical Engineering', 'Civil Engineering', 'Computer Engineering', 'Aerospace Engineering'].includes(courseTag);
+            } else if (filter === 'Medical') {
+              return ['Medicine', 'Nursing', 'Pharmacy', 'Dentistry'].includes(courseTag);
+            } else if (filter === 'Arts') {
+              return ['History', 'Philosophy', 'Art', 'Linguistics', 'Sociology', 'Anthropology'].includes(courseTag);
+            } else if (filter === 'Business') {
+              return ['Business', 'Economics', 'Marketing', 'Finance'].includes(courseTag);
+            } else {
+              return courseTag === filter;
+            }
+          });
+        });
+      }
+      
+      // Reset to first page and render filtered results
+      currentPage = 1;
+      renderPage(currentPage);
+      renderPagination();
+      
+      // Close the filter menu
+      filterMenu.style.display = 'none';
+    });
   })
   .catch(error => {
     console.error('Error fetching course data:', error);

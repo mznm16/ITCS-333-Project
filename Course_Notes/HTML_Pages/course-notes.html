@@ -45,14 +45,32 @@
         <input type="text" class="search-input" placeholder="Search by course, subject, or topic...">
       </div>
       <div class="filter-controls">
-        <button class="filter-btn">
-          <i class="fas fa-filter"></i>
-          Filter
-        </button>
-        <button class="filter-btn">
-          <i class="fas fa-sort"></i>
-          Sort
-        </button>
+        <div class="filter-container">
+          <button class="filter-btn" id="filterButton">
+            <i class="fas fa-filter"></i>
+            Filter
+          </button>
+          <div class="filter-menu">
+            <label><input type="checkbox" name="filter" value="Computer Science"> Computer Science</label>
+            <label><input type="checkbox" name="filter" value="Engineering"> Engineering</label>
+            <label><input type="checkbox" name="filter" value="Medical"> Medical</label>
+            <label><input type="checkbox" name="filter" value="Business"> Business</label>
+            <label><input type="checkbox" name="filter" value="Science"> Science</label>
+            <label><input type="checkbox" name="filter" value="Arts"> Arts & Humanities</label>
+            <button class="apply-filter-btn">Apply Filters</button>
+          </div>
+        </div>
+        <div class="sort-container">
+          <button class="filter-btn" id="sortButton">
+            <i class="fas fa-sort"></i>
+            Sort
+          </button>
+          <div class="sort-menu">
+            <label><input type="radio" name="sort" value="recent"> Sort by Most Recent</label>
+            <label><input type="radio" name="sort" value="alphabetical"> Sort Alphabetically</label>
+            <label><input type="radio" name="sort" value="subject"> Sort by Subject Area</label>
+          </div>
+        </div>
       </div>
       <a href="upload-notes.html" class="add-new-btn">
         <i class="fas fa-plus"></i>
