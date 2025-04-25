@@ -45,14 +45,32 @@
         <input type="text" class="search-input" placeholder="Search by course, subject, or topic...">
       </div>
       <div class="filter-controls">
-        <button class="filter-btn">
-          <i class="fas fa-filter"></i>
-          Filter
-        </button>
-        <button class="filter-btn">
-          <i class="fas fa-sort"></i>
-          Sort
-        </button>
+        <div class="filter-container">
+          <button class="filter-btn" id="filterButton">
+            <i class="fas fa-filter"></i>
+            Filter
+          </button>
+          <div class="filter-menu">
+            <label><input type="checkbox" name="filter" value="Computer Science"> Computer Science</label>
+            <label><input type="checkbox" name="filter" value="Engineering"> Engineering</label>
+            <label><input type="checkbox" name="filter" value="Medical"> Medical</label>
+            <label><input type="checkbox" name="filter" value="Business"> Business</label>
+            <label><input type="checkbox" name="filter" value="Science"> Science</label>
+            <label><input type="checkbox" name="filter" value="Arts"> Arts & Humanities</label>
+            <button class="apply-filter-btn">Apply Filters</button>
+          </div>
+        </div>
+        <div class="sort-container">
+          <button class="filter-btn" id="sortButton">
+            <i class="fas fa-sort"></i>
+            Sort
+          </button>
+          <div class="sort-menu">
+            <label><input type="radio" name="sort" value="recent"> Sort by Most Recent</label>
+            <label><input type="radio" name="sort" value="alphabetical"> Sort Alphabetically</label>
+            <label><input type="radio" name="sort" value="subject"> Sort by Subject Area</label>
+          </div>
+        </div>
       </div>
       <a href="upload-notes.html" class="add-new-btn">
         <i class="fas fa-plus"></i>
@@ -60,78 +78,7 @@
       </a>
     </div>
 
-    <div class="item-list">
-      <article class="item-card">
-        <div class="item-content">
-          <div class="item-meta">
-            <span class="item-tag">Computer Science</span>
-            <span class="item-date">Updated: march 20, 2025</span>
-          </div>
-          <h2 class="item-title">ITCS333 - HTML tags</h2>
-          <p class="item-desc">Complete html tags in a PDF file with their examples.</p>
-          <a href="view-notes.html" class="module-link">View Notes <i class="fas fa-arrow-right"></i></a>
-        </div>
-      </article>
-
-      <article class="item-card">
-        <div class="item-content">
-          <div class="item-meta">
-            <span class="item-tag">Physics</span>
-            <span class="item-date">Updated: Oct 3, 2024</span>
-          </div>
-          <h2 class="item-title">PHYCS432 - Quantum Mechanics Formulas</h2>
-          <p class="item-desc">Comprehensive formula sheet with solved example problems and derivations for key concepts.</p>
-          <a href="view-notes.html" class="module-link">View Notes <i class="fas fa-arrow-right"></i></a>
-        </div>
-      </article>
-
-      <article class="item-card">
-        <div class="item-content">
-          <div class="item-meta">
-            <span class="item-tag">History</span>
-            <span class="item-date">Updated: Sep 18, 2021</span>
-          </div>
-          <h2 class="item-title">HIST328 - World War II Timeline & Analysis</h2>
-          <p class="item-desc">Detailed chronology of key events with analysis of causes, impacts, and historical significance.</p>
-          <a href="view-notes.html" class="module-link">View Notes <i class="fas fa-arrow-right"></i></a>
-        </div>
-      </article>
-
-      <article class="item-card">
-        <div class="item-content">
-          <div class="item-meta">
-            <span class="item-tag">Computer Science</span>
-            <span class="item-date">Updated: Oct 8, 2023</span>
-          </div>
-          <h2 class="item-title">ITCS214 - Cheat Sheet</h2>
-          <p class="item-desc">Quick reference guide for common data structures with time complexity analysis and implementation notes.</p>
-          <a href="view-notes.html" class="module-link">View Notes <i class="fas fa-arrow-right"></i></a>
-        </div>
-      </article>
-
-      <article class="item-card">
-        <div class="item-content">
-          <div class="item-meta">
-            <span class="item-tag">Psychology</span>
-            <span class="item-date">Updated: Sep 29, 2023</span>
-          </div>
-          <h2 class="item-title">PSYC211 - Developmental Key Theories</h2>
-          <p class="item-desc">Summary of major developmental theories with comparison charts and real-world applications.</p>
-          <a href="view-notes.html" class="module-link">View Notes <i class="fas fa-arrow-right"></i></a>
-        </div>
-      </article>
-
-      <article class="item-card">
-        <div class="item-content">
-          <div class="item-meta">
-            <span class="item-tag">Economics</span>
-            <span class="item-date">Updated: Oct 5, 2022</span>
-          </div>
-          <h2 class="item-title">ECON261 - Macroeconomics Study Guide</h2>
-          <p class="item-desc">Comprehensive notes covering GDP, inflation, monetary policy, and international trade concepts.</p>
-          <a href="view-notes.html" class="module-link">View Notes <i class="fas fa-arrow-right"></i></a>
-        </div>
-      </article>
+    <div id="item-list" class="item-list">
     </div>
 
     <div class="pagination">
@@ -188,6 +135,6 @@
     </div>
   </footer>
 
-
+  <script src="../JS/script.js"></script>
 </body>
 </html>
