@@ -58,6 +58,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Update file name
                 document.querySelector('.d-flex.align-items-center p.mb-0').textContent = 
                     `${course['file-name']} (8 pages, 1.5 MB)`;
+                
+                // Update last updated date
+                document.querySelector('#lastUpdated').textContent = `Last updated: ${course['item-date']}`;
 
                 console.log('Page updated successfully');
             } catch (e) {
