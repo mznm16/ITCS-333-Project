@@ -3,26 +3,51 @@ fetch('https://680baf23d5075a76d98c0d14.mockapi.io/courses')
   .then(response => response.json())
   .then(courses => {
     const itemList = document.getElementById('item-list');
+    const pagination = document.querySelector('.pagination');
+    let currentPage = 1;
+    const itemsPerPage = 6;
+    const totalPages = Math.ceil(courses.length / itemsPerPage);
 
-    // Loop through the courses and create course boxes dynamically
-    courses.forEach(course => {
-      const courseCard = document.createElement('article');
-      courseCard.classList.add('item-card');
-
-      courseCard.innerHTML = `
-        <div class="item-content">
-          <div class="item-meta">
-            <span class="item-tag">${course['item-tag']}</span>
-            <span class="item-date">Updated: ${course['item-date']}</span>
+    function renderPage(page) {
+      itemList.innerHTML = '';
+      const startIdx = (page - 1) * itemsPerPage;
+      const endIdx = startIdx + itemsPerPage;
+      const pageCourses = courses.slice(startIdx, endIdx);
+      pageCourses.forEach(course => {
+        const courseCard = document.createElement('article');
+        courseCard.classList.add('item-card');
+        courseCard.innerHTML = `
+          <div class="item-content">
+            <div class="item-meta">
+              <span class="item-tag">${course['item-tag']}</span>
+              <span class="item-date">Updated: ${course['item-date']}</span>
+            </div>
+            <h2 class="item-title">${course['item-title']}</h2>
+            <p class="item-desc">${course['item-desc']}</p>
+            <a href="view-notes.html" class="module-link">View Notes <i class="fas fa-arrow-right"></i></a>
           </div>
-          <h2 class="item-title">${course['item-title']}</h2>
-          <p class="item-desc">${course['item-desc']}</p>
-          <a href="view-notes.html" class="module-link">View Notes <i class="fas fa-arrow-right"></i></a>
-        </div>
-      `;
+        `;
+        itemList.appendChild(courseCard);
+      });
+    }
 
-      itemList.appendChild(courseCard);
-    });
+    function renderPagination() {
+      pagination.innerHTML = '';
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
+        btn.textContent = i;
+        btn.addEventListener('click', () => {
+          currentPage = i;
+          renderPage(currentPage);
+          renderPagination();
+        });
+        pagination.appendChild(btn);
+      }
+    }
+
+    renderPage(currentPage);
+    renderPagination();
   })
   .catch(error => {
     console.error('Error fetching course data:', error);
