@@ -1,4 +1,34 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Function to get file icon based on extension
+    function getFileIcon(fileName) {
+        const extension = fileName.split('.').pop().toLowerCase();
+        switch(extension) {
+            case 'pdf':
+                return '<i class="fas fa-file-pdf text-danger fa-3x"></i>';
+            case 'pptx':
+            case 'ppt':
+                return '<i class="fas fa-file-powerpoint text-warning fa-3x"></i>';
+            case 'doc':
+            case 'docx':
+                return '<i class="fas fa-file-word text-primary fa-3x"></i>';
+            case 'xls':
+            case 'xlsx':
+                return '<i class="fas fa-file-excel text-success fa-3x"></i>';
+            case 'txt':
+                return '<i class="fas fa-file-alt text-secondary fa-3x"></i>';
+            case 'zip':
+            case 'rar':
+                return '<i class="fas fa-file-archive text-info fa-3x"></i>';
+            case 'jpg':
+            case 'jpeg':
+            case 'png':
+            case 'gif':
+                return '<i class="fas fa-file-image text-primary fa-3x"></i>';
+            default:
+                return '<i class="fas fa-file text-secondary fa-3x"></i>';
+        }
+    }
+
     // Get the course ID from URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const courseId = urlParams.get('id');
@@ -54,6 +84,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Update description
                 document.querySelector('.card-body p').textContent = course['long-desc'];
+                
+                // Update file icon and name
+                const fileIconElement = document.querySelector('.file-icon');
+                if (fileIconElement) {
+                    fileIconElement.innerHTML = getFileIcon(course['file-name']);
+                }
                 
                 // Update file name
                 document.querySelector('.d-flex.align-items-center p.mb-0').textContent = 
