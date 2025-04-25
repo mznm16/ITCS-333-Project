@@ -9,8 +9,77 @@ fetch('https://680baf23d5075a76d98c0d14.mockapi.io/courses')
     const pagination = document.querySelector('.pagination');
     let currentPage = 1;
     const itemsPerPage = 6;
-    let filteredCourses = [...courses]; // Store filtered courses globally
+    let filteredCourses = [...courses];
     let isLoading = false;
+    let currentSearchTerm = '';
+
+    // Function to apply filters to courses
+    function applyFilters(coursesToFilter, selectedFilters) {
+      if (selectedFilters.length === 0) return coursesToFilter;
+      
+      return coursesToFilter.filter(course => {
+        const courseTag = course['item-tag'];
+        return selectedFilters.some(filter => {
+          if (filter === 'Science') {
+            return ['Physics', 'Chemistry', 'Biology', 'Environmental Science'].includes(courseTag);
+          } else if (filter === 'Engineering') {
+            return ['Mechanical Engineering', 'Electrical Engineering', 'Civil Engineering', 'Computer Engineering', 'Aerospace Engineering'].includes(courseTag);
+          } else if (filter === 'Medical') {
+            return ['Medicine', 'Nursing', 'Pharmacy', 'Dentistry'].includes(courseTag);
+          } else if (filter === 'Arts') {
+            return ['History', 'Philosophy', 'Art', 'Linguistics', 'Sociology', 'Anthropology'].includes(courseTag);
+          } else if (filter === 'Business') {
+            return ['Business', 'Economics', 'Marketing', 'Finance'].includes(courseTag);
+          } else {
+            return courseTag === filter;
+          }
+        });
+      });
+    }
+
+    // Function to apply search to courses
+    function applySearch(coursesToSearch, searchTerm) {
+      if (!searchTerm) return coursesToSearch;
+      
+      return coursesToSearch.filter(course => {
+        const title = course['item-title'].toLowerCase();
+        const tag = course['item-tag'].toLowerCase();
+        const desc = course['item-desc'].toLowerCase();
+        
+        return title.includes(searchTerm) || 
+               tag.includes(searchTerm) || 
+               desc.includes(searchTerm);
+      });
+    }
+
+    // Function to update results based on both search and filters
+    function updateResults() {
+      const selectedFilters = Array.from(document.querySelectorAll('.filter-menu input[type="checkbox"]:checked'))
+        .map(checkbox => checkbox.value);
+      
+      // First apply filters to all courses
+      let results = applyFilters(courses, selectedFilters);
+      // Then apply search to filtered results
+      results = applySearch(results, currentSearchTerm);
+      
+      filteredCourses = results;
+      currentPage = 1;
+      renderPage(currentPage);
+      renderPagination();
+    }
+
+    // Add search functionality
+    const searchInput = document.querySelector('.search-input');
+    searchInput.addEventListener('input', async (e) => {
+      currentSearchTerm = e.target.value.toLowerCase().trim();
+      
+      showLoading();
+      // Simulate network delay for search
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      updateResults();
+      hideLoading();
+    });
 
     function showLoading() {
       isLoading = true;
@@ -56,18 +125,31 @@ fetch('https://680baf23d5075a76d98c0d14.mockapi.io/courses')
       const totalPages = Math.ceil(coursesToPaginate.length / itemsPerPage);
       pagination.innerHTML = '';
       
-      // Only show pagination if there's more than one page
-      if (totalPages > 1) {
-        for (let i = 1; i <= totalPages; i++) {
-          const btn = document.createElement('button');
-          btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
-          btn.textContent = i;
-          btn.addEventListener('click', () => {
-            currentPage = i;
-            renderPage(currentPage, coursesToPaginate);
-            renderPagination(coursesToPaginate);
-          });
-          pagination.appendChild(btn);
+      // Always show page 1 if there are any items
+      if (coursesToPaginate.length > 0) {
+        const btn = document.createElement('button');
+        btn.className = 'page-btn' + (currentPage === 1 ? ' active' : '');
+        btn.textContent = '1';
+        btn.addEventListener('click', () => {
+          currentPage = 1;
+          renderPage(currentPage, coursesToPaginate);
+          renderPagination(coursesToPaginate);
+        });
+        pagination.appendChild(btn);
+        
+        // Only show additional pages if there are more than itemsPerPage items
+        if (totalPages > 1) {
+          for (let i = 2; i <= totalPages; i++) {
+            const btn = document.createElement('button');
+            btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
+            btn.textContent = i;
+            btn.addEventListener('click', () => {
+              currentPage = i;
+              renderPage(currentPage, coursesToPaginate);
+              renderPagination(coursesToPaginate);
+            });
+            pagination.appendChild(btn);
+          }
         }
       }
     }
@@ -148,42 +230,10 @@ fetch('https://680baf23d5075a76d98c0d14.mockapi.io/courses')
     applyFilterBtn.addEventListener('click', async () => {
       showLoading();
       
-      const selectedFilters = Array.from(document.querySelectorAll('.filter-menu input[type="checkbox"]:checked'))
-        .map(checkbox => checkbox.value);
-      
       // Simulate network delay for filtering
       await new Promise(resolve => setTimeout(resolve, 500));
       
-      if (selectedFilters.length === 0) {
-        // If no filters selected, show all courses
-        filteredCourses = [...courses];
-      } else {
-        // Filter courses based on selected tags
-        filteredCourses = courses.filter(course => {
-          const courseTag = course['item-tag'];
-          // Check if course belongs to any of the selected filter categories
-          return selectedFilters.some(filter => {
-            if (filter === 'Science') {
-              return ['Physics', 'Chemistry', 'Biology', 'Environmental Science'].includes(courseTag);
-            } else if (filter === 'Engineering') {
-              return ['Mechanical Engineering', 'Electrical Engineering', 'Civil Engineering', 'Computer Engineering', 'Aerospace Engineering'].includes(courseTag);
-            } else if (filter === 'Medical') {
-              return ['Medicine', 'Nursing', 'Pharmacy', 'Dentistry'].includes(courseTag);
-            } else if (filter === 'Arts') {
-              return ['History', 'Philosophy', 'Art', 'Linguistics', 'Sociology', 'Anthropology'].includes(courseTag);
-            } else if (filter === 'Business') {
-              return ['Business', 'Economics', 'Marketing', 'Finance'].includes(courseTag);
-            } else {
-              return courseTag === filter;
-            }
-          });
-        });
-      }
-      
-      // Reset to first page and render filtered results
-      currentPage = 1;
-      renderPage(currentPage);
-      renderPagination();
+      updateResults();
       hideLoading();
       
       // Close the filter menu
