@@ -8,15 +8,15 @@ const itemList = document.querySelector('.item-list');
 const paginationContainer = document.querySelector('.pagination');
 const searchInput = document.querySelector('.search-input');
 
-// Fetch reviews from the API
+// Load reviews from local db.json
 async function fetchReviews() {
     try {
-        const response = await fetch('https://680cee342ea307e081d57b57.mockapi.io/reviews');
+        const response = await fetch('../JS/db.json');
         allReviews = await response.json();
         displayReviews();
         setupPagination();
     } catch (error) {
-        console.error('Error fetching reviews:', error);
+        console.error('Error loading reviews:', error);
         itemList.innerHTML = '<p class="error">Failed to load reviews. Please try again later.</p>';
     }
 }
@@ -36,6 +36,11 @@ function displayReviews(filteredReviews = null) {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const currentReviews = reviews.slice(startIndex, endIndex);
+
+    if (currentReviews.length === 0) {
+        itemList.innerHTML = '<p class="text-center mt-4">No reviews found matching your search.</p>';
+        return;
+    }
 
     itemList.innerHTML = currentReviews.map(review => `
         <article class="item-card">
@@ -65,16 +70,18 @@ function setupPagination(filteredReviews = null) {
     
     paginationContainer.innerHTML = '';
     
-    // Previous button
-    if (pageCount > 1) {
-        paginationContainer.innerHTML += `
-            <button class="page-btn ${currentPage === 1 ? 'disabled' : ''}" 
-                    ${currentPage === 1 ? 'disabled' : ''} 
-                    onclick="changePage(${currentPage - 1})">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-        `;
+    if (pageCount <= 1) {
+        return;
     }
+
+    // Previous button
+    paginationContainer.innerHTML += `
+        <button class="page-btn ${currentPage === 1 ? 'disabled' : ''}" 
+                ${currentPage === 1 ? 'disabled' : ''} 
+                onclick="changePage(${currentPage - 1})">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    `;
 
     // Page numbers
     for (let i = 1; i <= pageCount; i++) {
@@ -102,39 +109,57 @@ function setupPagination(filteredReviews = null) {
     }
 
     // Next button
-    if (pageCount > 1) {
-        paginationContainer.innerHTML += `
-            <button class="page-btn ${currentPage === pageCount ? 'disabled' : ''}" 
-                    ${currentPage === pageCount ? 'disabled' : ''} 
-                    onclick="changePage(${currentPage + 1})">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        `;
-    }
+    paginationContainer.innerHTML += `
+        <button class="page-btn ${currentPage === pageCount ? 'disabled' : ''}" 
+                ${currentPage === pageCount ? 'disabled' : ''} 
+                onclick="changePage(${currentPage + 1})">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    `;
 }
 
 // Change page
 function changePage(newPage) {
-    if (newPage >= 1 && newPage <= Math.ceil(allReviews.length / itemsPerPage)) {
-        currentPage = newPage;
+    currentPage = newPage;
+    const searchTerm = searchInput.value.toLowerCase();
+    
+    if (searchTerm) {
+        const filteredReviews = filterReviews(searchTerm);
+        displayReviews(filteredReviews);
+        setupPagination(filteredReviews);
+    } else {
         displayReviews();
         setupPagination();
     }
 }
 
-// Search functionality
-searchInput.addEventListener('input', (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    const filteredReviews = allReviews.filter(review => 
+// Filter reviews based on search term
+function filterReviews(searchTerm) {
+    return allReviews.filter(review => 
         review['course-tag'].toLowerCase().includes(searchTerm) ||
         review['course-title'].toLowerCase().includes(searchTerm) ||
         review['dr-name'].toLowerCase().includes(searchTerm) ||
         review['short-desc'].toLowerCase().includes(searchTerm)
     );
-    
-    currentPage = 1;
-    displayReviews(filteredReviews);
-    setupPagination(filteredReviews);
+}
+
+// Search functionality with debounce
+let searchTimeout;
+searchInput.addEventListener('input', (e) => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+        const searchTerm = e.target.value.toLowerCase();
+        currentPage = 1;
+        
+        if (searchTerm) {
+            const filteredReviews = filterReviews(searchTerm);
+            displayReviews(filteredReviews);
+            setupPagination(filteredReviews);
+        } else {
+            displayReviews();
+            setupPagination();
+        }
+    }, 300); // Debounce delay of 300ms
 });
 
 // Initialize the page
