@@ -6,6 +6,7 @@ let activeFilters = {
     ratings: []
 };
 let activeSort = null;
+let isLoading = false;
 
 // Elements
 const itemList = document.querySelector('.item-list');
@@ -17,10 +18,18 @@ const filterMenu = document.getElementById('filterMenu');
 const sortMenu = document.getElementById('sortMenu');
 const applyFilterBtn = document.querySelector('.apply-filter-btn');
 const applySortBtn = document.querySelector('.apply-sort-btn');
+const loadingOverlay = document.getElementById('loadingOverlay');
+
+// Show/hide loading state
+function setLoading(loading) {
+    isLoading = loading;
+    loadingOverlay.style.display = loading ? 'flex' : 'none';
+}
 
 // Load reviews from local db.json
 async function fetchReviews() {
     try {
+        setLoading(true);
         const response = await fetch('../JS/db.json');
         allReviews = await response.json();
         displayReviews();
@@ -28,6 +37,8 @@ async function fetchReviews() {
     } catch (error) {
         console.error('Error loading reviews:', error);
         itemList.innerHTML = '<p class="error">Failed to load reviews. Please try again later.</p>';
+    } finally {
+        setLoading(false);
     }
 }
 
@@ -40,8 +51,13 @@ function createStarRating(stars) {
     return `${starsHtml} ${stars}/5`;
 }
 
-// Apply filters and sort
-function applyFiltersAndSort(reviews) {
+// Apply filters and sort with loading state
+async function applyFiltersAndSort(reviews) {
+    setLoading(true);
+    
+    // Simulate network delay for smoother UI
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
     let filtered = [...reviews];
 
     // Apply rating filters
@@ -71,11 +87,17 @@ function applyFiltersAndSort(reviews) {
         });
     }
 
+    setLoading(false);
     return filtered;
 }
 
 // Filter reviews based on search term
-function filterReviews(searchTerm) {
+async function filterReviews(searchTerm) {
+    setLoading(true);
+    
+    // Simulate network delay for smoother UI
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
     const searchResults = allReviews.filter(review => 
         review['course-tag'].toLowerCase().includes(searchTerm) ||
         review['course-title'].toLowerCase().includes(searchTerm) ||
@@ -84,18 +106,28 @@ function filterReviews(searchTerm) {
     );
     
     // Apply existing filters and sort to search results
-    return applyFiltersAndSort(searchResults);
+    const processed = await applyFiltersAndSort(searchResults);
+    setLoading(false);
+    return processed;
 }
 
 // Display reviews for current page
-function displayReviews(filteredReviews = null) {
-    const reviews = filteredReviews || applyFiltersAndSort(allReviews);
+async function displayReviews(filteredReviews = null) {
+    let reviews;
+    if (filteredReviews) {
+        reviews = filteredReviews;
+    } else {
+        setLoading(true);
+        reviews = await applyFiltersAndSort(allReviews);
+    }
+
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const currentReviews = reviews.slice(startIndex, endIndex);
 
     if (currentReviews.length === 0) {
         itemList.innerHTML = '<p class="text-center mt-4">No reviews found matching your criteria.</p>';
+        setLoading(false);
         return;
     }
 
@@ -120,6 +152,7 @@ function displayReviews(filteredReviews = null) {
     `).join('');
 
     setupPagination(reviews);
+    setLoading(false);
 }
 
 // Setup pagination
@@ -220,7 +253,7 @@ sortBtn.addEventListener('click', (e) => {
 });
 
 // Apply filters
-applyFilterBtn.addEventListener('click', () => {
+applyFilterBtn.addEventListener('click', async () => {
     const ratingCheckboxes = filterMenu.querySelectorAll('input[type="checkbox"][value]');
     activeFilters.ratings = [...ratingCheckboxes]
         .filter(cb => cb.checked)
@@ -229,26 +262,26 @@ applyFilterBtn.addEventListener('click', () => {
     currentPage = 1;
     const searchTerm = searchInput.value.toLowerCase();
     if (searchTerm) {
-        const filteredReviews = filterReviews(searchTerm);
-        displayReviews(filteredReviews);
+        const filteredReviews = await filterReviews(searchTerm);
+        await displayReviews(filteredReviews);
     } else {
-        displayReviews();
+        await displayReviews();
     }
     filterMenu.classList.remove('show');
 });
 
 // Apply sort
-applySortBtn.addEventListener('click', () => {
+applySortBtn.addEventListener('click', async () => {
     const selectedSort = sortMenu.querySelector('input[name="sort"]:checked');
     activeSort = selectedSort ? selectedSort.value : null;
     
     currentPage = 1;
     const searchTerm = searchInput.value.toLowerCase();
     if (searchTerm) {
-        const filteredReviews = filterReviews(searchTerm);
-        displayReviews(filteredReviews);
+        const filteredReviews = await filterReviews(searchTerm);
+        await displayReviews(filteredReviews);
     } else {
-        displayReviews();
+        await displayReviews();
     }
     sortMenu.classList.remove('show');
 });
@@ -257,15 +290,15 @@ applySortBtn.addEventListener('click', () => {
 let searchTimeout;
 searchInput.addEventListener('input', (e) => {
     clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(() => {
+    searchTimeout = setTimeout(async () => {
         const searchTerm = e.target.value.toLowerCase();
         currentPage = 1;
         
         if (searchTerm) {
-            const filteredReviews = filterReviews(searchTerm);
-            displayReviews(filteredReviews);
+            const filteredReviews = await filterReviews(searchTerm);
+            await displayReviews(filteredReviews);
         } else {
-            displayReviews();
+            await displayReviews();
         }
     }, 300);
 });
