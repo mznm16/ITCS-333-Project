@@ -46,14 +46,27 @@
         <input type="text" class="search-input" placeholder="Search news by keyword or topic...">
       </div>
       <div class="filter-controls">
-        <button class="filter-btn">
+        <button class="filter-btn" onclick="toggleMenu('filter-menu')">
           <i class="fas fa-filter"></i>
           Filter
         </button>
-        <button class="filter-btn">
+        <div class="filter-menu">
+          <!-- Filter options will be dynamically inserted here -->
+        </div>
+        
+        <button class="filter-btn" onclick="toggleMenu('sort-menu')">
           <i class="fas fa-sort"></i>
           Sort
         </button>
+        <div class="sort-menu">
+          <select id="sortSelect" class="form-select" onchange="applySorting(this.value)">
+            <option value="" disabled selected>Sort by...</option>
+            <option value="date-new">Date (Newest First)</option>
+            <option value="date-old">Date (Oldest First)</option>
+            <option value="alpha-asc">Title (A-Z)</option>
+            <option value="alpha-desc">Title (Z-A)</option>
+          </select>
+        </div>
       </div>
       <a href="submit-news.html" class="add-new-btn">
         <i class="fas fa-plus"></i>

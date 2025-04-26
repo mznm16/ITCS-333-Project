@@ -1,18 +1,109 @@
 let currentPage = 1;
 const itemsPerPage = 6;
 let newsData = [];
+let originalNewsData = []; // Store original data for resetting filters
+let activeFilters = new Set(); // Store active tag filters
 
 // Fetch news data from the API
 async function fetchNews() {
     try {
         const response = await fetch('https://680cee342ea307e081d57b57.mockapi.io/news');
         newsData = await response.json();
+        originalNewsData = [...newsData]; // Keep a copy of original data
+        setupFilterOptions(); // Set up filter options based on available tags
         displayNews(currentPage);
         setupPagination();
     } catch (error) {
         console.error('Error fetching news:', error);
         document.querySelector('.item-list').innerHTML = '<p>Error loading news. Please try again later.</p>';
     }
+}
+
+// Set up filter options
+function setupFilterOptions() {
+    const tags = new Set(originalNewsData.map(news => news['news-tag']));
+    const filterMenu = document.querySelector('.filter-menu');
+    filterMenu.innerHTML = Array.from(tags).map(tag => `
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="${tag}" id="filter-${tag}">
+            <label class="form-check-label" for="filter-${tag}">${tag}</label>
+        </div>
+    `).join('') + `
+    <div class="filter-actions mt-3">
+        <button class="btn btn-primary btn-sm" onclick="applyFilters()">Apply Filters</button>
+        <button class="btn btn-secondary btn-sm" onclick="resetFilters()">Reset</button>
+    </div>`;
+}
+
+// Apply filters
+function applyFilters() {
+    const checkedFilters = document.querySelectorAll('.filter-menu input:checked');
+    activeFilters = new Set(Array.from(checkedFilters).map(input => input.value));
+    
+    if (activeFilters.size > 0) {
+        newsData = originalNewsData.filter(news => activeFilters.has(news['news-tag']));
+    } else {
+        newsData = [...originalNewsData];
+    }
+    
+    // Apply current sort if any
+    const sortSelect = document.querySelector('#sortSelect');
+    if (sortSelect) {
+        applySorting(sortSelect.value);
+    }
+    
+    currentPage = 1;
+    displayNews(currentPage);
+    setupPagination();
+    document.querySelector('.filter-menu').classList.remove('show');
+}
+
+// Reset filters
+function resetFilters() {
+    document.querySelectorAll('.filter-menu input').forEach(input => input.checked = false);
+    activeFilters.clear();
+    newsData = [...originalNewsData];
+    
+    // Apply current sort if any
+    const sortSelect = document.querySelector('#sortSelect');
+    if (sortSelect) {
+        applySorting(sortSelect.value);
+    }
+    
+    currentPage = 1;
+    displayNews(currentPage);
+    setupPagination();
+    document.querySelector('.filter-menu').classList.remove('show');
+}
+
+// Apply sorting
+function applySorting(sortType) {
+    switch (sortType) {
+        case 'date-new':
+            newsData.sort((a, b) => new Date(b['news-date']) - new Date(a['news-date']));
+            break;
+        case 'date-old':
+            newsData.sort((a, b) => new Date(a['news-date']) - new Date(b['news-date']));
+            break;
+        case 'alpha-asc':
+            newsData.sort((a, b) => a['news-title'].localeCompare(b['news-title']));
+            break;
+        case 'alpha-desc':
+            newsData.sort((a, b) => b['news-title'].localeCompare(a['news-title']));
+            break;
+    }
+    currentPage = 1;
+    displayNews(currentPage);
+    setupPagination();
+    document.querySelector('.sort-menu').classList.remove('show');
+}
+
+// Toggle menu visibility
+function toggleMenu(menuClass) {
+    const menu = document.querySelector('.' + menuClass);
+    const otherMenu = menuClass === 'filter-menu' ? '.sort-menu' : '.filter-menu';
+    document.querySelector(otherMenu).classList.remove('show');
+    menu.classList.toggle('show');
 }
 
 // Display news for the current page
@@ -88,7 +179,17 @@ function changePage(page) {
 }
 
 // Initialize when the page loads
-document.addEventListener('DOMContentLoaded', fetchNews);
+document.addEventListener('DOMContentLoaded', () => {
+    fetchNews();
+    
+    // Close menus when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.filter-controls')) {
+            document.querySelector('.filter-menu').classList.remove('show');
+            document.querySelector('.sort-menu').classList.remove('show');
+        }
+    });
+});
 
 // Search functionality
 const searchInput = document.querySelector('.search-input');
