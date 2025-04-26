@@ -157,6 +157,93 @@
     </div>
   </footer>
 
-  
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('newsSubmissionForm');
+        const requiredFields = [
+            { id: 'headline', name: 'Headline', minLength: 5 },
+            { id: 'summary', name: 'Summary', minLength: 10 },
+            { id: 'content', name: 'Full Content', minLength: 20 },
+            { id: 'category', name: 'Category' }
+        ];
+
+        function showError(input, message) {
+            let error = input.parentElement.querySelector('.invalid-feedback');
+            if (!error) {
+                error = document.createElement('div');
+                error.className = 'invalid-feedback d-block';
+                input.parentElement.appendChild(error);
+            }
+            error.textContent = message;
+            input.classList.add('is-invalid');
+            input.classList.remove('is-valid');
+            removeTick(input);
+        }
+
+        function showSuccess(input) {
+            clearError(input);
+            input.classList.add('is-valid');
+            input.classList.remove('is-invalid');
+            addTick(input);
+        }
+
+        function clearError(input) {
+            let error = input.parentElement.querySelector('.invalid-feedback');
+            if (error) error.remove();
+            input.classList.remove('is-invalid');
+        }
+
+        function addTick(input) {
+            let tick = input.parentElement.querySelector('.valid-feedback');
+            if (!tick) {
+                tick = document.createElement('div');
+                tick.className = 'valid-feedback d-block';
+                tick.innerHTML = '&#10003;'; // Green tick
+                input.parentElement.appendChild(tick);
+            }
+        }
+
+        function removeTick(input) {
+            let tick = input.parentElement.querySelector('.valid-feedback');
+            if (tick) tick.remove();
+        }
+
+        form.addEventListener('input', function (e) {
+            const input = e.target;
+            const field = requiredFields.find(f => f.id === input.id);
+
+            if (field) {
+                if (!input.value || (field.id === 'category' && input.value === '')) {
+                    showError(input, `${field.name} is required.`);
+                } else if (field.minLength && input.value.length < field.minLength) {
+                    showError(input, `${field.name} should be at least ${field.minLength} characters.`);
+                } else {
+                    showSuccess(input);
+                }
+            }
+        });
+
+        form.addEventListener('submit', function (e) {
+            let valid = true;
+
+            requiredFields.forEach(field => {
+                const input = document.getElementById(field.id);
+                if (!input.value || (field.id === 'category' && input.value === '')) {
+                    showError(input, `${field.name} is required.`);
+                    valid = false;
+                } else if (field.minLength && input.value.length < field.minLength) {
+                    showError(input, `${field.name} should be at least ${field.minLength} characters.`);
+                    valid = false;
+                } else {
+                    showSuccess(input);
+                }
+            });
+
+            if (!valid) {
+                e.preventDefault();
+            }
+        });
+    });
+  </script>
 </body>
 </html>
