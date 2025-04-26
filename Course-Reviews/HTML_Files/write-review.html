@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Write Course Review - Campus Hub</title>
+  <meta name="description" content="Share your experience with a course on Campus Hub">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../stylesheet.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="" class="nav-logo">Campus Hub</a>
+        <div class="nav-links">
+          <a href="" class="nav-link">Home</a>
+          <a href="" class="nav-link">Events</a>
+          <a href="" class="nav-link">Study Groups</a>
+          <a href="course-reviews.html" class="nav-link">Course Reviews</a>
+          <a href="" class="nav-link">Notes</a>
+          <a href="" class="nav-link">News</a>
+        </div>
+        <a href="" class="auth-btn">Sign In</a>
+        <button class="mobile-menu-toggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container py-5">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <div class="card shadow">
+          <div class="card-header bg-primary text-white">
+            <h2 class="h4 mb-0">Write a Course Review</h2>
+          </div>
+          <div class="card-body">
+            <form id="reviewForm">
+              <div class="mb-3">
+                <label for="courseCode" class="form-label">Course Code <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="courseCode" placeholder="e.g., CS101" required>
+              </div>
+              
+              <div class="mb-3">
+                <label for="courseName" class="form-label">Course Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="courseName" placeholder="e.g., Introduction to Computer Science" required>
+              </div>
+              
+              <div class="mb-3">
+                <label for="professor" class="form-label">Professor <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="professor" required>
+              </div>
+              
+              <div class="mb-3">
+                <label for="semester" class="form-label">Semester Taken <span class="text-danger">*</span></label>
+                <select class="form-select" id="semester" required>
+                  <option value="" selected disabled>Select semester</option>
+                  <option value="Fall 2023">Second semester 2024/2025</option>
+                  <option value="Summer 2023">First semester 2024/2025</option>
+                  <option value="Spring 2023">Summer semester 2023/2024</option>
+                  <option value="Fall 2022">Second semester 2023/2024</option>
+                  <option value="Summer 2022">First semester 2023/2024</option>
+                  <option value="Spring 2022">Summer semester 2022/2023</option>
+                </select>
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label">Overall Rating <span class="text-danger">*</span></label>
+                <div class="rating-stars mb-2">
+                  <div class="btn-group" role="group">
+                    <input type="radio" class="btn-check" name="overallRating" id="rating1" value="1" required>
+                    <label class="btn btn-outline-warning" for="rating1"><i class="fas fa-star"></i> 1</label>
+                    
+                    <input type="radio" class="btn-check" name="overallRating" id="rating2" value="2">
+                    <label class="btn btn-outline-warning" for="rating2"><i class="fas fa-star"></i> 2</label>
+                    
+                    <input type="radio" class="btn-check" name="overallRating" id="rating3" value="3">
+                    <label class="btn btn-outline-warning" for="rating3"><i class="fas fa-star"></i> 3</label>
+                    
+                    <input type="radio" class="btn-check" name="overallRating" id="rating4" value="4">
+                    <label class="btn btn-outline-warning" for="rating4"><i class="fas fa-star"></i> 4</label>
+                    
+                    <input type="radio" class="btn-check" name="overallRating" id="rating5" value="5">
+                    <label class="btn btn-outline-warning" for="rating5"><i class="fas fa-star"></i> 5</label>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row mb-3">
+                <div class="col-md-4">
+                  <label class="form-label">Difficulty Level</label>
+                  <select class="form-select" id="difficulty">
+                    <option value="1">Very Easy</option>
+                    <option value="2">Easy</option>
+                    <option value="3" selected>Moderate</option>
+                    <option value="4">Difficult</option>
+                    <option value="5">Very Difficult</option>
+                  </select>
+                </div>
+                
+                <div class="col-md-4">
+                  <label class="form-label">Workload</label>
+                  <select class="form-select" id="workload">
+                    <option value="1">Very Light</option>
+                    <option value="2">Light</option>
+                    <option value="3" selected>Moderate</option>
+                    <option value="4">Heavy</option>
+                    <option value="5">Very Heavy</option>
+                  </select>
+                </div>
+                
+                <div class="col-md-4">
+                  <label class="form-label">Would Take Again?</label>
+                  <select class="form-select" id="takeAgain">
+                    <option value="yes">Yes</option>
+                    <option value="maybe">Maybe</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="reviewText" class="form-label">Your Review <span class="text-danger">*</span></label>
+                <textarea class="form-control" id="reviewText" rows="6" required
+                          placeholder="Share your experience with this course. What did you like? What could be improved? Tips for future students?"></textarea>
+                <div class="form-text">Minimum 100 characters</div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="tags" class="form-label">Tags (separated by commas)</label>
+                <input type="text" class="form-control" id="tags" placeholder="e.g., interesting, lab work, group projects">
+              </div>
+              
+              <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="anonymous">
+                <label class="form-check-label" for="anonymous">Post anonymously</label>
+              </div>
+              
+              <div class="d-flex justify-content-between mt-4">
+                <a href="course-reviews.html" class="btn btn-secondary">
+                  <i class="fas fa-arrow-left me-2"></i>Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-paper-plane me-2"></i>Submit Review
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer mt-5">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3 class="footer-title">Campus Hub</h3>
+          <p>Your all-in-one platform for a connected and enriched campus experience.</p>
+        </div>
+        <div class="footer-column">
+          <h3 class="footer-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li class="footer-link"><a href="">Events Calendar</a></li>
+            <li class="footer-link"><a href="">Study Group Finder</a></li>
+            <li class="footer-link"><a href="course-reviews.html">Course Reviews</a></li>
+            <li class="footer-link"><a href="">Course Notes</a></li>
+            <li class="footer-link"><a href="">Campus News</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3 class="footer-title">Resources</h3>
+          <ul class="footer-links">
+            <li class="footer-link"><a href="">Privacy Policy</a></li>
+            <li class="footer-link"><a href="">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3 class="footer-title">Contact</h3>
+          <ul class="footer-links">
+            <li class="footer-link"><a href="mailto:studentcc@uob.edu.bh">studentcc@uob.edu.bh</a></li>
+            <li class="footer-link"><a href="tel:+97317155355">+973 17155355</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright">&copy; 2025 Campus Hub. All rights reserved.</p>
+        <div class="social-links">
+          <a href="https://x.com/uobedubh" class="social-link"><i class="fab fa-twitter"></i></a>
+          <a href="https://www.instagram.com/uobedubh/?hl=en" class="social-link"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.linkedin.com/company/university-of-bahrain-uob-" class="social-link"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../JS/write-review.js"></script>
+</body>
+</html>
