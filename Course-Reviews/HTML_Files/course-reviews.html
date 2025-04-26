@@ -45,14 +45,41 @@
         <input type="text" class="search-input" placeholder="Search by course code, name, or professor...">
       </div>
       <div class="filter-controls">
-        <button class="filter-btn">
-          <i class="fas fa-filter"></i>
-          Filter
-        </button>
-        <button class="filter-btn">
-          <i class="fas fa-sort"></i>
-          Sort
-        </button>
+        <div class="dropdown">
+          <button class="filter-btn" id="filterBtn">
+            <i class="fas fa-filter"></i>
+            Filter
+          </button>
+          <div class="filter-menu" id="filterMenu">
+            <div class="filter-content">
+              <h4>Filter By Rating</h4>
+              <label><input type="checkbox" value="5"> 5 Stars</label>
+              <label><input type="checkbox" value="4"> 4 Stars</label>
+              <label><input type="checkbox" value="3"> 3 Stars</label>
+              <label><input type="checkbox" value="2"> 2 Stars</label>
+              <label><input type="checkbox" value="1"> 1 Star</label>
+              <button class="apply-filter-btn">Apply Filters</button>
+            </div>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="filter-btn" id="sortBtn">
+            <i class="fas fa-sort"></i>
+            Sort
+          </button>
+          <div class="filter-menu" id="sortMenu">
+            <div class="filter-content">
+              <h4>Sort By</h4>
+              <label><input type="radio" name="sort" value="rating-desc"> Rating (High to Low)</label>
+              <label><input type="radio" name="sort" value="rating-asc"> Rating (Low to High)</label>
+              <label><input type="radio" name="sort" value="date-desc"> Date (Newest First)</label>
+              <label><input type="radio" name="sort" value="date-asc"> Date (Oldest First)</label>
+              <label><input type="radio" name="sort" value="name-asc"> Course Name (A-Z)</label>
+              <label><input type="radio" name="sort" value="name-desc"> Course Name (Z-A)</label>
+              <button class="apply-sort-btn">Apply Sort</button>
+            </div>
+          </div>
+        </div>
       </div>
       <a href="write-review.html" class="add-new-btn">
         <i class="fas fa-plus"></i>

@@ -2,11 +2,21 @@
 let currentPage = 1;
 const itemsPerPage = 6;
 let allReviews = [];
+let activeFilters = {
+    ratings: []
+};
+let activeSort = null;
 
 // Elements
 const itemList = document.querySelector('.item-list');
 const paginationContainer = document.querySelector('.pagination');
 const searchInput = document.querySelector('.search-input');
+const filterBtn = document.getElementById('filterBtn');
+const sortBtn = document.getElementById('sortBtn');
+const filterMenu = document.getElementById('filterMenu');
+const sortMenu = document.getElementById('sortMenu');
+const applyFilterBtn = document.querySelector('.apply-filter-btn');
+const applySortBtn = document.querySelector('.apply-sort-btn');
 
 // Load reviews from local db.json
 async function fetchReviews() {
@@ -30,15 +40,62 @@ function createStarRating(stars) {
     return `${starsHtml} ${stars}/5`;
 }
 
+// Apply filters and sort
+function applyFiltersAndSort(reviews) {
+    let filtered = [...reviews];
+
+    // Apply rating filters
+    if (activeFilters.ratings.length > 0) {
+        filtered = filtered.filter(review => activeFilters.ratings.includes(review.stars.toString()));
+    }
+
+    // Apply sort
+    if (activeSort) {
+        filtered.sort((a, b) => {
+            switch (activeSort) {
+                case 'rating-desc':
+                    return b.stars - a.stars;
+                case 'rating-asc':
+                    return a.stars - b.stars;
+                case 'date-desc':
+                    return new Date(b['review-date']) - new Date(a['review-date']);
+                case 'date-asc':
+                    return new Date(a['review-date']) - new Date(b['review-date']);
+                case 'name-asc':
+                    return a['course-title'].localeCompare(b['course-title']);
+                case 'name-desc':
+                    return b['course-title'].localeCompare(a['course-title']);
+                default:
+                    return 0;
+            }
+        });
+    }
+
+    return filtered;
+}
+
+// Filter reviews based on search term
+function filterReviews(searchTerm) {
+    const searchResults = allReviews.filter(review => 
+        review['course-tag'].toLowerCase().includes(searchTerm) ||
+        review['course-title'].toLowerCase().includes(searchTerm) ||
+        review['dr-name'].toLowerCase().includes(searchTerm) ||
+        review['short-desc'].toLowerCase().includes(searchTerm)
+    );
+    
+    // Apply existing filters and sort to search results
+    return applyFiltersAndSort(searchResults);
+}
+
 // Display reviews for current page
 function displayReviews(filteredReviews = null) {
-    const reviews = filteredReviews || allReviews;
+    const reviews = filteredReviews || applyFiltersAndSort(allReviews);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const currentReviews = reviews.slice(startIndex, endIndex);
 
     if (currentReviews.length === 0) {
-        itemList.innerHTML = '<p class="text-center mt-4">No reviews found matching your search.</p>';
+        itemList.innerHTML = '<p class="text-center mt-4">No reviews found matching your criteria.</p>';
         return;
     }
 
@@ -61,11 +118,13 @@ function displayReviews(filteredReviews = null) {
             </div>
         </article>
     `).join('');
+
+    setupPagination(reviews);
 }
 
 // Setup pagination
 function setupPagination(filteredReviews = null) {
-    const reviews = filteredReviews || allReviews;
+    const reviews = filteredReviews || applyFiltersAndSort(allReviews);
     const pageCount = Math.ceil(reviews.length / itemsPerPage);
     
     paginationContainer.innerHTML = '';
@@ -126,22 +185,73 @@ function changePage(newPage) {
     if (searchTerm) {
         const filteredReviews = filterReviews(searchTerm);
         displayReviews(filteredReviews);
-        setupPagination(filteredReviews);
     } else {
         displayReviews();
-        setupPagination();
     }
 }
 
-// Filter reviews based on search term
-function filterReviews(searchTerm) {
-    return allReviews.filter(review => 
-        review['course-tag'].toLowerCase().includes(searchTerm) ||
-        review['course-title'].toLowerCase().includes(searchTerm) ||
-        review['dr-name'].toLowerCase().includes(searchTerm) ||
-        review['short-desc'].toLowerCase().includes(searchTerm)
-    );
+// Toggle filter/sort menus
+function toggleMenu(menu) {
+    const allMenus = document.querySelectorAll('.filter-menu');
+    allMenus.forEach(m => {
+        if (m !== menu) m.classList.remove('show');
+    });
+    menu.classList.toggle('show');
 }
+
+// Close menus when clicking outside
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.dropdown')) {
+        document.querySelectorAll('.filter-menu').forEach(menu => {
+            menu.classList.remove('show');
+        });
+    }
+});
+
+// Event listeners for filter and sort buttons
+filterBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMenu(filterMenu);
+});
+
+sortBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMenu(sortMenu);
+});
+
+// Apply filters
+applyFilterBtn.addEventListener('click', () => {
+    const ratingCheckboxes = filterMenu.querySelectorAll('input[type="checkbox"][value]');
+    activeFilters.ratings = [...ratingCheckboxes]
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
+
+    currentPage = 1;
+    const searchTerm = searchInput.value.toLowerCase();
+    if (searchTerm) {
+        const filteredReviews = filterReviews(searchTerm);
+        displayReviews(filteredReviews);
+    } else {
+        displayReviews();
+    }
+    filterMenu.classList.remove('show');
+});
+
+// Apply sort
+applySortBtn.addEventListener('click', () => {
+    const selectedSort = sortMenu.querySelector('input[name="sort"]:checked');
+    activeSort = selectedSort ? selectedSort.value : null;
+    
+    currentPage = 1;
+    const searchTerm = searchInput.value.toLowerCase();
+    if (searchTerm) {
+        const filteredReviews = filterReviews(searchTerm);
+        displayReviews(filteredReviews);
+    } else {
+        displayReviews();
+    }
+    sortMenu.classList.remove('show');
+});
 
 // Search functionality with debounce
 let searchTimeout;
@@ -154,12 +264,10 @@ searchInput.addEventListener('input', (e) => {
         if (searchTerm) {
             const filteredReviews = filterReviews(searchTerm);
             displayReviews(filteredReviews);
-            setupPagination(filteredReviews);
         } else {
             displayReviews();
-            setupPagination();
         }
-    }, 300); // Debounce delay of 300ms
+    }, 300);
 });
 
 // Initialize the page
