@@ -391,23 +391,81 @@ body {
   display: flex;
   gap: 12px;
   align-items: center;
+  position: relative;
 }
 
 .filter-btn {
-  background-color: var(--primary-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-sm);
-  padding: 8px 16px;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: var(--transition-default);
   display: flex;
   align-items: center;
   gap: 8px;
+  background-color: var(--primary-bg);
+  color: var(--primary-text);
+  border: 1px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: var(--border-radius-sm);
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: var(--transition-default);
 }
 
 .filter-btn:hover {
   border-color: var(--accent-color);
+  color: var(--accent-color);
+  transform: translateY(-1px);
+}
+
+.filter-btn i {
+  font-size: 0.875rem;
+}
+
+.filter-menu, .sort-menu {
+  position: absolute;
+  background: var(--primary-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--border-radius-md);
+  padding: 16px;
+  z-index: 10;
+  min-width: 200px;
+  margin-top: 8px;
+  top: 100%;
+  left: 0;
+}
+
+.sort-menu {
+  left: 76px;
+}
+
+.filter-menu label, .sort-menu label {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  margin: -4px -8px;
+  border-radius: var(--border-radius-sm);
+  font-size: 0.875rem;
+  cursor: pointer;
+  color: var(--primary-text);
+  transition: var(--transition-default);
+}
+
+.filter-menu label:hover, .sort-menu label:hover {
+  background-color: var(--secondary-bg);
+  color: var(--accent-color);
+}
+
+.filter-menu input[type="checkbox"],
+.sort-menu input[type="radio"] {
+  margin-right: 8px;
+  accent-color: var(--accent-color);
+}
+
+/* Style for Apply buttons in filter/sort menus */
+.filter-menu .add-new-btn,
+.sort-menu .add-new-btn {
+  width: 100%;
+  margin-top: 12px;
+  justify-content: center;
 }
 
 .add-new-btn {
@@ -868,7 +926,50 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-/* Responsive styles */
+/* Loading Indicators */
+.loading-indicator, .update-loading-indicator {
+  text-align: center;
+  padding: 2rem;
+  color: var(--secondary-text);
+  font-size: 1.125rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.loading-indicator i, .update-loading-indicator i {
+  animation: spin 1s linear infinite;
+  font-size: 1.25rem;
+  color: var(--accent-color);
+}
+
+/* Form validation styles */
+.form-error {
+  color: #ff3b30;
+  font-size: 0.875rem;
+  margin-top: 4px;
+  display: none;
+}
+
+.form-input.error {
+  border-color: #ff3b30;
+}
+
+.form-input.error:focus {
+  box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.1);
+}
+
+.form-success {
+  background-color: #34c759;
+  color: white;
+  padding: 1rem;
+  border-radius: var(--border-radius-sm);
+  margin-bottom: 1rem;
+  display: none;
+}
+
 @media (max-width: 768px) {
   .nav-links {
     display: none;
@@ -901,6 +1002,18 @@ body {
   
   .search-container {
     max-width: 100%;
+  }
+
+  .filter-menu, .sort-menu {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 300px;
+    margin: 0;
+    background: var(--primary-bg);
+    box-shadow: var(--shadow-lg);
   }
 }
 

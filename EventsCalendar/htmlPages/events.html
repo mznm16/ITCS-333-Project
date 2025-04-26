@@ -44,14 +44,25 @@
         <input type="text" class="search-input" placeholder="Search events...">
       </div>
       <div class="filter-controls">
-        <button class="filter-btn">
+        <button class="filter-btn" id="filter-btn">
           <i class="fas fa-filter"></i>
           Filter
         </button>
-        <button class="filter-btn">
+        <div class="filter-menu" id="filter-menu" style="display:none;">
+          <!-- Filter options will be populated dynamically -->
+          <button id="apply-filter-btn" class="add-new-btn" style="margin-top:8px;">Apply</button>
+        </div>
+        <button class="filter-btn" id="sort-btn">
           <i class="fas fa-sort"></i>
           Sort
         </button>
+        <div class="sort-menu" id="sort-menu" style="display:none;">
+          <label><input type="radio" name="sort" value="date-desc" checked> Newest First</label><br>
+          <label><input type="radio" name="sort" value="date-asc"> Oldest First</label><br>
+          <label><input type="radio" name="sort" value="title-asc"> Title A-Z</label><br>
+          <label><input type="radio" name="sort" value="title-desc"> Title Z-A</label><br>
+          <button id="apply-sort-btn" class="add-new-btn" style="margin-top:8px;">Apply</button>
+        </div>
       </div>
       <a href="event-create.html" class="add-new-btn">
         <i class="fas fa-plus"></i>
