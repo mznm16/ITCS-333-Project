@@ -7,6 +7,7 @@
   <meta name="description" content="Discover campus events, workshops, and activities">
   <link rel="stylesheet" href="../styleSheet.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="../js/events.js" defer></script>
 </head>
 <body>
   <header class="header">
@@ -58,19 +59,18 @@
       </a>
     </div>
 
-    <article class="item-card animate-fadeIn" style="animation-delay: 0.3s;">
-      <div class="item-content">
-        <div class="item-meta">
-          <span class="item-tag">Festival</span>
-          <span class="item-date">April 13 – 17, 2025</span>
+    <div id="event-container">
+      <article class="item-card animate-fadeIn" style="animation-delay: 0.3s;">
+        <div class="item-content">
+          <div class="item-meta">
+            <span class="item-tag">Festival</span>
+            <span class="item-date">April 13 – 17, 2025</span>
+          </div>
+          <h2 class="item-title">Chinese Cultural Week Festival</h2>
+          <p class="item-desc">Join us for the Chinese Cultural Week Festival, where you can enjoy artistic performances, workshops, and interactive exhibitions showcasing the rich heritage of Chinese culture. </p>
+          <a href="event-ChineseCultural.html" class="module-link">View Details <i class="fas fa-arrow-right"></i></a>
         </div>
-        <h2 class="item-title">Chinese Cultural Week Festival</h2>
-        <p class="item-desc">Join us for the Chinese Cultural Week Festival, where you can enjoy artistic performances, workshops, and interactive exhibitions showcasing the rich heritage of Chinese culture. </p>
-        <a href="event-ChineseCultural.html" class="module-link">View Details <i class="fas fa-arrow-right"></i></a>
-      </div>
-    </article>
-
-
+      </article>
       <article class="item-card animate-fadeIn" style="animation-delay: 0.2s;">
         <div class="item-content">
           <div class="item-meta">
@@ -93,9 +93,7 @@
           <a href="event-CareerDay21.html" class="module-link">View Details <i class="fas fa-arrow-right"></i></a>
         </div>
       </article>
-
-
-      
+    </div>
 
     <div class="pagination">
       <button class="page-btn active">1</button>
