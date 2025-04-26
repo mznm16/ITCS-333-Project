@@ -1025,4 +1025,33 @@ body {
     }
 }
 
+/* Loading States */
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    width: 100%;
+}
+
+.item-list.loading {
+    position: relative;
+    min-height: 200px;
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+    color: var(--accent-color);
+}
+
+.loading-spinner p {
+    color: var(--secondary-text);
+    margin-top: 1rem;
+    font-size: 0.875rem;
+}
+
 

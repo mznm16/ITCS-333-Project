@@ -14,8 +14,28 @@ function formatDate(dateStr) {
     });
 }
 
+// Show loading state
+function showLoading() {
+    const newsContent = document.querySelector('.news-content');
+    newsContent.innerHTML = `
+        <div class="loading-spinner">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading article...</p>
+        </div>
+    `;
+}
+
+// Hide loading state
+function hideLoading() {
+    const newsContent = document.querySelector('.news-content');
+    newsContent.classList.remove('loading');
+}
+
 // Fetch and display specific news article
 async function fetchNewsDetail() {
+    showLoading();
     try {
         const newsId = getNewsId();
         if (!newsId) {
@@ -65,7 +85,9 @@ async function fetchNewsDetail() {
     } catch (error) {
         console.error('Error fetching news:', error);
         document.querySelector('.news-content').innerHTML = 
-            '<p class="text-danger">Error loading news article. Please try again later.</p>';
+            '<p class="text-danger"><i class="fas fa-exclamation-circle me-2"></i>Error loading news article. Please try again later.</p>';
+    } finally {
+        hideLoading();
     }
 }
 

@@ -6,6 +6,7 @@ let activeFilters = new Set(); // Store active tag filters
 
 // Fetch news data from the API
 async function fetchNews() {
+    showLoading();
     try {
         const response = await fetch('https://680cee342ea307e081d57b57.mockapi.io/news');
         newsData = await response.json();
@@ -16,6 +17,8 @@ async function fetchNews() {
     } catch (error) {
         console.error('Error fetching news:', error);
         document.querySelector('.item-list').innerHTML = '<p>Error loading news. Please try again later.</p>';
+    } finally {
+        hideLoading();
     }
 }
 
@@ -37,25 +40,29 @@ function setupFilterOptions() {
 
 // Apply filters
 function applyFilters() {
-    const checkedFilters = document.querySelectorAll('.filter-menu input:checked');
-    activeFilters = new Set(Array.from(checkedFilters).map(input => input.value));
-    
-    if (activeFilters.size > 0) {
-        newsData = originalNewsData.filter(news => activeFilters.has(news['news-tag']));
-    } else {
-        newsData = [...originalNewsData];
-    }
-    
-    // Apply current sort if any
-    const sortSelect = document.querySelector('#sortSelect');
-    if (sortSelect) {
-        applySorting(sortSelect.value);
-    }
-    
-    currentPage = 1;
-    displayNews(currentPage);
-    setupPagination();
-    document.querySelector('.filter-menu').classList.remove('show');
+    showLoading();
+    setTimeout(() => {
+        const checkedFilters = document.querySelectorAll('.filter-menu input:checked');
+        activeFilters = new Set(Array.from(checkedFilters).map(input => input.value));
+        
+        if (activeFilters.size > 0) {
+            newsData = originalNewsData.filter(news => activeFilters.has(news['news-tag']));
+        } else {
+            newsData = [...originalNewsData];
+        }
+        
+        // Apply current sort if any
+        const sortSelect = document.querySelector('#sortSelect');
+        if (sortSelect) {
+            applySorting(sortSelect.value, false);
+        }
+        
+        currentPage = 1;
+        displayNews(currentPage);
+        setupPagination();
+        document.querySelector('.filter-menu').classList.remove('show');
+        hideLoading();
+    }, 300); // Small delay to show loading state
 }
 
 // Reset filters
@@ -77,25 +84,30 @@ function resetFilters() {
 }
 
 // Apply sorting
-function applySorting(sortType) {
-    switch (sortType) {
-        case 'date-new':
-            newsData.sort((a, b) => new Date(b['news-date']) - new Date(a['news-date']));
-            break;
-        case 'date-old':
-            newsData.sort((a, b) => new Date(a['news-date']) - new Date(b['news-date']));
-            break;
-        case 'alpha-asc':
-            newsData.sort((a, b) => a['news-title'].localeCompare(b['news-title']));
-            break;
-        case 'alpha-desc':
-            newsData.sort((a, b) => b['news-title'].localeCompare(a['news-title']));
-            break;
-    }
-    currentPage = 1;
-    displayNews(currentPage);
-    setupPagination();
-    document.querySelector('.sort-menu').classList.remove('show');
+function applySorting(sortType, showLoadingState = true) {
+    if (showLoadingState) showLoading();
+    
+    setTimeout(() => {
+        switch (sortType) {
+            case 'date-new':
+                newsData.sort((a, b) => new Date(b['news-date']) - new Date(a['news-date']));
+                break;
+            case 'date-old':
+                newsData.sort((a, b) => new Date(a['news-date']) - new Date(b['news-date']));
+                break;
+            case 'alpha-asc':
+                newsData.sort((a, b) => a['news-title'].localeCompare(b['news-title']));
+                break;
+            case 'alpha-desc':
+                newsData.sort((a, b) => b['news-title'].localeCompare(a['news-title']));
+                break;
+        }
+        currentPage = 1;
+        displayNews(currentPage);
+        setupPagination();
+        document.querySelector('.sort-menu').classList.remove('show');
+        if (showLoadingState) hideLoading();
+    }, 300); // Small delay to show loading state
 }
 
 // Toggle menu visibility
@@ -193,19 +205,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Search functionality
 const searchInput = document.querySelector('.search-input');
+let searchTimeout;
 searchInput.addEventListener('input', (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    if (searchTerm) {
-        const filteredNews = newsData.filter(news => 
-            news['news-title'].toLowerCase().includes(searchTerm) ||
-            news['news-short-desc'].toLowerCase().includes(searchTerm) ||
-            news['news-tag'].toLowerCase().includes(searchTerm)
-        );
-        newsData = filteredNews;
-    } else {
-        fetchNews(); // Reset to original data
-    }
-    currentPage = 1;
-    displayNews(currentPage);
-    setupPagination();
+    showLoading();
+    clearTimeout(searchTimeout);
+    
+    searchTimeout = setTimeout(() => {
+        const searchTerm = e.target.value.toLowerCase();
+        if (searchTerm) {
+            newsData = originalNewsData.filter(news => 
+                news['news-title'].toLowerCase().includes(searchTerm) ||
+                news['news-short-desc'].toLowerCase().includes(searchTerm) ||
+                news['news-tag'].toLowerCase().includes(searchTerm)
+            );
+        } else {
+            newsData = [...originalNewsData];
+        }
+        currentPage = 1;
+        displayNews(currentPage);
+        setupPagination();
+        hideLoading();
+    }, 500); // Debounce delay
 });
+
+function showLoading() {
+    const itemList = document.querySelector('.item-list');
+    itemList.classList.add('loading');
+    itemList.innerHTML = `
+        <div class="loading-spinner">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading news...</p>
+        </div>
+    `;
+}
+
+function hideLoading() {
+    const itemList = document.querySelector('.item-list');
+    itemList.classList.remove('loading');
+}
