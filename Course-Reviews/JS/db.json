@@ -1,0 +1,202 @@
+[
+    {
+      "id": 1,
+      "course-tag": "ITCS213",
+      "course-title": "Computer Programming I",
+      "review-date": "2023-09-15",
+      "short-desc": "Great introduction to programming concepts with Python.",
+      "stars": 5,
+      "dr-name": "Dr. Ahmed Mahmoud",
+      "whole-review": "This course was an excellent introduction to programming. Dr. Mahmoud explained concepts clearly with practical examples. The assignments were challenging but fair, helping solidify understanding. The course covered variables, loops, functions, and basic data structures. What I appreciated most was the immediate feedback on coding exercises. The final project allowed creativity while applying learned concepts. Office hours were extremely helpful when I got stuck. The online resources were comprehensive and well-organized. I came in with no coding experience and left feeling confident. Highly recommend for beginners wanting to learn programming fundamentals."
+    },
+    {
+      "id": 2,
+      "course-tag": "ECON203",
+      "course-title": "Microeconomics",
+      "review-date": "2023-11-02",
+      "short-desc": "Dry material but essential for business students.",
+      "stars": 3,
+      "dr-name": "Dr. Sarah Johnson",
+      "whole-review": "The content of this course is fundamental for understanding economic principles, but the delivery was quite dry. Dr. Johnson knows her material well but lectures tended to be monotonous. The textbook was actually more engaging than the lectures. Exams were fair but heavily focused on memorizing graphs and formulas. Group projects helped make some concepts clearer through application. The course could benefit from more real-world examples to make theory more relatable. I learned what I needed to but wouldn't take it as an elective. Office hours were helpful for clarification on confusing topics. Overall, it served its purpose but wasn't particularly enjoyable."
+    },
+    {
+      "id": 3,
+      "course-tag": "BIOL204",
+      "course-title": "Human Anatomy & Physiology",
+      "review-date": "2023-12-10",
+      "short-desc": "Intense but fascinating deep dive into human biology.",
+      "stars": 4,
+      "dr-name": "Dr. Michael Chen",
+      "whole-review": "This course is as challenging as it is rewarding. Dr. Chen's passion for human biology is contagious, making complex systems easier to grasp. The lab sessions with anatomical models were incredibly helpful for visualization. There's a massive amount of memorization required for all the body systems. Exams were tough but fair, testing both conceptual understanding and details. The cadaver lab was an unforgettable experience that really brought everything together. Study groups were essential for retaining all the information. The only downside was the overwhelming workload at times. Dr. Chen was always available for questions and provided excellent study resources. Highly recommend for pre-med students."
+    },
+    {
+      "id": 4,
+      "course-tag": "MATH205",
+      "course-title": "Calculus II",
+      "review-date": "2024-01-22",
+      "short-desc": "Challenging but well-taught continuation of calculus.",
+      "stars": 4,
+      "dr-name": "Dr. Robert Williams",
+      "whole-review": "Calculus II builds nicely on the foundation from Calculus I. Dr. Williams has a gift for explaining complex mathematical concepts clearly. The integration techniques and series convergence topics were particularly well-presented. Weekly problem sets were time-consuming but crucial for understanding. The TA-led recitation sessions were invaluable for working through difficult problems. Exams focused on application rather than rote memorization. I appreciated how Dr. Williams connected concepts to real-world applications in physics and engineering. The course moved at a brisk pace but never felt overwhelming. Office hours were extremely helpful when I hit roadblocks. A must for engineering and physics majors."
+    },
+    {
+      "id": 5,
+      "course-tag": "PSYC206",
+      "course-title": "Cognitive Psychology",
+      "review-date": "2024-02-15",
+      "short-desc": "Fascinating exploration of how the mind works.",
+      "stars": 5,
+      "dr-name": "Dr. Emily Rodriguez",
+      "whole-review": "This was one of the most interesting courses I've taken. Dr. Rodriguez made cognitive processes like memory, attention, and decision-making come alive. The experimental demonstrations in class were particularly engaging and memorable. Readings were current and relevant, often including cutting-edge research. The experimental design project allowed us to apply concepts firsthand. Dr. Rodriguez was approachable and enthusiastic about student questions. Discussions were lively and thought-provoking. Exams focused on understanding rather than memorization. The course changed how I think about human behavior and mental processes. I looked forward to every lecture. Highly recommend for anyone curious about psychology or neuroscience."
+    },
+    {
+      "id": 6,
+      "course-tag": "CHEM207",
+      "course-title": "Organic Chemistry I",
+      "review-date": "2023-10-30",
+      "short-desc": "As difficult as its reputation suggests.",
+      "stars": 2,
+      "dr-name": "Dr. James Peterson",
+      "whole-review": "Organic Chemistry lives up to its notorious reputation. Dr. Peterson is knowledgeable but moves through material extremely quickly. The volume of reactions and mechanisms to memorize is overwhelming. Lectures were dry with little student interaction. The textbook was actually more helpful than the lectures. Exams were unreasonably difficult compared to practice problems. Lab sessions were the only redeeming quality, making concepts more concrete. Study groups were essential for survival. The curve at the end helped, but the stress wasn't worth it. I wouldn't recommend unless absolutely required for your major. Office hours were crowded with desperate students. There must be better ways to teach this material."
+    },
+    {
+      "id": 7,
+      "course-tag": "HIST208",
+      "course-title": "World History Since 1500",
+      "review-date": "2023-11-18",
+      "short-desc": "Broad survey with engaging perspectives.",
+      "stars": 4,
+      "dr-name": "Dr. Fatima Al-Mansoori",
+      "whole-review": "Dr. Al-Mansoori presents world history through multiple cultural lenses, which was refreshing. The course covers major global developments from colonialism to globalization. Primary source analysis assignments were particularly interesting, giving direct insight into historical perspectives. Lectures were well-organized with helpful visual aids. Discussions encouraged comparing different regional experiences of historical events. The reading load was substantial but manageable if kept up with. Exams required synthesis rather than simple recall. Dr. Al-Mansoori was passionate and responsive to student questions. The only downside was the inevitable superficial treatment of some complex topics due to time constraints. Great for fulfilling humanities requirements."
+    },
+    {
+      "id": 8,
+      "course-tag": "PHYS209",
+      "course-title": "University Physics I",
+      "review-date": "2024-01-05",
+      "short-desc": "Solid foundation in mechanics and thermodynamics.",
+      "stars": 3,
+      "dr-name": "Dr. David Wilson",
+      "whole-review": "Physics I covers classical mechanics thoroughly but can feel dry at times. Dr. Wilson explains concepts clearly but lectures follow the textbook closely. Problem-solving sessions were more valuable than lectures for actual understanding. The online homework system provided good practice but sometimes had frustrating interface issues. Labs were well-designed to complement lecture material. Exams were fair but time-pressured. The course would benefit from more real-world applications to maintain interest. Dr. Wilson was available for help but not particularly engaging in class. A decent introduction to physics, but nothing extraordinary. Essential for engineering majors but could be more inspiring."
+    },
+    {
+      "id": 9,
+      "course-tag": "ARAB210",
+      "course-title": "Intermediate Arabic",
+      "review-date": "2023-12-03",
+      "short-desc": "Excellent for developing conversational fluency.",
+      "stars": 5,
+      "dr-name": "Dr. Khalid Hassan",
+      "whole-review": "Dr. Hassan creates an immersive environment that rapidly improves language skills. Classes are conducted primarily in Arabic, which was intimidating at first but tremendously helpful. The focus on everyday conversations made the language feel practical and alive. Cultural lessons were woven seamlessly into language instruction. Small class size allowed for individual attention and plenty of speaking practice. Homework included interesting media like Arabic songs and short films. Dr. Hassan was patient with mistakes while pushing us to improve. By semester's end, I could comfortably have extended conversations. The course exceeded my expectations for language acquisition. Highly recommend for serious students wanting to advance beyond basics."
+    },
+    {
+      "id": 10,
+      "course-tag": "BUS211",
+      "course-title": "Principles of Marketing",
+      "review-date": "2024-02-20",
+      "short-desc": "Practical introduction to marketing strategies.",
+      "stars": 4,
+      "dr-name": "Dr. Lisa Thompson",
+      "whole-review": "This course provides a solid foundation in marketing principles with real-world applications. Dr. Thompson brings industry experience that makes concepts tangible. Case studies of actual companies were particularly engaging and educational. Group projects simulated real marketing challenges and were graded fairly. Guest speakers from various industries provided valuable perspectives. The textbook was current and well-integrated with lectures. Exams tested understanding rather than memorization. Dr. Thompson was accessible and gave constructive feedback on assignments. The only downside was some repetition of basic concepts for those with prior exposure. Overall, a well-structured introduction that's valuable even for non-business majors."
+    },
+    {
+      "id": 11,
+      "course-tag": "PHIL212",
+      "course-title": "Introduction to Ethics",
+      "review-date": "2023-10-15",
+      "short-desc": "Thought-provoking examination of moral philosophy.",
+      "stars": 5,
+      "dr-name": "Dr. Thomas O'Connor",
+      "whole-review": "Dr. O'Connor facilitates profound discussions about ethical theories and dilemmas. The course covers major philosophical frameworks from utilitarianism to virtue ethics. Classroom debates were respectful yet challenging, pushing students to examine their assumptions. Readings included both classical texts and contemporary applications. Writing assignments allowed for deep exploration of personal ethical perspectives. Dr. O'Connor provided detailed feedback that improved critical thinking skills. The course changed how I approach moral questions in everyday life. Exams were essays that tested understanding rather than recall. Class participation was encouraged but not forced. This was the rare course that truly changed how I think. Highly recommend for anyone interested in philosophy or self-examination."
+    },
+    {
+      "id": 12,
+      "course-tag": "ENGL213",
+      "course-title": "Creative Writing",
+      "review-date": "2024-01-30",
+      "short-desc": "Inspires creativity with constructive feedback.",
+      "stars": 4,
+      "dr-name": "Professor Jessica Moore",
+      "whole-review": "Professor Moore creates a supportive environment for developing writing skills. The workshop format provided valuable peer feedback on short stories and poems. Writing prompts were creative and helped overcome blocks. Professor Moore's critiques were insightful yet encouraging, focusing on growth. Readings of published works illustrated techniques we could emulate. The portfolio requirement ensured substantial output by semester's end. Class discussions were lively and respectful. The only downside was inconsistent quality of peer feedback - some students took it more seriously than others. Overall, my writing improved significantly through repeated practice and revision. Great for aspiring writers or anyone wanting to express themselves more effectively. Not just for English majors."
+    },
+    {
+      "id": 13,
+      "course-tag": "STAT214",
+      "course-title": "Probability and Statistics",
+      "review-date": "2023-11-25",
+      "short-desc": "Useful but mathematically demanding.",
+      "stars": 3,
+      "dr-name": "Dr. Raj Patel",
+      "whole-review": "This course provides essential statistical foundations but can feel abstract. Dr. Patel is thorough but moves quickly through complex probability theory. Real-world data analysis projects were the most valuable components. The statistical software training was practical for research applications. Mathematical proofs were emphasized more than I expected. Office hours were essential for clarifying confusing concepts. Exams were challenging but curved generously. The course would benefit from more applied examples earlier on. Dr. Patel was knowledgeable but not always clear in explanations. Study groups were crucial for getting through problem sets. Useful for research methods but not the most engaging presentation. Take it if required, but be prepared to work hard."
+    },
+    {
+      "id": 14,
+      "course-tag": "ART215",
+      "course-title": "Digital Photography",
+      "review-date": "2024-02-10",
+      "short-desc": "Hands-on introduction to photographic techniques.",
+      "stars": 5,
+      "dr-name": "Professor Carlos Mendez",
+      "whole-review": "Professor Mendez teaches technical skills while nurturing artistic vision. The course covers camera operation, composition, lighting, and digital editing. Assignments were creative and allowed for personal expression. Field trips to various locations provided diverse shooting opportunities. Critiques were constructive and focused on artistic growth rather than technical perfection. The darkroom sessions were particularly magical for understanding photographic processes. Professor Mendez was generous with one-on-one feedback and equipment advice. By semester's end, my photography improved dramatically. The final exhibition was a rewarding culmination of our work. Studio time was flexible around student schedules. This course was the highlight of my semester - both relaxing and creatively stimulating. Great for beginners and experienced photographers alike."
+    },
+    {
+      "id": 15,
+      "course-tag": "POLS216",
+      "course-title": "International Relations",
+      "review-date": "2023-12-15",
+      "short-desc": "Timely analysis of global political dynamics.",
+      "stars": 4,
+      "dr-name": "Dr. Katherine Lee",
+      "whole-review": "Dr. Lee connects theoretical frameworks to current global events effectively. The course examines power structures, international organizations, and conflict resolution. Simulation exercises like model UN were educational and fun. Readings balanced classic texts with contemporary case studies. Discussions were lively as students applied theories to news events. Research paper allowed deep exploration of a chosen topic. Dr. Lee challenged students to consider multiple perspectives on contentious issues. Exams required critical thinking rather than rote memorization. The only downside was occasional difficulty connecting abstract theories to practical outcomes. Overall, the course provided valuable lenses for understanding world affairs. Highly recommend for political science majors or globally-minded students."
+    },
+    {
+      "id": 16,
+      "course-tag": "MUSC217",
+      "course-title": "Music Theory I",
+      "review-date": "2024-01-18",
+      "short-desc": "Fundamentals for reading and composing music.",
+      "stars": 3,
+      "dr-name": "Dr. Elizabeth Brown",
+      "whole-review": "This course covers essential music theory but can feel dry. Dr. Brown is meticulous about proper notation and terminology. Sight-singing and ear training components were challenging but valuable. The pace was brisk, assuming some prior musical knowledge. Weekly composition exercises helped apply theoretical concepts. Dr. Brown was strict but fair in grading. The textbook was clear with good examples. Piano lab sessions were helpful for hearing theoretical concepts. Some classmates with strong musical backgrounds found it basic, while beginners struggled. Office hours were essential for clarification. Good foundation for music majors but potentially frustrating for casual students. Consider your musical background before enrolling."
+    },
+    {
+      "id": 17,
+      "course-tag": "ENVR218",
+      "course-title": "Environmental Science",
+      "review-date": "2023-11-05",
+      "short-desc": "Eye-opening survey of ecological challenges.",
+      "stars": 5,
+      "dr-name": "Dr. Marcus Green",
+      "whole-review": "Dr. Green presents pressing environmental issues with scientific rigor and urgency. The course covers ecosystems, pollution, climate change, and sustainability solutions. Field trips to local habitats made concepts tangible. Lab sessions included water quality testing and biodiversity surveys. Discussions about environmental justice were particularly thought-provoking. Group projects addressed real campus sustainability initiatives. Dr. Green balanced sobering facts with hopeful solutions. The course changed how I think about daily consumption habits. Research paper allowed exploration of a personal interest area. Exams focused on applying concepts rather than memorizing facts. This should be a required course for all students given our planetary challenges. Life-changing for many in the class."
+    },
+    {
+      "id": 18,
+      "course-tag": "COMM219",
+      "course-title": "Public Speaking",
+      "review-date": "2024-02-25",
+      "short-desc": "Builds confidence through practical experience.",
+      "stars": 4,
+      "dr-name": "Professor Daniel Kim",
+      "whole-review": "Professor Kim creates a supportive environment for overcoming speech anxiety. The course progresses from impromptu talks to prepared presentations with visual aids. Video recordings allowed for self-assessment of improvement. Peer feedback was structured to be constructive. Professor Kim's coaching on vocal variety and body language was particularly helpful. The small class size ensured everyone received individual attention. Speech topics were interesting and sometimes personally meaningful. The final persuasive speech was a rewarding culmination of skills learned. I entered terrified of public speaking and left feeling capable. The only downside was occasional unevenness in peer evaluation quality. Valuable for virtually any career path. Not just for communication majors."
+    },
+    {
+      "id": 19,
+      "course-tag": "CHEM220",
+      "course-title": "Biochemistry",
+      "review-date": "2023-12-05",
+      "short-desc": "Challenging but fascinating molecular perspective on biology.",
+      "stars": 4,
+      "dr-name": "Dr. Olivia Smith",
+      "whole-review": "Dr. Smith makes complex biochemical pathways understandable through clear explanations and analogies. The course connects molecular processes to larger biological functions effectively. Problem sets helped reinforce metabolic pathways and enzyme kinetics. The molecular modeling lab was particularly engaging. Exams were challenging but focused on key concepts rather than trivia. Dr. Smith was always available to clarify confusing topics. Study groups were essential for mastering the material. The course demands significant time investment but feels rewarding. Connections to medicine and biotechnology made content feel relevant. Color-coded pathway diagrams provided by the professor were invaluable study aids. Tough but excellent preparation for MCAT or graduate studies in life sciences."
+    },
+    {
+      "id": 20,
+      "course-tag": "SOCI221",
+      "course-title": "Sociology of Gender",
+      "review-date": "2024-01-10",
+      "short-desc": "Thought-provoking examination of gender constructs.",
+      "stars": 5,
+      "dr-name": "Dr. Naomi Carter",
+      "whole-review": "Dr. Carter facilitates profound discussions about gender as a social construct. The course examines historical and cross-cultural variations in gender roles. Intersectional analysis of gender with race, class, and sexuality was particularly enlightening. Readings included classic sociological texts and contemporary case studies. Class debates were respectful yet challenging of assumptions. Research projects allowed exploration of personal interests within academic frameworks. Dr. Carter created a safe space for discussing sensitive topics. The course changed how I perceive everyday interactions and media representations. Exams required critical analysis rather than simple recall. This was the kind of class that stays with you long after semester ends. Highly recommend for all students, regardless of major."
+    }
+  ]
