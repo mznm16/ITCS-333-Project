@@ -2,10 +2,15 @@
 const itemList = document.getElementById('item-list');
 itemList.innerHTML = '<div class="loading-spinner"></div>';
 
-// Fetch the course data from the API
-fetch('https://680baf23d5075a76d98c0d14.mockapi.io/courses')
+// Fetch the course data from the PHP backend
+fetch('https://PHP-MySQL.XMo2.repl.co/getNotes.php')
   .then(response => response.json())
-  .then(courses => {
+  .then(result => {
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to fetch notes');
+    }
+    
+    const courses = result.data;
     const pagination = document.querySelector('.pagination');
     let currentPage = 1;
     const itemsPerPage = 6;
