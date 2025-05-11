@@ -121,7 +121,7 @@ function createGroupCard(group) {
     // Add edit and delete buttons only if user is the owner
     const ownerButtons = group.Owner
         ? `
-            <div class="d-flex gap-2">
+            <div class="d-flex justify-content-right gap-2 mt-3">
                 <button class="btn btn-outline-danger" onclick="deleteGroup('${group.id}')">
                     <i class="fas fa-trash me-2"></i>Delete
                 </button>
@@ -404,9 +404,8 @@ async function submitGroupForm() {
     // List of available images (more images will be added later)
     const availableImages = [
    
-        '../images/datastr.avif',
-      
-
+        
+    
         '../images/cs.jpg',
 
     ];
@@ -648,5 +647,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Remove joinGroupFromMain and ensure all join buttons call joinGroup directly
-// If joinGroupFromMain is referenced elsewhere, alias it to joinGroup
+document.addEventListener('DOMContentLoaded', function() {
+  const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+  const navLinks = document.querySelector('.nav-links');
+
+  mobileMenuToggle.addEventListener('click', function() {
+    navLinks.classList.toggle('active');
+  });
+
+//if clicked outside the navabar,,it will close
+  document.addEventListener('click', function(event) {
+    if (!event.target.closest('.navbar')) {
+      navLinks.classList.remove('active');
+    }
+  });
+});

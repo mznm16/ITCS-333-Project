@@ -472,7 +472,7 @@ function updateGroupDetails(group) {
 
         resourcesContainer.innerHTML = resourcesHtml;
 
-        // Add event listeners
+        // Add event listeners to the add resource form
         const addResourceForm = document.getElementById('addResourceForm');
         if (addResourceForm) {
             addResourceForm.onsubmit = (e) => handleAddResource(e, group.Owner ? 'Owner' : 'Member');
@@ -505,7 +505,7 @@ function updateGroupDetails(group) {
         }
     }
 
-    // Update the discussion section
+    // Update the group discussion add new chats
     const discussionSection = document.querySelector('.discussion-section');
     if (discussionSection) {
         let discussionHtml = `
