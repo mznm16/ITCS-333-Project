@@ -121,11 +121,7 @@ function createGroupCard(group) {
     // Add edit and delete buttons only if user is the owner
     const ownerButtons = group.Owner
         ? `
-<<<<<<< HEAD
             <div class="d-flex justify-content-right gap-2 mt-3">
-=======
-            <div class="d-flex gap-2">
->>>>>>> 3a23d83585643a5a7d1c24bfee71beca7e68121a
                 <button class="btn btn-outline-danger" onclick="deleteGroup('${group.id}')">
                     <i class="fas fa-trash me-2"></i>Delete
                 </button>
