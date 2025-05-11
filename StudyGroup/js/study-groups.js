@@ -137,11 +137,7 @@ function createGroupCard(group) {
         <div class="col mb-4">
             <div class="card shadow-sm">
                 <a href="view-group.html?id=${group.id}">
-<<<<<<< HEAD
                     <img src="${group.image || '../images/newcs.jpg'}" class="card-img-top">
-=======
-                    <img src="${group.image || '../images/study.jpg'}" class="card-img-top">
->>>>>>> 3a23d83585643a5a7d1c24bfee71beca7e68121a
                 </a>
                 <div class="card-header position-relative">
                     <h5 class="card-title">${group.title}</h5>
@@ -409,7 +405,6 @@ async function submitGroupForm() {
         return;
     }
 
-<<<<<<< HEAD
     // List of available images (more images will be added later)
     const availableImages = [
    
@@ -417,16 +412,6 @@ async function submitGroupForm() {
     
         '../images/newcs.jpg',
 
-=======
-    // List of available images
-    const availableImages = [
-        '../images/itcs333.webp',
-        '../images/datastr.avif',
-        '../images/eng.avif',
-        '../images/maths.jpg',
-        '../images/newcs.jpg',
-        '../images/study.jpg'
->>>>>>> 3a23d83585643a5a7d1c24bfee71beca7e68121a
     ];
 
     // Randomly select an image
@@ -501,11 +486,7 @@ async function deleteGroup(groupId) {
     }
 }
 
-<<<<<<< HEAD
 // joinGroup function for both main and group view pages
-=======
-// Unified joinGroup function for both main and group view pages
->>>>>>> 3a23d83585643a5a7d1c24bfee71beca7e68121a
 async function joinGroup(groupId) {
     try {
         const response = await fetch(`${API_URL}/${groupId}`);
@@ -670,7 +651,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-<<<<<<< HEAD
 document.addEventListener('DOMContentLoaded', function() {
   const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
   const navLinks = document.querySelector('.nav-links');
@@ -686,7 +666,3 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
-=======
-// Remove joinGroupFromMain and ensure all join buttons call joinGroup directly
-// If joinGroupFromMain is referenced elsewhere, alias it to joinGroup
->>>>>>> 3a23d83585643a5a7d1c24bfee71beca7e68121a
