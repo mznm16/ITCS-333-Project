@@ -121,7 +121,7 @@ function createGroupCard(group) {
     // Add edit and delete buttons only if user is the owner
     const ownerButtons = group.Owner
         ? `
-            <div class="d-flex gap-2">
+            <div class="d-flex justify-content-right gap-2 mt-3">
                 <button class="btn btn-outline-danger" onclick="deleteGroup('${group.id}')">
                     <i class="fas fa-trash me-2"></i>Delete
                 </button>
@@ -133,7 +133,7 @@ function createGroupCard(group) {
         <div class="col mb-4">
             <div class="card shadow-sm">
                 <a href="view-group.html?id=${group.id}">
-                    <img src="${group.image || '../images/study.jpg'}" class="card-img-top">
+                    <img src="${group.image || '../images/newcs.jpg'}" class="card-img-top">
                 </a>
                 <div class="card-header position-relative">
                     <h5 class="card-title">${group.title}</h5>
@@ -401,14 +401,13 @@ async function submitGroupForm() {
         return;
     }
 
-    // List of available images
+    // List of available images (more images will be added later)
     const availableImages = [
-        '../images/itcs333.webp',
-        '../images/datastr.avif',
-        '../images/eng.avif',
-        '../images/maths.jpg',
-        '../images/cs.jpg',
-        '../images/study.jpg'
+   
+        
+    
+        '../images/newcs.jpg',
+
     ];
 
     // Randomly select an image
@@ -483,7 +482,7 @@ async function deleteGroup(groupId) {
     }
 }
 
-// Unified joinGroup function for both main and group view pages
+// joinGroup function for both main and group view pages
 async function joinGroup(groupId) {
     try {
         const response = await fetch(`${API_URL}/${groupId}`);
@@ -648,5 +647,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Remove joinGroupFromMain and ensure all join buttons call joinGroup directly
-// If joinGroupFromMain is referenced elsewhere, alias it to joinGroup
+document.addEventListener('DOMContentLoaded', function() {
+  const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+  const navLinks = document.querySelector('.nav-links');
+
+  mobileMenuToggle.addEventListener('click', function() {
+    navLinks.classList.toggle('active');
+  });
+
+//if clicked outside the navabar,,it will close
+  document.addEventListener('click', function(event) {
+    if (!event.target.closest('.navbar')) {
+      navLinks.classList.remove('active');
+    }
+  });
+});
