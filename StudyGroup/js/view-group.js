@@ -472,7 +472,11 @@ function updateGroupDetails(group) {
 
         resourcesContainer.innerHTML = resourcesHtml;
 
+<<<<<<< HEAD
         // Add event listeners to the add resource form
+=======
+        // Add event listeners
+>>>>>>> 3a23d83585643a5a7d1c24bfee71beca7e68121a
         const addResourceForm = document.getElementById('addResourceForm');
         if (addResourceForm) {
             addResourceForm.onsubmit = (e) => handleAddResource(e, group.Owner ? 'Owner' : 'Member');
@@ -505,7 +509,11 @@ function updateGroupDetails(group) {
         }
     }
 
+<<<<<<< HEAD
     // Update the group discussion add new chats
+=======
+    // Update the discussion section
+>>>>>>> 3a23d83585643a5a7d1c24bfee71beca7e68121a
     const discussionSection = document.querySelector('.discussion-section');
     if (discussionSection) {
         let discussionHtml = `
