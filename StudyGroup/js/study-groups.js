@@ -1,5 +1,12 @@
-const API_URL = 'https://6809eb641f1a52874cde5938.mockapi.io/GroupName';
+
+const API_URL = 'https://cdf959f7-3f65-4593-bb62-14a1fbc10c5f-00-3ecxqa96ajnyg.pike.replit.dev/ITCS-333-Project/StudyGroup/php/api/groups';
 const GROUPS_PER_PAGE = 15;
+
+// Get the current user ID from local storage (set during login)
+function getCurrentUserId() {
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    return userData.user_id || 0;
+}
 
 let studyGroups = [];
 let currentPage = 1;
@@ -117,7 +124,7 @@ function createGroupCard(group) {
         : group.Joined
             ? '<button class="btn btn-success" disabled><i class="fas fa-check me-2"></i>Joined</button>'
             : `<button class="btn btn-success" onclick="joinGroup('${group.id}')"><i class="fas fa-user-plus me-2"></i>Join</button>`;
-           
+
     // Add edit and delete buttons only if user is the owner
     const ownerButtons = group.Owner
         ? `
@@ -133,7 +140,7 @@ function createGroupCard(group) {
         <div class="col mb-4">
             <div class="card shadow-sm">
                 <a href="view-group.html?id=${group.id}">
-                    <img src="${group.image || '../images/newcs.jpg'}" class="card-img-top">
+                    <img src="${group.image || getRandomImage()}" class="card-img-top">
                 </a>
                 <div class="card-header position-relative">
                     <h5 class="card-title">${group.title}</h5>
@@ -228,7 +235,7 @@ function filterGroups(searchTerm) {
                group.course.toLowerCase().includes(searchLower) ||
                group.description.toLowerCase().includes(searchLower);
     });
-    
+
     currentPage = 1;
     displayGroups(filtered);
 }
@@ -246,23 +253,73 @@ function filterGroupsByTab(groups, tabId) {
     }
 }
 
+// Helper function to handle arrays that might be strings
+function ensureArray(possibleArray) {
+    if (typeof possibleArray === 'string') {
+        try {
+            return JSON.parse(possibleArray);
+        } catch (e) {
+            return [];
+        }
+    }
+    return Array.isArray(possibleArray) ? possibleArray : [];
+}
+
+// Add selectTab function
 function selectTab(tabButton) {
-    // Remove active class from all tabs
-    document.querySelectorAll('.nav-link').forEach(tab => {
-        tab.classList.remove('active');
-    });
-    // Add active class to clicked tab
-    tabButton.classList.add('active');
-    // Get the tab content ID
-    const tabId = tabButton.getAttribute('data-bs-target').substring(1);
-    // Reapply all filters (tab, search, filter dropdowns)
-    if (typeof applyAllFilters === 'function') {
+    try {
+        // Remove active class from all tabs
+        document.querySelectorAll('.nav-link').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        // Add active class to clicked tab
+        tabButton.classList.add('active');
+        // Get the tab content ID
+        const tabId = tabButton.getAttribute('data-bs-target').substring(1);
+        // Apply filters
         applyAllFilters();
-    } else {
-        // fallback: just filter by tab
-        const filteredGroups = filterGroupsByTab(studyGroups, tabId);
-        currentPage = 1;
-        displayGroups(filteredGroups);
+    } catch (error) {
+        console.error('Error selecting tab:', error);
+    }
+}
+
+// Wrap loadStudyGroups in try-catch
+async function loadStudyGroups() {
+    try {
+        showLoadingOverlay();
+        showLoading();
+
+        const userId = getCurrentUserId();
+        const response = await fetch(`${API_URL}/read.php?user_id=${userId}`);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        studyGroups = await response.json();
+
+        if (!Array.isArray(studyGroups) && studyGroups.data) {
+            studyGroups = studyGroups.data;
+        }
+
+        if (!Array.isArray(studyGroups)) {
+            studyGroups = [];
+        }
+
+        displayGroups(studyGroups);
+    } catch (error) {
+        console.error('Error loading study groups:', error);
+        const container = document.querySelector('.row.row-cols-1.row-cols-md-3');
+        if (container) {
+            container.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <p class="text-danger">Failed to load study groups. Please try again later.</p>
+                    <button class="btn btn-primary mt-2" onclick="loadStudyGroups()">Retry</button>
+                </div>
+            `;
+        }
+    } finally {
+        hideLoadingOverlay();
     }
 }
 
@@ -281,32 +338,6 @@ function sortGroups(groups, sortBy) {
         });
     }
     return sorted;
-}
-
-async function loadStudyGroups() {
-    try {
-        showLoadingOverlay();
-        showLoading();
-        const response = await fetch(API_URL);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        studyGroups = await response.json();
-        displayGroups(studyGroups);
-    } catch (error) {
-        console.error('Error loading study groups:', error);
-        const container = document.querySelector('.row.row-cols-1.row-cols-md-3');
-        if (container) {
-            container.innerHTML = `
-                <div class="col-12 text-center py-5">
-                    <p class="text-danger">Failed to load study groups. Please try again later.</p>
-                    <button class="btn btn-primary mt-2" onclick="loadStudyGroups()">Retry</button>
-                </div>
-            `;
-        }
-    } finally {
-        hideLoadingOverlay();
-    }
 }
 
 function addResourceField() {
@@ -355,13 +386,13 @@ function addResourceField() {
 function getResources() {
     const resources = [];
     const resourceItems = document.querySelectorAll('.resource-item');
-    
+
     resourceItems.forEach(item => {
         const type = item.querySelector('.resource-type').value;
         const title = item.querySelector('.resource-title').value;
         const url = item.querySelector('.resource-url').value;
         const description = item.querySelector('.resource-description').value;
-        
+
         if (title && url) { // Only add if both title and URL are provided
             resources.push({
                 type,
@@ -372,7 +403,7 @@ function getResources() {
             });
         }
     });
-    
+
     return resources;
 }
 
@@ -382,13 +413,18 @@ async function submitGroupForm() {
     const course = document.getElementById('courseSelect').value;
     const meetingTime = document.getElementById('meetingTime').value;
     const location = document.getElementById('location').value;
-    const maxMembers = document.getElementById('maxMembers').value;
+    const maxMembers = parseInt(document.getElementById('maxMembers').value);
     const description = document.getElementById('description').value;
-    
+
+    if (maxMembers > 8) {
+        alert('Maximum members cannot exceed 8');
+        return;
+    }
+
     // Get selected days
     const selectedDays = Array.from(document.querySelectorAll('.day-btn.active'))
         .map(btn => btn.dataset.day);
-    
+
     // Get selected requirements
     const requirements = [
         document.getElementById('reqLaptop').checked ? 'laptop' : null,
@@ -403,15 +439,28 @@ async function submitGroupForm() {
 
     // List of available images (more images will be added later)
     const availableImages = [
-   
-        
-    
+           '../images/fourth.jpg',
+        '../images/third.jpg',
+        '../images/grp.jpg',
         '../images/newcs.jpg',
-
+    
+    
     ];
 
     // Randomly select an image
     const randomImage = availableImages[Math.floor(Math.random() * availableImages.length)];
+
+    // Get the user ID
+    const userId = getCurrentUserId();
+
+    // Convert time to timestamp if needed
+    let meetingTimeTimestamp = 0;
+    if (meetingTime) {
+        const today = new Date();
+        const [hours, minutes] = meetingTime.split(':');
+        today.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
+        meetingTimeTimestamp = Math.floor(today.getTime() / 1000);
+    }
 
     const groupData = {
         title: groupName,
@@ -419,19 +468,17 @@ async function submitGroupForm() {
         course: course,
         description: description,
         maxMembers: parseInt(maxMembers),
-        currentMembers: 1,
-        meetingTime: new Date(`1970-01-01T${meetingTime}`).getTime() / 1000,
+        meetingTime: meetingTimeTimestamp,
         location: location,
         Days: selectedDays,
         requirements: requirements,
         resources: getResources(),
-        Joined: true,
-        Owner: true,
-        image: randomImage
+        image: randomImage,
+        user_id: userId // Add the user ID to the request
     };
 
     try {
-        const response = await fetch(API_URL, {
+        const response = await fetch(`${API_URL}/create.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -440,55 +487,146 @@ async function submitGroupForm() {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to create group');
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to create group');
         }
 
-        const createdGroup = await response.json();
-        console.log('Created group:', createdGroup);
-        alert('Group created successfully!');
-        
-        // Close the modal
-        const modal = bootstrap.Modal.getInstance(document.getElementById('createGroupModal'));
-        modal.hide();
+        const responseData = await response.json();
 
-        // Reset the form
-        document.getElementById('createGroupForm').reset();
-        
+        if (responseData.status === 'error') {
+            throw new Error(responseData.message);
+        }
+
+        console.log('Created group:', responseData.data);
+        Swal.fire({
+            icon: 'success',
+            title: 'Group created successfully!',
+            text: 'Your study group has been created.',
+            timer: 2000,
+            showConfirmButton: false,
+            timerProgressBar: true,
+            willClose: () => {
+                // Optional: Close the modal if still open
+                const modalElement = document.getElementById('createGroupModal');
+                if (bootstrap.Modal.getInstance(modalElement)) {
+                    bootstrap.Modal.getInstance(modalElement).hide();
+                }
+
+                // Optional: Reset the form
+                document.getElementById('createGroupForm').reset();
+
+                // Redirect to the new group view page
+                window.location.href = `view-group.html?id=${responseData.data.id}`;
+            }
+        });
         // Reload the groups to show the new one
         loadStudyGroups();
     } catch (error) {
         console.error('Error creating group:', error);
-        alert('Failed to create group. Please try again.');
+        alert('Failed to create group. ' + error.message);
     }
 }
-
+//Delete group
 async function deleteGroup(groupId) {
-    if (confirm('Are you sure you want to delete this group?')) {
+    const userId = getCurrentUserId();
+
+    if (!window.Swal) {
+        // Fallback if SweetAlert2 is not available
+        if (confirm('Are you sure you want to delete this group?')) {
+            try {
+                const response = await fetch(`${API_URL}/delete.php?id=${groupId}&user_id=${userId}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to delete group');
+                }
+
+                const responseData = await response.json();
+
+                if (responseData.status === 'error') {
+                    throw new Error(responseData.message);
+                }
+
+                alert('Group deleted successfully!');
+                loadStudyGroups(); // Reload the groups list
+            } catch (error) {
+                console.error('Error deleting group:', error);
+                alert('Failed to delete group. ' + error.message);
+            }
+        }
+        return;
+    }
+
+    // Use SweetAlert2 for confirmation
+    const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you really want to delete this group?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel',
+        reverseButtons: true
+    });
+
+    if (result.isConfirmed) {
         try {
-            const response = await fetch(`${API_URL}/${groupId}`, {
+            const response = await fetch(`${API_URL}/delete.php?id=${groupId}&user_id=${userId}`, {
                 method: 'DELETE'
             });
 
             if (!response.ok) {
-                throw new Error('Failed to delete group');
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to delete group');
             }
 
-            alert('Group deleted successfully!');
+            const responseData = await response.json();
+
+            if (responseData.status === 'error') {
+                throw new Error(responseData.message);
+            }
+
+            // Show success message
+            await Swal.fire({
+                icon: 'success',
+                title: 'Deleted!',
+                text: 'Group has been deleted.',
+                timer: 1800,
+                showConfirmButton: false,
+                timerProgressBar: true
+            });
+
             loadStudyGroups(); // Reload the groups list
         } catch (error) {
             console.error('Error deleting group:', error);
-            alert('Failed to delete group. Please try again.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Deletion Failed',
+                text: error.message
+            });
         }
     }
-}
-
-// joinGroup function for both main and group view pages
+} 
+// if not logged in, it will redirect to the sign in page
 async function joinGroup(groupId) {
     try {
-        const response = await fetch(`${API_URL}/${groupId}`);
+        const userId = getCurrentUserId();
+
+        if (!userId) {
+            alert('Please sign in to join a group');
+            window.location.href = '../../Home_Page/HTML_Pages/signin.html';
+            return;
+        }
+
+        // First get the current group data
+        const response = await fetch(`${API_URL}/read_single.php?id=${groupId}&user_id=${userId}`);
         if (!response.ok) {
             throw new Error('Failed to fetch group data');
         }
+
         const group = await response.json();
 
         if (group.currentMembers >= group.maxMembers) {
@@ -496,36 +634,67 @@ async function joinGroup(groupId) {
             return;
         }
 
-        const updatedGroup = {
-            ...group,
-            Joined: true,
-            currentMembers: group.currentMembers + 1
-        };
-
-        const updateResponse = await fetch(`${API_URL}/${groupId}`, {
+        // Set Joined to true and send update request
+        const updateResponse = await fetch(`${API_URL}/update.php`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(updatedGroup)
+            body: JSON.stringify({
+                id: groupId,
+                user_id: userId,
+                Joined: true
+            })
         });
 
         if (!updateResponse.ok) {
-            throw new Error('Failed to join group');
+            const errorData = await updateResponse.json();
+            throw new Error(errorData.message || 'Failed to join group');
         }
 
-        alert(`You joined the group: ${group.title}`);
-        // Reload the groups to show the updated state
-        if (typeof loadStudyGroups === 'function') {
-            loadStudyGroups();
-        } else {
-            window.location.reload();
+        const updateData = await updateResponse.json();
+
+        if (updateData.status === 'error') {
+            throw new Error(updateData.message);
         }
+
+        // Show SweetAlert2 dialog or fall back to alert
+        const showDialog = () => {
+            if (window.Swal) {
+                Swal.fire({
+                    icon: 'success',
+                    title: `You joined the group!`,
+                    text: `Welcome to "${group.title}"`,
+                    showConfirmButton: false,
+                    timer: 1800,
+                    timerProgressBar: true,
+                    willClose: () => {
+                        if (window.location.pathname.includes('view-group.html')) {
+                            loadGroupDetails();
+                        } else {
+                            window.location.href = `view-group.html?id=${groupId}`;
+                        }
+                    }
+                });
+            } else {
+                alert(`You joined the group: ${group.title}`);
+                if (window.location.pathname.includes('view-group.html')) {
+                    window.location.reload();
+                } else {
+                    window.location.href = `view-group.html?id=${groupId}`;
+                }
+            }
+        };
+
+        showDialog();
     } catch (error) {
         console.error('Error joining group:', error);
-        alert('Failed to join group. Please try again.');
+        alert('Failed to join group: ' + error.message);
     }
 }
+
+
+
 
 document.addEventListener('DOMContentLoaded', function() {
     loadStudyGroups();
