@@ -1,2 +1,0 @@
-run = "php -S 0.0.0.0:8000 -t . -d upload_max_filesize=10M -d post_max_size=10M"
-entrypoint = "index.php"
