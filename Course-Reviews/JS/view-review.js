@@ -93,26 +93,51 @@ function clearComments() {
 // Render comments in the Comments section
 function renderComments(comments) {
     const commentsContainer = document.getElementById('comments-container');
-    if (!commentsContainer) return;
+    if (!commentsContainer) {
+        console.error('Comments container not found');
+        return;
+    }
     
     // Clear existing comments
     clearComments();
     
+    // Handle case where comments is undefined or null
+    if (!comments) {
+        commentsContainer.innerHTML = `
+            <p class="text-muted">
+                <i class="fas fa-comments me-2"></i>No comments available
+            </p>`;
+        return;
+    }
+    
     const commentsCount = comments.length;
-    let commentsHtml = `<p class="text-muted"><i class="fas fa-comments me-2"></i>${commentsCount} comment${commentsCount !== 1 ? 's' : ''}</p>`;
+    let commentsHtml = `
+        <p class="text-muted">
+            <i class="fas fa-comments me-2"></i>${commentsCount} comment${commentsCount !== 1 ? 's' : ''}
+        </p>`;
     
     if (commentsCount > 0) {
         commentsHtml += comments.map(c => `
             <div class="comment-item mb-3">
-                <strong>${c.commenter}</strong> 
-                <span class="text-muted small">${new Date(c.created_at).toLocaleDateString('en-US')}</span>
-                <p class="mb-1">${c.comment}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <strong>${c.commenter || 'Anonymous'}</strong>
+                    <span class="text-muted small">${new Date(c.created_at).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    })}</span>
+                </div>
+                <p class="mb-1 mt-2">${c.comment}</p>
                 <hr>
             </div>
         `).join('');
+    } else {
+        commentsHtml += `
+            <p class="text-muted mb-3">Be the first to comment on this review!</p>`;
     }
     
     commentsContainer.innerHTML = commentsHtml;
+    console.log('Comments rendered:', comments.length, 'comments');
 }
 
 // Fetch and display review
@@ -155,8 +180,7 @@ async function fetchReview() {
             } else {
                 console.error('Review content element not found');
             }
-            
-            // Update reviewer information with error handling
+              // Update reviewer information with error handling
             if (reviewerInfo && postedInfo) {
                 reviewerInfo.textContent = `Review by: ${review.reviewer || 'Anonymous'}`;
                 const postedDate = review.created_at 
@@ -169,10 +193,6 @@ async function fetchReview() {
                 postedInfo.textContent = `Posted: ${postedDate}`;
             } else {
                 console.error('Reviewer or posted info elements not found');
-            }
-            // Update review metadata
-            if (authorInfo) {
-                authorInfo.innerHTML = `<small>Review by: ${review.reviewer}</small><br><small>Posted: ${new Date(review.created_at).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})}</small>`;
             }
             // Render comments
             renderComments(data.comments);
@@ -253,20 +273,25 @@ if (commentForm) {
             
             const result = await response.json();
             if (result.success) {
-                // Fetch updated comments instead of reloading the page
-                const reviewResponse = await fetch(`https://2b911c75-2d5f-4b3a-b7ac-c4f37dc4f726-00-4nbzx33z7xnv.pike.replit.dev/get_review.php?id=${reviewId}`);
-                const reviewData = await reviewResponse.json();
-                renderComments(reviewData.comments);
+                // Clear the form
                 commentForm.reset();
+                // Fetch the updated review data to show the new comment
+                fetchReview();
             } else {
-                alert('Failed to submit comment.');
+                alert(result.error || 'Failed to submit comment.');
             }
         } catch (err) {
             console.error('Error submitting comment:', err);
-            alert('Error submitting comment. Please try again.');
+            alert('Error submitting comment. Please try again later.');
         }
     });
 }
+
+// Call fetchReview when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Page loaded, fetching review data...');
+    fetchReview();
+});
 
 // Initialize the page
 fetchReview();
