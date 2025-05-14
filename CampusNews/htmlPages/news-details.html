@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News Details</title>
+    <title>News Details - Campus Hub</title>
+    <meta name="description" content="View detailed campus news article">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../styleSheet.css">
     <style>
         .news-details-container {
@@ -43,26 +46,105 @@
             font-weight: bold;
             margin-left: 10px;
         }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover {
+            color: var(--accent-hover);
+        }
     </style>
 </head>
 <body>
-    <div class="news-details-container">
-        <div id="news-details-loading">Loading...</div>
-        <div id="news-details" style="display:none;">
-            <h1 class="news-details-title" id="news-title"></h1>
-            <div class="news-details-meta">
-                <span id="news-date"></span>
-                <span id="news-category"></span>
-                <span id="news-urgent"></span>
-            </div>
-            <img id="news-image" class="news-details-image" style="display:none;" />
-            <div class="news-details-content" id="news-content"></div>
-            <div class="news-details-tags" id="news-tags"></div>
-            <div class="news-details-source" id="news-source"></div>
-            <div class="news-details-event-date" id="news-event-date"></div>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="/ITCS-333-Project/index.html" class="nav-logo">Campus Hub</a>
+                <div class="nav-links">
+                    <a href="/ITCS-333-Project/index.html" class="nav-link">Home</a>
+                    <a href="/ITCS-333-Project/EventsCalendar/htmlPages/events.html" class="nav-link">Events</a>
+                    <a href="/ITCS-333-Project/StudyGroup/HTML files/study-groups.html" class="nav-link">Study Groups</a>
+                    <a href="/ITCS-333-Project/Course-Reviews/HTML_Files/course-reviews.html" class="nav-link">Course Reviews</a>
+                    <a href="/ITCS-333-Project/Course_Notes/HTML_Pages/course-notes.html" class="nav-link">Notes</a>
+                    <a href="/ITCS-333-Project/CampusNews/htmlPages/campus-news.html" class="nav-link">News</a>
+                </div>
+                <a href="/ITCS-333-Project/Home_Page/HTML_Pages/signin.html" class="auth-btn">Sign In</a>
+                <button class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
         </div>
-        <div id="news-details-error" style="color:red; display:none;"></div>
-    </div>
+    </header>
+
+    <main class="container">
+        <a href="campus-news.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to News
+        </a>
+        <div class="news-details-container">
+            <div id="news-details-loading">Loading...</div>
+            <div id="news-details" style="display:none;">
+                <h1 class="news-details-title" id="news-title"></h1>
+                <div class="news-details-meta">
+                    <span id="news-date"></span>
+                    <span id="news-category"></span>
+                    <span id="news-urgent"></span>
+                </div>
+                <img id="news-image" class="news-details-image" style="display:none;" />
+                <div class="news-details-content" id="news-content"></div>
+                <div class="news-details-tags" id="news-tags"></div>
+                <div class="news-details-source" id="news-source"></div>
+                <div class="news-details-event-date" id="news-event-date"></div>
+            </div>
+            <div id="news-details-error" style="color:red; display:none;"></div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3 class="footer-title">Campus Hub</h3>
+                    <p>Your all-in-one platform for a connected and enriched campus experience.</p>
+                </div>
+                <div class="footer-column">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="/ITCS-333-Project/EventsCalendar/htmlPages/events.html">Events Calendar</a></li>
+                        <li class="footer-link"><a href="/ITCS-333-Project/StudyGroup/HTML files/study-groups.html">Study Group Finder</a></li>
+                        <li class="footer-link"><a href="/ITCS-333-Project/Course-Reviews/HTML_Files/course-reviews.html">Course Reviews</a></li>
+                        <li class="footer-link"><a href="/ITCS-333-Project/Course_Notes/HTML_Pages/course-notes.html">Course Notes</a></li>
+                        <li class="footer-link"><a href="/ITCS-333-Project/CampusNews/htmlPages/campus-news.html">Campus News</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3 class="footer-title">Resources</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="/ITCS-333-Project/Home_Page/HTML_Pages/privacy-policy.html">Privacy Policy</a></li>
+                        <li class="footer-link"><a href="/ITCS-333-Project/Home_Page/HTML_Pages/terms-of-service.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3 class="footer-title">Contact</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="mailto:studentcc@uob.edu.bh">studentcc@uob.edu.bh</a></li>
+                        <li class="footer-link"><a href="tel:+97317155355">+973 17155355</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">&copy; 2025 Campus Hub. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="https://x.com/uobedubh" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/uobedubh/?hl=en" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/company/university-of-bahrain-uob-" class="social-link"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <script>
     function getQueryParam(name) {
         const url = new URL(window.location.href);
