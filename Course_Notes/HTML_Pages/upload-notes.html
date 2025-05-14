@@ -123,6 +123,7 @@
               </div>
               <div class="mb-4">
                 <label for="notesFile" class="form-label">Upload File <span class="text-danger">*</span></label>
+                <input type="hidden" name="MAX_FILE_SIZE" value="10485760"><!-- 10MB in bytes -->
                 <input class="form-control" type="file" id="notesFile" name="notesFile" required>
                 <div class="form-text">Accepted formats: PDF, DOCX, PPT, JPG, PNG (Max size: 10MB)</div>
               </div>

@@ -2,11 +2,19 @@
 // download.php: Securely serve files from the uploads directory
 $uploadsDir = __DIR__ . '/../uploads/';
 $file = basename($_GET['file'] ?? '');
-$path = realpath($uploadsDir . $file);
+$path = $uploadsDir . $file;
 
-if (!$file || !$path || strpos($path, realpath($uploadsDir)) !== 0 || !file_exists($path)) {
+// Basic security check to prevent directory traversal
+if (!$file || strpos($file, '/') !== false || strpos($file, '\\') !== false) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Invalid file name']);
+    exit;
+}
+
+if (!file_exists($path)) {
+    error_log('File not found: ' . $path);
     http_response_code(404);
-    echo "File not found.";
+    echo json_encode(['error' => 'File not found']);
     exit;
 }
 
