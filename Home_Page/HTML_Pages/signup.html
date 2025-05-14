@@ -53,7 +53,7 @@
        
         <div class="form-actions">
           <button type="submit" class="form-submit">Sign Up</button>
-          <p class="form-link">Already have an account? <a href="/ITCS-333-Project/Home_Page/HTML_Pages/signin.html">Sign in</a></p>
+          <p class="form-link">Already have an account? <a href="signin.html">Sign in</a></p>
         </div>
       </form>
     </div>
@@ -152,7 +152,7 @@
             alert('Account created successfully! You are now signed in.');
             
             // Redirect to home page or the previous page
-            const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || '/ITCS-333-Project/index.html';
+            const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || '../../index.html';
             window.location.href = redirectUrl;
           }
         } catch (error) {
