@@ -14,16 +14,16 @@
   <header class="header">
     <div class="container">
       <nav class="navbar">
-        <a href="/ITCS-333-Project/index.html" class="nav-logo">Campus Hub</a>
+        <a href="" class="nav-logo">Campus Hub</a>
         <div class="nav-links">
-          <a href="/ITCS-333-Project/index.html" class="nav-link">Home</a>
-          <a href="/ITCS-333-Project/EventsCalendar/htmlPages/events.html" class="nav-link">Events</a>
-          <a href="/ITCS-333-Project/StudyGroup/HTML files/study-groups.html" class="nav-link">Study Groups</a>
-          <a href="/ITCS-333-Project/Course-Reviews/HTML_Files/course-reviews.html" class="nav-link">Course Reviews</a>
-          <a href="/ITCS-333-Project/Course_Notes/HTML_Pages/course-notes.html" class="nav-link">Notes</a>
-          <a href="/ITCS-333-Project/CampusNews/htmlPages/campus-news.html" class="nav-link">News</a>
+          <a href="" class="nav-link">Home</a>
+          <a href="" class="nav-link">Events</a>
+          <a href="" class="nav-link">Study Groups</a>
+          <a href="" class="nav-link">Course Reviews</a>
+          <a href="" class="nav-link">Notes</a>
+          <a href="campus-news.html" class="nav-link">News</a>
         </div>
-        <a href="/ITCS-333-Project/Home_Page/HTML_Pages/signin.html" class="auth-btn">Sign In</a>
+        <a href="" class="auth-btn">Sign In</a>
         <button class="mobile-menu-toggle">
           <i class="fas fa-bars"></i>
         </button>
@@ -124,18 +124,18 @@
         <div class="footer-column">
           <h3 class="footer-title">Quick Links</h3>
           <ul class="footer-links">
-            <li class="footer-link"><a href="/ITCS-333-Project/EventsCalendar/htmlPages/events.html">Events Calendar</a></li>
-            <li class="footer-link"><a href="/ITCS-333-Project/StudyGroup/HTML files/study-groups.html">Study Group Finder</a></li>
-            <li class="footer-link"><a href="/ITCS-333-Project/Course-Reviews/HTML_Files/course-reviews.html">Course Reviews</a></li>
-            <li class="footer-link"><a href="/ITCS-333-Project/Course_Notes/HTML_Pages/course-notes.html">Course Notes</a></li>
-            <li class="footer-link"><a href="/ITCS-333-Project/CampusNews/htmlPages/campus-news.html">Campus News</a></li>
+            <li class="footer-link"><a href="">Events Calendar</a></li>
+            <li class="footer-link"><a href="">Study Group Finder</a></li>
+            <li class="footer-link"><a href="">Course Reviews</a></li>
+            <li class="footer-link"><a href="">Course Notes</a></li>
+            <li class="footer-link"><a href="campus-news.html">Campus News</a></li>
           </ul>
         </div>
         <div class="footer-column">
           <h3 class="footer-title">Resources</h3>
           <ul class="footer-links">
-            <li class="footer-link"><a href="/ITCS-333-Project/Home_Page/HTML_Pages/privacy-policy.html">Privacy Policy</a></li>
-            <li class="footer-link"><a href="/ITCS-333-Project/Home_Page/HTML_Pages/terms-of-service.html">Terms of Service</a></li>
+            <li class="footer-link"><a href="">Privacy Policy</a></li>
+            <li class="footer-link"><a href="">Terms of Service</a></li>
           </ul>
         </div>
         <div class="footer-column">
@@ -168,6 +168,8 @@
         ];
 
         function showError(input, message) {
+            input.classList.remove('is-valid');
+            removeTick(input);
             let error = input.parentElement.querySelector('.invalid-feedback');
             if (!error) {
                 error = document.createElement('div');
@@ -176,8 +178,6 @@
             }
             error.textContent = message;
             input.classList.add('is-invalid');
-            input.classList.remove('is-valid');
-            removeTick(input);
         }
 
         function showSuccess(input) {
@@ -198,7 +198,7 @@
             if (!tick) {
                 tick = document.createElement('div');
                 tick.className = 'valid-feedback d-block';
-                tick.innerHTML = '&#10003;'; // Green tick
+                tick.innerHTML = '&#10003;';
                 input.parentElement.appendChild(tick);
             }
         }
@@ -223,24 +223,61 @@
             }
         });
 
-        form.addEventListener('submit', function (e) {
-            let valid = true;
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
 
+            // Validate all required fields before submission
+            let valid = true;
             requiredFields.forEach(field => {
                 const input = document.getElementById(field.id);
-                if (!input.value || (field.id === 'category' && input.value === '')) {
-                    showError(input, `${field.name} is required.`);
+                if (!input.value || (field.minLength && input.value.length < field.minLength)) {
+                    showError(input, `${field.name} is required${field.minLength ? ` and should be at least ${field.minLength} characters.` : '.'}`);
                     valid = false;
-                } else if (field.minLength && input.value.length < field.minLength) {
-                    showError(input, `${field.name} should be at least ${field.minLength} characters.`);
-                    valid = false;
-                } else {
-                    showSuccess(input);
                 }
             });
+            if (!valid) return;
 
-            if (!valid) {
-                e.preventDefault();
+            // Gather form data
+            const headline = document.getElementById('headline').value.trim();
+            const summary = document.getElementById('summary').value.trim();
+            const content = document.getElementById('content').value.trim();
+            const category = document.getElementById('category').value;
+            const source = document.getElementById('source') ? document.getElementById('source').value.trim() : '';
+            const event_date = document.getElementById('eventDate') ? document.getElementById('eventDate').value : '';
+            const tags = document.getElementById('tags') ? document.getElementById('tags').value.trim() : '';
+            const urgent = document.getElementById('urgent') && document.getElementById('urgent').checked ? 1 : 0;
+
+            const payload = {
+                headline,
+                summary,
+                content,
+                category,
+                source,
+                event_date,
+                tags,
+                urgent
+            };
+
+            try {
+                const response = await fetch('https://f6da7095-a6f6-4d17-92c3-5fe84333d397-00-i370d3pysjru.pike.replit.dev/news.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('News submitted successfully!');
+                    window.location.href = 'campus-news.html';
+                } else {
+                    alert('Error submitting news: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                alert('Error submitting news. Please try again later.');
+                console.error(error);
             }
         });
     });
