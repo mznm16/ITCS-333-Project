@@ -8,6 +8,13 @@ function escapeHtml(text) {
 }
 
 function renderComments(comments) {
+  // Update the comments counter in the UI
+  const commentCounter = document.getElementById('comments-count');
+  const commentsCount = Array.isArray(comments) ? comments.length : (comments.comments || []).length;
+  if (commentCounter) {
+    commentCounter.textContent = commentsCount;
+  }
+
   const commentsContainer = document.getElementById('comments-container') || (() => {
     const div = document.createElement('div');
     div.id = 'comments-container';
@@ -49,10 +56,14 @@ async function postComment(noteId, commenter, comment) {
   formData.append('note_id', noteId);
   formData.append('commenter', commenter);
   formData.append('comment', comment);
-  await fetch(apiBase + 'add-comment.php', {
+  const response = await fetch(apiBase + 'add-comment.php', {
     method: 'POST',
     body: formData
   });
+  if (!response.ok) {
+    throw new Error('Failed to post comment');
+  }
+  return response.json();
 }
 
 document.addEventListener('DOMContentLoaded', function() {
