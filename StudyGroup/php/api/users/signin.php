@@ -22,9 +22,23 @@ try {
     // Validate required fields
     $requiredFields = ['email', 'password'];
     foreach ($requiredFields as $field) {
-        if (!isset($data[$field]) || empty($data[$field])) {
+        if (!isset($data[$field]) || empty(trim($data[$field]))) {
             throw new Exception("Missing required field: $field");
         }
+    }
+
+    // Sanitize and validate inputs
+    $email = filter_var(trim($data['email']), FILTER_SANITIZE_EMAIL);
+    $password = trim($data['password']);
+
+    // Validate email format
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        throw new Exception("Invalid email format");
+    }
+
+    // Basic password validation
+    if (strlen($password) < 1) {
+        throw new Exception("Password cannot be empty");
     }
     
     // Get user from database

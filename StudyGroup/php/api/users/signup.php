@@ -22,9 +22,31 @@ try {
     // Validate required fields
     $requiredFields = ['username', 'email', 'password'];
     foreach ($requiredFields as $field) {
-        if (!isset($data[$field]) || empty($data[$field])) {
+        if (!isset($data[$field]) || empty(trim($data[$field]))) {
             throw new Exception("Missing required field: $field");
         }
+    }
+
+    // Sanitize and validate inputs
+    $username = filter_var(trim($data['username']), FILTER_SANITIZE_STRING);
+    $email = filter_var(trim($data['email']), FILTER_SANITIZE_EMAIL);
+    $password = trim($data['password']);
+
+    // Additional validation
+    if (strlen($username) < 3 || strlen($username) > 50) {
+        throw new Exception("Username must be between 3 and 50 characters");
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        throw new Exception("Invalid email format");
+    }
+
+    if (strlen($password) < 8) {
+        throw new Exception("Password must be at least 8 characters long");
+    }
+
+    if (!preg_match('/[A-Za-z]/', $password) || !preg_match('/[0-9]/', $password)) {
+        throw new Exception("Password must contain both letters and numbers");
     }
     
     // Validate email format
