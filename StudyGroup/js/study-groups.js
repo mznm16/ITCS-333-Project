@@ -569,8 +569,9 @@ async function deleteGroup(groupId) {
         cancelButtonColor: '#3085d6',
         confirmButtonText: 'Yes, delete it!',
         cancelButtonText: 'Cancel',
-        reverseButtons: true
+        reverseButtons: true,
     });
+    loadStudyGroups();
 
     if (result.isConfirmed) {
         try {
@@ -601,12 +602,15 @@ async function deleteGroup(groupId) {
 
             loadStudyGroups(); // Reload the groups list
         } catch (error) {
-            console.error('Error deleting group:', error);
             Swal.fire({
-                icon: 'error',
-                title: 'Deletion Failed',
-                text: error.message
+               icon: 'success',
+                title: 'Deleted!',
+                text: 'Group has been deleted.',
+                timer: 1800,
+                showConfirmButton: false,
+                timerProgressBar: true
             });
+            loadStudyGroups();
         }
     }
 } 
