@@ -26,11 +26,11 @@ function setLoading(loading) {
     loadingOverlay.style.display = loading ? 'flex' : 'none';
 }
 
-// Load reviews from local db.json
+// Load reviews from PHP backend
 async function fetchReviews() {
     try {
         setLoading(true);
-        const response = await fetch('../JS/db.json');
+        const response = await fetch('https://2b911c75-2d5f-4b3a-b7ac-c4f37dc4f726-00-4nbzx33z7xnv.pike.replit.dev/get_reviews.php');
         allReviews = await response.json();
         displayReviews();
         setupPagination();
@@ -135,15 +135,15 @@ async function displayReviews(filteredReviews = null) {
         <article class="item-card">
             <div class="item-content">
                 <div class="item-meta">
-                    <span class="item-tag">${review['course-tag']}</span>
-                    <span class="item-date">${review['review-date']}</span>
+                    <span class="item-tag">${review.code}</span>
+                    <span class="item-date">${new Date(review.created_at).toLocaleDateString('en-US')}</span>
                 </div>
-                <h2 class="item-title">${review['course-title']}</h2>
-                <p class="item-desc">${review['short-desc']}</p>
+                <h2 class="item-title">${review.name}</h2>
+                <p class="item-desc">${review.summary}</p>
                 <div class="d-flex justify-content-between align-items-center mt-2">
                     <div>
-                        <span class="me-3">${createStarRating(review.stars)}</span>
-                        <span><i class="fas fa-user"></i> ${review['dr-name']}</span>
+                        <span class="me-3">${createStarRating(Math.round(review.rating))}</span>
+                        <span><i class="fas fa-user"></i> ${review.professor}</span>
                     </div>
                     <a href="view-review.html?id=${review.id}" class="module-link">Read Reviews <i class="fas fa-arrow-right"></i></a>
                 </div>
