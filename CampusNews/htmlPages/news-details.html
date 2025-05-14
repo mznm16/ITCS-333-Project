@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Details</title>
+    <link rel="stylesheet" href="../styleSheet.css">
+    <style>
+        .news-details-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 32px;
+            border-radius: 10px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+        }
+        .news-details-title {
+            font-size: 2.2em;
+            margin-bottom: 12px;
+        }
+        .news-details-meta {
+            color: #888;
+            margin-bottom: 18px;
+        }
+        .news-details-image {
+            max-width: 100%;
+            margin-bottom: 18px;
+            border-radius: 8px;
+        }
+        .news-details-content {
+            font-size: 1.15em;
+            line-height: 1.7;
+        }
+        .news-details-tags {
+            margin-top: 18px;
+            color: #555;
+        }
+        .urgent {
+            color: #fff;
+            background: #e74c3c;
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="news-details-container">
+        <div id="news-details-loading">Loading...</div>
+        <div id="news-details" style="display:none;">
+            <h1 class="news-details-title" id="news-title"></h1>
+            <div class="news-details-meta">
+                <span id="news-date"></span>
+                <span id="news-category"></span>
+                <span id="news-urgent"></span>
+            </div>
+            <img id="news-image" class="news-details-image" style="display:none;" />
+            <div class="news-details-content" id="news-content"></div>
+            <div class="news-details-tags" id="news-tags"></div>
+            <div class="news-details-source" id="news-source"></div>
+            <div class="news-details-event-date" id="news-event-date"></div>
+        </div>
+        <div id="news-details-error" style="color:red; display:none;"></div>
+    </div>
+    <script>
+    function getQueryParam(name) {
+        const url = new URL(window.location.href);
+        return url.searchParams.get(name);
+    }
+
+    async function fetchNewsDetails(id) {
+        try {
+            const res = await fetch(`../../backend/news.php?id=${id}`);
+            if (!res.ok) throw new Error('News not found');
+            return await res.json();
+        } catch (e) {
+            throw e;
+        }
+    }
+
+    async function renderNewsDetails() {
+        const id = getQueryParam('id');
+        if (!id) {
+            document.getElementById('news-details-loading').style.display = 'none';
+            document.getElementById('news-details-error').textContent = 'No news ID provided.';
+            document.getElementById('news-details-error').style.display = 'block';
+            return;
+        }
+        try {
+            const news = await fetchNewsDetails(id);
+            document.getElementById('news-details-loading').style.display = 'none';
+            document.getElementById('news-details').style.display = 'block';
+            document.getElementById('news-title').textContent = news['news-title'];
+            document.getElementById('news-date').textContent = `Date: ${news['news-date']}`;
+            document.getElementById('news-category').textContent = ` | Category: ${news['news-tag']}`;
+            if (news['urgent'] && news['urgent'] != '0') {
+                document.getElementById('news-urgent').textContent = 'URGENT';
+                document.getElementById('news-urgent').className = 'urgent';
+            }
+            if (news['image']) {
+                const img = document.getElementById('news-image');
+                img.src = news['image'];
+                img.style.display = 'block';
+            }
+            document.getElementById('news-content').textContent = news['whole-news'];
+            if (news['tags']) {
+                document.getElementById('news-tags').textContent = 'Tags: ' + news['tags'];
+            }
+            if (news['source']) {
+                document.getElementById('news-source').textContent = 'Source: ' + news['source'];
+            }
+            if (news['event-date']) {
+                document.getElementById('news-event-date').textContent = 'Event Date: ' + news['event-date'];
+            }
+        } catch (e) {
+            document.getElementById('news-details-loading').style.display = 'none';
+            document.getElementById('news-details-error').textContent = e.message || 'Failed to load news.';
+            document.getElementById('news-details-error').style.display = 'block';
+        }
+    }
+    renderNewsDetails();
+    </script>
+</body>
+</html>

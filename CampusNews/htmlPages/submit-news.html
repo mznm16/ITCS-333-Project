@@ -168,6 +168,8 @@
         ];
 
         function showError(input, message) {
+            input.classList.remove('is-valid');
+            removeTick(input);
             let error = input.parentElement.querySelector('.invalid-feedback');
             if (!error) {
                 error = document.createElement('div');
@@ -176,8 +178,6 @@
             }
             error.textContent = message;
             input.classList.add('is-invalid');
-            input.classList.remove('is-valid');
-            removeTick(input);
         }
 
         function showSuccess(input) {
@@ -198,7 +198,7 @@
             if (!tick) {
                 tick = document.createElement('div');
                 tick.className = 'valid-feedback d-block';
-                tick.innerHTML = '&#10003;'; // Green tick
+                tick.innerHTML = '&#10003;';
                 input.parentElement.appendChild(tick);
             }
         }
@@ -223,24 +223,61 @@
             }
         });
 
-        form.addEventListener('submit', function (e) {
-            let valid = true;
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
 
+            // Validate all required fields before submission
+            let valid = true;
             requiredFields.forEach(field => {
                 const input = document.getElementById(field.id);
-                if (!input.value || (field.id === 'category' && input.value === '')) {
-                    showError(input, `${field.name} is required.`);
+                if (!input.value || (field.minLength && input.value.length < field.minLength)) {
+                    showError(input, `${field.name} is required${field.minLength ? ` and should be at least ${field.minLength} characters.` : '.'}`);
                     valid = false;
-                } else if (field.minLength && input.value.length < field.minLength) {
-                    showError(input, `${field.name} should be at least ${field.minLength} characters.`);
-                    valid = false;
-                } else {
-                    showSuccess(input);
                 }
             });
+            if (!valid) return;
 
-            if (!valid) {
-                e.preventDefault();
+            // Gather form data
+            const headline = document.getElementById('headline').value.trim();
+            const summary = document.getElementById('summary').value.trim();
+            const content = document.getElementById('content').value.trim();
+            const category = document.getElementById('category').value;
+            const source = document.getElementById('source') ? document.getElementById('source').value.trim() : '';
+            const event_date = document.getElementById('eventDate') ? document.getElementById('eventDate').value : '';
+            const tags = document.getElementById('tags') ? document.getElementById('tags').value.trim() : '';
+            const urgent = document.getElementById('urgent') && document.getElementById('urgent').checked ? 1 : 0;
+
+            const payload = {
+                headline,
+                summary,
+                content,
+                category,
+                source,
+                event_date,
+                tags,
+                urgent
+            };
+
+            try {
+                const response = await fetch('https://f6da7095-a6f6-4d17-92c3-5fe84333d397-00-i370d3pysjru.pike.replit.dev/news.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('News submitted successfully!');
+                    window.location.href = 'campus-news.html';
+                } else {
+                    alert('Error submitting news: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                alert('Error submitting news. Please try again later.');
+                console.error(error);
             }
         });
     });
