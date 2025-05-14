@@ -1,12 +1,20 @@
 :root {
   --primary-text: #1a1a1a;
   --secondary-text: #666666;
+   --primary-bg: #ffffff;
+  --secondary-bg: #f5f5f7;
   --accent-color: #0066cc;
   --border-radius-sm: 4px;
   --border-radius-md: 8px;
   --transition-default: all 0.3s ease;
 }
 
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
 /* Header Styles */
 .header {
   position: sticky;
@@ -19,6 +27,24 @@
   transition: var(--transition-default);
 }
 
+.page-header {
+  background: linear-gradient(180deg, var(--primary-bg), var(--secondary-bg));
+  padding: 64px 0 32px;
+  text-align: center;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+
+.page-description {
+  color: var(--secondary-text);
+  max-width: 600px;
+  margin: 0 auto;
+}
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -189,40 +215,88 @@
 
 /* Search and Filter Controls */
 .listing-controls {
-  background: white;
-  padding: 1.5rem;
-  border-radius: var(--border-radius-md);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  margin-top: -2rem;
-  position: relative;
-  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 32px 0 24px;
+  flex-wrap: wrap;
+  gap: 16px;
 }
-
 .search-container {
-  position: relative;
+  border: 1px solid #e0e0e0;
+  border-radius: var(--border-radius-sm);
+  background: #fff;
 }
-
-.search-icon {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--secondary-text);
+.search-container {
+  flex-grow: 1;
+  max-width: 400px;
+  position: relative;
 }
 
 .search-input {
   width: 100%;
-  padding: 0.75rem 1rem 0.75rem 2.5rem;
-  border: 1px solid #dee2e6;
+  padding: 12px 16px;
+  padding-left: 40px;
+  border: 1px solid var(--border-color);
   border-radius: var(--border-radius-sm);
-  font-size: 0.875rem;
   transition: var(--transition-default);
 }
 
 .search-input:focus {
   outline: none;
   border-color: var(--accent-color);
-  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--secondary-text);
+}
+
+.filter-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.filter-btn {
+  background-color: var(--primary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: var(--transition-default);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-btn:hover {
+  border-color: var(--accent-color);
+}
+
+.add-new-btn {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: var(--border-radius-sm);
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: var(--transition-default);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.add-new-btn:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-1px);
 }
 
 /* Tabs Styling */
@@ -297,26 +371,56 @@
   justify-content: center;
   align-items: center;
 }
+.page-header {
+  background: linear-gradient(180deg, var(--primary-bg), var(--secondary-bg));
+  padding: 64px 0 32px;
+  text-align: center;
+}
 
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+
+}
+.page-description {
+  color: var(--secondary-text);
+  max-width: 600px;
+  margin: 0 auto;
+}
 /* Pagination */
-.pagination .page-btn{
-  margin-top: 2rem;
-  justify-content: center;
-  border-radius: 7px;
-  font-size: 1.2rem;   /* Increases text size */
-  padding: 10px 20px;  /* Increases button size */
-  margin: 5px;
 
-  
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 32px 0;
 }
-.pagination .page-btn.active{
-    background-color: var(--accent-color);
-  color: white;}
-  
-.pagination .page-btn:hover{
-    background-color: rgba(0, 102, 204, 0.1);
-  color: var(--accent-color);
+
+.page-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--primary-bg);
+  cursor: pointer;
+  transition: var(--transition-default);
 }
+
+.page-btn.active {
+  background-color: var(--accent-color);
+  color: white;
+  border-color: var(--accent-color);
+}
+
+.page-btn:hover:not(.active) {
+  border-color: var(--accent-color);
+}
+
 
 /* Mobile Menu Styles */
 .mobile-menu-toggle {
