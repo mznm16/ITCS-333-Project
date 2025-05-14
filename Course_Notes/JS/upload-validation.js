@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     const form = document.getElementById('uploadNotesForm');
     const fileInput = document.getElementById('notesFile');
     
@@ -138,34 +138,128 @@ document.addEventListener('DOMContentLoaded', function() {
         validateField(fileInput);
     });
 
-    // Form submission handler
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        let isValid = true;
+    // If in edit mode, fetch note data and prefill form
+    const urlParams = new URLSearchParams(window.location.search);
+    const isEdit = urlParams.get('edit') === '1';
+    const noteId = urlParams.get('id');
+    const apiBase = 'https://48b2a128-b883-4c2b-81e4-26a3d02113bd-00-89sz2gccdxxn.sisko.replit.dev/';
 
-        // Validate all required fields
-        form.querySelectorAll('input[required], textarea[required]').forEach(field => {
-            if (!validateField(field)) {
-                isValid = false;
+    if (isEdit && noteId) {
+        // Change form title/button for edit mode
+        const formTitle = document.querySelector('.card-header h2, .card-header .h4');
+        if (formTitle) formTitle.textContent = 'Edit Course Notes';
+        const submitBtn = document.querySelector('#uploadNotesForm button[type="submit"]');
+        if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-save me-2"></i>Update Note';
+
+        // Fetch note data and prefill form
+        try {
+            const res = await fetch(apiBase + 'get-note.php?id=' + encodeURIComponent(noteId));
+            const note = await res.json();
+            if (note && note.id) {
+                document.getElementById('title').value = note.title || '';
+                document.getElementById('subject').value = note.subject || '';
+                document.getElementById('description').value = note.description || '';
+                document.getElementById('long_description').value = note.long_description || '';
+                document.getElementById('uploader').value = note.uploader || '';
+                // File input cannot be prefilled for security reasons
             }
+        } catch (err) {
+            // Optionally show error
+        }
+    }    // Form submission handler
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        // Remove previous alerts
+        const prevAlert = document.querySelector('.alert-success');
+        if (prevAlert) prevAlert.remove();
+
+        // Remove any previous loading overlays
+        document.querySelectorAll('.loading-overlay').forEach(el => el.remove());
+        
+        // Create a single, centered loading spinner overlay (identical to delete note)
+        const loadingOverlay = document.createElement('div');
+        loadingOverlay.className = 'loading-overlay';
+        loadingOverlay.innerHTML = '<div class="loading-spinner"></div>';
+        document.body.appendChild(loadingOverlay);
+        document.head.appendChild(spinnerStyle);
+
+        // Validate required fields
+        let valid = true;
+        form.querySelectorAll('input[required], textarea[required]').forEach(field => {
+            if (!validateField(field)) valid = false;
         });
+        if (!valid) {
+            if (loadingOverlay) loadingOverlay.remove();
+            return;
+        }
 
-        if (isValid) {
-            // Show success message
-            const successAlert = document.createElement('div');
-            successAlert.className = 'alert alert-success mt-3';
-            successAlert.role = 'alert';
-            successAlert.textContent = 'Notes uploaded successfully!';
-            form.insertBefore(successAlert, form.firstChild);
+        // Prepare form data
+        const formData = new FormData(form);
+        // Add file
+        if (fileInput.files.length > 0) {
+            formData.append('notesFile', fileInput.files[0]);
+        }
 
-            // Hide success message after 3 seconds
-            setTimeout(() => {
-                successAlert.remove();
-                form.reset();
-                form.querySelectorAll('.is-valid').forEach(field => {
-                    field.classList.remove('is-valid');
+        // --- EDIT MODE: update note instead of upload ---
+        if (isEdit && noteId) {
+            formData.append('id', noteId);
+            try {
+                const response = await fetch(apiBase + 'upload-notes.php?edit=1', {
+                    method: 'POST',
+                    body: formData
                 });
-            }, 3000);
+                const result = await response.json();
+                if (result.success) {
+                    const alert = document.createElement('div');
+                    alert.className = 'alert alert-success mt-3';
+                    alert.role = 'alert';
+                    alert.textContent = 'Note updated successfully! Redirecting...';
+                    form.parentNode.insertBefore(alert, form.nextSibling);
+                    setTimeout(() => {
+                        window.location.href = 'course-notes.html';
+                        if (loadingOverlay) loadingOverlay.remove();
+                    }, 1800);
+                } else {
+                    alert('Update failed: ' + (result.error || 'Unknown error'));
+                    if (loadingOverlay) loadingOverlay.remove();
+                }
+            } catch (err) {
+                alert('Update failed: ' + err.message);
+                if (loadingOverlay) loadingOverlay.remove();
+            }
+            return;
+        }
+        // --- END EDIT MODE ---
+
+        // AJAX upload (add mode)
+        try {
+            const response = await fetch('https://48b2a128-b883-4c2b-81e4-26a3d02113bd-00-89sz2gccdxxn.sisko.replit.dev/upload-notes.php', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            if (result.success) {
+                // Show green Bootstrap alert
+                const alert = document.createElement('div');
+                alert.className = 'alert alert-success mt-3';
+                alert.role = 'alert';
+                alert.textContent = 'Notes uploaded successfully! Redirecting...';
+                form.parentNode.insertBefore(alert, form.nextSibling);
+                setTimeout(() => {
+                    window.location.href = 'course-notes.html';
+                    if (loadingOverlay) loadingOverlay.remove();
+                }, 1800);
+            } else {
+                alert('Upload failed: ' + (result.error || 'Unknown error'));
+                if (loadingOverlay) loadingOverlay.remove();
+            }
+        } catch (err) {
+            alert('Upload failed: ' + err.message);
+            if (loadingOverlay) loadingOverlay.remove();
         }
     });
+
+    // Remove custom spinner CSS if present
+    const oldStyle = document.querySelector('style[data-upload-spinner]:not([data-upload-spinner="true"])');
+    if (oldStyle) oldStyle.remove();
 });
