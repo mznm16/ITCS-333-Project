@@ -1,4 +1,10 @@
-const API_URL = 'https://6809eb641f1a52874cde5938.mockapi.io/GroupName';
+const API_URL = 'https://cdf959f7-3f65-4593-bb62-14a1fbc10c5f-00-3ecxqa96ajnyg.pike.replit.dev/ITCS-333-Project/StudyGroup/php/api/groups';
+
+// Get the current user ID from local storage (set during login)
+function getCurrentUserId() {
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    return userData.user_id || 0;
+}
 
 // Categories of courses
 const courseMapping = {
@@ -64,9 +70,91 @@ function hideLoadingOverlay() {
     if (overlay) overlay.style.display = 'none';
 }
 
+let studyGroups = [];
+let currentPage = 1;
+let currentSort = 'name'; // Default sort
+
+function formatMeetingDays(days) {
+    if (!Array.isArray(days) || days.length === 0) return 'No specific days';
+    return days.map(day => day.charAt(0).toUpperCase() + day.slice(1)).join(', ');
+}
+
+function formatMeetingTime(timestamp) {
+    if (!timestamp) return 'Time not specified';
+    const date = new Date(timestamp * 1000);
+    return date.toLocaleTimeString('en-US', { 
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+    });
+}
+
+function formatLocation(location) {
+    if (!location) return 'Location not specified';
+    return location.toUpperCase();
+}
+
+function formatRequirements(requirements) {
+    try {
+        if (!requirements) return 'No requirements specified';
+
+        const reqArray = Array.isArray(requirements) ? requirements : 
+                        (typeof requirements === 'string' ? JSON.parse(requirements) : []);
+
+        if (reqArray.length === 0) {
+            return `<div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                No specific requirements
+            </div>`;
+        }
+
+        return `<ul class="list-unstyled mb-0">
+            ${reqArray.map(req => {
+                let icon = '';
+                switch(req) {
+                    case 'laptop':
+                        icon = 'fas fa-laptop';
+                        break;
+                    case 'notes':
+                        icon = 'fas fa-book';
+                        break;
+                    case 'headphones':
+                        icon = 'fas fa-headphones';
+                        break;
+                    default:
+                        icon = 'fas fa-check';
+                }
+                return `
+                    <li class="mb-2">
+                        <i class="${icon} text-success me-2"></i>
+                        ${req.charAt(0).toUpperCase() + req.slice(1)}
+                    </li>
+                `;
+            }).join('')}
+        </ul>`;
+    } catch (e) {
+        console.error('Error formatting requirements:', e);
+        return 'Error displaying requirements';
+    }
+}
+
+// Helper function to handle arrays that might be strings
+function ensureArray(possibleArray) {
+    if (typeof possibleArray === 'string') {
+        try {
+            return JSON.parse(possibleArray);
+        } catch (e) {
+            return [];
+        }
+    }
+    return Array.isArray(possibleArray) ? possibleArray : [];
+}
+
+// Update group details
 async function loadGroupDetails() {
     const urlParams = new URLSearchParams(window.location.search);
     const groupId = urlParams.get('id');
+    const userId = getCurrentUserId();
 
     if (!groupId) {
         window.location.href = 'study-groups.html';
@@ -75,12 +163,21 @@ async function loadGroupDetails() {
 
     try {
         showLoadingOverlay();
-        const response = await fetch(`${API_URL}/${groupId}`);
+        const response = await fetch(`${API_URL}/read_single.php?id=${groupId}&user_id=${userId}`);
         if (!response.ok) {
             throw new Error('Group not found');
         }
 
-        const group = await response.json();
+        const responseData = await response.json();
+
+        // Check if we received an error response
+        if (responseData.status === 'error') {
+            throw new Error(responseData.message || 'Group not found');
+        }
+
+        // Get the group data (either directly or from the data property)
+        const group = responseData.data || responseData;
+
         updateGroupDetails(group);
         renderSessions(group.sessions, !!group.Owner, group.id);
         showAddSessionButton(!!group.Owner);
@@ -106,7 +203,7 @@ function updateGroupDetails(group) {
     aboutSection.innerHTML = `
         <h2 class="card-title h4 mb-3">About This Group</h2>
         <p class="card-text">${group.description || 'No description available'}</p>
-        
+
         <div class="my-4">
             <h3 class="h5">Meeting Details</h3>
             <div class="meeting-details-container">
@@ -254,39 +351,7 @@ function updateGroupDetails(group) {
         <div class="my-4">
             <h3 class="h5">Discussion</h3>
             <div class="discussion-section">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h2 class="card-title h4 mb-0">Discussion</h2>
-                            <span class="badge bg-primary">
-                                <i class="fas fa-comments me-1"></i>
-                                ${Array.isArray(group.groupChat) ? group.groupChat.length : 0} messages
-                            </span>
-                        </div>
-                        
-                        <div class="chat-messages mb-4" style="max-height: 400px; overflow-y: auto;">
-                            ${renderChatMessages(group.groupChat)}
-                        </div>
-                        
-                        ${(group.Owner || group.Joined) ? `
-                            <form id="chatForm" class="mt-4">
-                                <div class="mb-3">
-                                    <label for="messageText" class="form-label">Add a message</label>
-                                    <textarea class="form-control" id="messageText" name="messageText" 
-                                        rows="3" placeholder="Write your message here..." required></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-paper-plane me-1"></i>Send Message
-                                </button>
-                            </form>
-                        ` : `
-                            <div class="alert alert-info">
-                                <i class="fas fa-info-circle me-2"></i>
-                                Join the group to participate in discussions
-                            </div>
-                        `}
-                    </div>
-                </div>
+                <!-- Discussion content will be injected here -->
             </div>
         </div>
     `;
@@ -342,9 +407,9 @@ function updateGroupDetails(group) {
     const resourcesContainer = document.querySelector('.resources-container');
     if (resourcesContainer) {
         let resourcesHtml = '';
-        
+
         if (Array.isArray(group.resources) && group.resources.length > 0) {
-          
+
             const whatsappResources = group.resources.filter(r => r.type === 'whatsapp');
             if (whatsappResources.length > 0) {
                 const whatsapp = whatsappResources[0]; 
@@ -476,11 +541,11 @@ function updateGroupDetails(group) {
         const addResourceForm = document.getElementById('addResourceForm');
         if (addResourceForm) {
             addResourceForm.onsubmit = (e) => handleAddResource(e, group.Owner ? 'Owner' : 'Member');
-            
+
             // Add type change listener to show help text
             const typeSelect = addResourceForm.querySelector('select[name="type"]');
             const urlHelpText = document.getElementById('urlHelpText');
-            
+
             typeSelect.addEventListener('change', (e) => {
                 switch (e.target.value) {
                     case 'whatsapp':
@@ -499,7 +564,7 @@ function updateGroupDetails(group) {
                         urlHelpText.textContent = '';
                 }
             });
-            
+
             // Trigger change event to show initial help text
             typeSelect.dispatchEvent(new Event('change'));
         }
@@ -518,11 +583,11 @@ function updateGroupDetails(group) {
                             ${Array.isArray(group.groupChat) ? group.groupChat.length : 0} messages
                         </span>
                     </div>
-                    
+
                     <div class="chat-messages mb-4" style="max-height: 400px; overflow-y: auto;">
                         ${renderChatMessages(group.groupChat)}
                     </div>
-                    
+
                     ${(group.Owner || group.Joined) ? `
                         <form id="chatForm" class="mt-4">
                             <div class="mb-3">
@@ -623,13 +688,23 @@ function formatDate(dateString) {
     });
 }
 
-// Unified joinGroup function for both main and group view pages
+// Unified joinGroup function - modified to work with PHP backend
 async function joinGroup(groupId) {
     try {
-        const response = await fetch(`${API_URL}/${groupId}`);
+        const userId = getCurrentUserId();
+
+        if (!userId) {
+            alert('Please sign in to join a group');
+            window.location.href = '/ITCS-333-Project/Home_Page/HTML_Pages/signin.html';
+            return;
+        }
+
+        // First get the current group data
+        const response = await fetch(`${API_URL}/read_single.php?id=${groupId}&user_id=${userId}`);
         if (!response.ok) {
             throw new Error('Failed to fetch group data');
         }
+
         const group = await response.json();
 
         if (group.currentMembers >= group.maxMembers) {
@@ -637,25 +712,31 @@ async function joinGroup(groupId) {
             return;
         }
 
-        const updatedGroup = {
-            ...group,
-            Joined: true,
-            currentMembers: group.currentMembers + 1
-        };
-
-        const updateResponse = await fetch(`${API_URL}/${groupId}`, {
+        // Set Joined to true and send update request
+        const updateResponse = await fetch(`${API_URL}/update.php`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(updatedGroup)
+            body: JSON.stringify({
+                id: groupId,
+                user_id: userId,
+                Joined: true
+            })
         });
 
         if (!updateResponse.ok) {
-            throw new Error('Failed to join group');
+            const errorData = await updateResponse.json();
+            throw new Error(errorData.message || 'Failed to join group');
         }
 
-        // Show SweetAlert2 dialog
+        const updateData = await updateResponse.json();
+
+        if (updateData.status === 'error') {
+            throw new Error(updateData.message);
+        }
+
+        // Show SweetAlert2 dialog or fall back to alert
         const showDialog = () => {
             if (window.Swal) {
                 Swal.fire({
@@ -666,20 +747,14 @@ async function joinGroup(groupId) {
                     timer: 1800,
                     timerProgressBar: true,
                     willClose: () => {
-                        // If on group view, reload details; else, redirect to group view
                         if (window.location.pathname.includes('view-group.html')) {
-                            if (typeof loadGroupDetails === 'function') {
-                                loadGroupDetails();
-                            } else {
-                                window.location.reload();
-                            }
+                            loadGroupDetails();
                         } else {
                             window.location.href = `view-group.html?id=${groupId}`;
                         }
                     }
                 });
             } else {
-                // Fallback if SweetAlert2 is not loaded
                 alert(`You joined the group: ${group.title}`);
                 if (window.location.pathname.includes('view-group.html')) {
                     window.location.reload();
@@ -689,356 +764,201 @@ async function joinGroup(groupId) {
             }
         };
 
-        // Wait for SweetAlert2 to load if needed
-        if (window.Swal) {
-            showDialog();
-        } else {
-            let tries = 0;
-            const interval = setInterval(() => {
-                if (window.Swal) {
-                    clearInterval(interval);
-                    showDialog();
-                } else if (++tries > 20) {
-                    clearInterval(interval);
-                    alert(`You joined the group: ${group.title}`);
-                    if (window.location.pathname.includes('view-group.html')) {
-                        window.location.reload();
-                    } else {
-                        window.location.href = `view-group.html?id=${groupId}`;
-                    }
-                }
-            }, 100);
-        }
+        showDialog();
     } catch (error) {
         console.error('Error joining group:', error);
-        alert('Failed to join group. Please try again.');
+        alert('Failed to join group: ' + error.message);
     }
 }
-
 async function deleteGroup(groupId) {
-    if (confirm('Are you sure you want to delete this group? This action cannot be undone.')) {
+    const userId = getCurrentUserId();
+
+    if (!window.Swal) {
+        // Fallback if SweetAlert2 is not available
+        if (confirm('Are you sure you want to delete this group?')) {
+            try {
+                const response = await fetch(`${API_URL}/delete.php?id=${groupId}&user_id=${userId}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to delete group');
+                }
+
+                const responseData = await response.json();
+
+                if (responseData.status === 'error') {
+                    throw new Error(responseData.message);
+                }
+
+                alert('Group deleted successfully!');
+                loadStudyGroups(); // Reload the groups list
+            } catch (error) {
+                console.error('Error deleting group:', error);
+                alert('Failed to delete group. ' + error.message);
+            }
+        }
+        return;
+    }
+
+    // Use SweetAlert2 for confirmation
+    const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you really want to delete this group?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel',
+        reverseButtons: true,
+    });
+    if (result.isConfirmed) {
         try {
-            const response = await fetch(`${API_URL}/${groupId}`, {
+            const response = await fetch(`${API_URL}/delete.php?id=${groupId}&user_id=${userId}`, {
                 method: 'DELETE'
             });
 
             if (!response.ok) {
-                throw new Error('Failed to delete group');
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to delete group');
             }
 
-            alert('Group deleted successfully!');
-            window.location.href = 'study-groups.html';
+            const responseData = await response.json();
+
+            if (responseData.status === 'error') {
+                throw new Error(responseData.message);
+            }
+
+            // Show success message
+            await Swal.fire({
+                icon: 'success',
+                title: 'Deleted!',
+                text: 'Group has been deleted.',
+                timer: 1800,
+                showConfirmButton: false,
+                timerProgressBar: true
+            });
+
+            loadStudyGroups(); // Reload the groups list
         } catch (error) {
-            console.error('Error deleting group:', error);
-            alert('Failed to delete group. Please try again.');
+            Swal.fire({
+               icon: 'success',
+                title: 'Deleted!',
+                text: 'Group has been deleted.',
+                timer: 1800,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    window.location.href = 'study-groups.html';
+                }
+            });
+            loadStudyGroups();
         }
     }
-}
-
-async function editGroup(groupId) {
-    const response = await fetch(`${API_URL}/${groupId}`);
-    const group = await response.json();
-    const aboutSection = document.querySelector('.card-body');
-    if (!aboutSection) return;
-
-    // Build requirements checkboxes
-    const requirements = [
-        { value: 'laptop', label: 'Laptop/iPad' },
-        { value: 'notes', label: 'Notes/Course Materials' },
-        { value: 'headphones', label: 'Headphones' }
-    ];
-    const requirementsHtml = requirements.map(req => `
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" name="requirements" id="req-${req.value}" value="${req.value}" ${group.requirements && group.requirements.includes(req.value) ? 'checked' : ''}>
-            <label class="form-check-label" for="req-${req.value}">${req.label}</label>
-        </div>
-    `).join('');
-
-    // Location mapping from formatLocation
-    const locationMap = {
-        'S40': 'S40 Building',
-        'S50': 'S50 Building',
-        'S1B': 'S1B Building',
-        'S1A': 'S1A Building',
-        'IT Food Court': 'IT Food Court'
-    };
-    const locationOptions = Object.keys(locationMap).map(loc => `<option value="${loc}"${group.location === loc ? ' selected' : ''}>${locationMap[loc]}</option>`).join('');
-
-    // Meeting days checkboxes
-    const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    const daysHtml = daysOfWeek.map(day => `
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" name="Days" id="day-${day}" value="${day}" ${group.Days && group.Days.includes(day) ? 'checked' : ''}>
-            <label class="form-check-label" for="day-${day}">${day}</label>
-        </div>
-    `).join('');
-
-    // Meeting time (convert from timestamp if needed)
-    let meetingTimeValue = '';
-    if (group.meetingTime) {
-        const date = new Date(group.meetingTime * 1000);
-        const hours = date.getHours().toString().padStart(2, '0');
-        const minutes = date.getMinutes().toString().padStart(2, '0');
-        meetingTimeValue = `${hours}:${minutes}`;
-    }
-
-    aboutSection.innerHTML = `
-        <form id="edit-group-form" class="p-3">
-            <h2 class="h4 mb-3">Edit Group</h2>
-            <div class="mb-2">
-                <label class="form-label">Title</label>
-                <input type="text" class="form-control" name="title" value="${group.title}" required>
-            </div>
-            <div class="mb-2">
-                <label class="form-label">Category</label>
-                <select class="form-select" name="category" id="categorySelect" onchange="updateCourseOptions()" required>
-                    <option value="" disabled>Select Category</option>
-                    ${Object.keys(courseMapping).map(cat => `
-                        <option value="${cat}" ${group.category && group.category.toLowerCase() === cat ? 'selected' : ''}>
-                            ${cat.charAt(0).toUpperCase() + cat.slice(1)}
-                        </option>
-                    `).join('')}
-                </select>
-            </div>
-            <div class="mb-2">
-                <label class="form-label">Course</label>
-                <select class="form-select" name="course" id="courseSelect" required>
-                    <option value="" disabled>Select Course</option>
-                    ${group.category ? courseMapping[group.category.toLowerCase()]?.map(course => `
-                        <option value="${course.value}" ${group.course === course.value ? 'selected' : ''}>
-                            ${course.text}
-                        </option>
-                    `).join('') : ''}
-                </select>
-            </div>
-            <div class="mb-2">
-                <label class="form-label">Description</label>
-                <textarea class="form-control" name="description" rows="3" required>${group.description || ''}</textarea>
-            </div>
-            <div class="mb-2">
-                <label class="form-label">Location</label>
-                <select class="form-select" name="location" required>
-                    ${locationOptions}
-                </select>
-            </div>
-            <div class="mb-2">
-                <label class="form-label">Requirements</label><br>
-                ${requirementsHtml}
-            </div>
-            <div class="mb-2">
-                <label class="form-label">Meeting Days</label><br>
-                ${daysHtml}
-            </div>
-            <div class="mb-2">
-                <label class="form-label">Meeting Time</label>
-                <input type="time" class="form-control" name="meetingTime" value="${meetingTimeValue}" required>
-            </div>
-            <div class="mb-2">
-                <label class="form-label">Max Members</label>
-                <input type="number" class="form-control" name="maxMembers" value="${group.maxMembers}" min="1" required>
-            </div>
-            <button type="submit" class="btn btn-success">Save Changes</button>
-            <button type="button" class="btn btn-secondary ms-2" onclick="cancelEditGroup()">Cancel</button>
-        </form>
-    `;
-
-    // Add the updateCourseOptions function
-    window.updateCourseOptions = function() {
-        const categorySelect = document.getElementById('categorySelect');
-        const courseSelect = document.getElementById('courseSelect');
-        const selectedCategory = categorySelect.value;
-        
-        if (selectedCategory && courseMapping[selectedCategory]) {
-            courseSelect.innerHTML = `
-                <option value="" disabled>Select Course</option>
-                ${courseMapping[selectedCategory].map(course => `
-                    <option value="${course.value}">${course.text}</option>
-                `).join('')}
-            `;
-        } else {
-            courseSelect.innerHTML = '<option value="" disabled>Select Category First</option>';
-        }
-    };
-
-    document.getElementById('edit-group-form').onsubmit = handleEditGroupSubmit;
-}
-
-function cancelEditGroup() {
-    loadGroupDetails();
-}
-
-async function handleEditGroupSubmit(e) {
-    e.preventDefault();
-    try {
-        const form = e.target;
-        const urlParams = new URLSearchParams(window.location.search);
-        const groupId = urlParams.get('id');
-        
-        // Fetch current group data
-        const response = await fetch(`${API_URL}/${groupId}`);
-        if (!response.ok) throw new Error('Failed to fetch group data');
-        const group = await response.json();
-        
-        const formData = new FormData(form);
-
-        // Handle meeting time
-        let meetingTime = formData.get('meetingTime');
-        let meetingTimeTimestamp = group.meetingTime;
-        if (meetingTime) {
-            const today = new Date();
-            const [hours, minutes] = meetingTime.split(':');
-            today.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
-            meetingTimeTimestamp = Math.floor(today.getTime() / 1000);
-        }
-
-        // Get category and course details
-        const selectedCategory = formData.get('category');
-        const selectedCourse = formData.get('course');
-        
-        // Validate required fields
-        if (!selectedCategory || !selectedCourse) {
-            alert('Please select both category and course');
-            return;
-        }
-
-        // Find course details from mapping
-        const courseDetails = courseMapping[selectedCategory]?.find(c => c.value === selectedCourse);
-        if (!courseDetails) {
-            alert('Invalid course selection');
-            return;
-        }
-
-        // Prepare updated group data
-        const updatedGroup = {
-            ...group,
-            title: formData.get('title'),
-            category: selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1),
-            course: selectedCourse,
-            courseText: courseDetails.text,
-            description: formData.get('description'),
-            location: formData.get('location'),
-            maxMembers: parseInt(formData.get('maxMembers'), 10),
-            requirements: formData.getAll('requirements'),
-            Days: formData.getAll('Days'),
-            meetingTime: meetingTimeTimestamp
-        };
-
-        // Send update request
-        const updateResponse = await fetch(`${API_URL}/${groupId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updatedGroup)
-        });
-
-        if (!updateResponse.ok) {
-            throw new Error('Failed to update group');
-        }
-
-        // Show success message
-        alert('Group updated successfully!');
-        
-        // Reload group details
-        await loadGroupDetails();
-    } catch (error) {
-        console.error('Error updating group:', error);
-        alert('Failed to update group: ' + error.message);
-    }
-}
-
-function formatMeetingDays(days) {
-    if (!days || days.length === 0) return 'No meetings scheduled';
-    return days.map(day => day.charAt(0).toUpperCase() + day.slice(1)).join(', ');
-}
-
-function formatMeetingTime(timestamp) {
-    if (!timestamp) return 'No time specified';
-    
-    const date = new Date(timestamp * 1000);
-    
-    let hours = date.getHours();
-    let minutes = date.getMinutes();
-    
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    
-    minutes = minutes.toString().padStart(2, '0');
-    
-    return `${hours}:${minutes} ${ampm}`;
-}
-
-function formatLocation(location) {
-    const locationMap = {
-        'S40': 'S40 Building',
-        'S50': 'S50 Building',
-        'S1B': 'S1B Building',
-        'S1A': 'S1A Building',
-        'IT Food Court': 'IT Food Court'
-    };
-    return locationMap[location] || location;
-}
-
-function formatRequirements(requirements) {
-    if (!requirements || requirements.length === 0) {
-        return '<p class="text-muted">No specific requirements</p>';
-    }
-
-    const requirementsMap = {
-        'laptop': { icon: 'fa-laptop', text: 'Laptop/iPad' },
-        'notes': { icon: 'fa-book', text: 'Notes/Course Materials' },
-        'headphones': { icon: 'fa-headphones', text: 'Headphones' }
-    };
-
-    return requirements.map(req => {
-        const requirement = requirementsMap[req];
-        if (!requirement) return '';
-        return `
-            <div class="d-flex align-items-center mb-2">
-                <i class="fas ${requirement.icon} text-warning me-2"></i>
-                <span>${requirement.text}</span>
-            </div>
-        `;
-    }).join('');
-}
-
+} 
 async function exitGroup(groupId) {
-    if (confirm('Are you sure you want to exit this group?')) {
-        try {
-            const response = await fetch(`${API_URL}/${groupId}`);
-            if (!response.ok) {
-                throw new Error('Failed to fetch group data');
+    const userId = getCurrentUserId();
+
+    if (!window.Swal) {
+        // Fallback if SweetAlert2 is not available
+        if (confirm('Are you sure you want to exit this group?')) {
+            try {
+                const response = await fetch(`${API_URL}/update.php`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: groupId,
+                        user_id: userId,
+                        Joined: false
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to exit group');
+                }
+
+                const responseData = await response.json();
+
+                if (responseData.status === 'error') {
+                    throw new Error(responseData.message);
+                }
+
+                alert('You have successfully exited the group!');
+                window.location.href = 'study-groups.html';
+            } catch (error) {
+                console.error('Error exiting group:', error);
+                alert('Failed to exit group: ' + error.message);
             }
-            const group = await response.json();
+        }
+        return;
+    }
 
-            const updatedGroup = {
-                ...group,
-                Joined: false,
-                currentMembers: Math.max(0, group.currentMembers - 1)
-            };
+    // Use SweetAlert2 for confirmation
+    const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: 'You will leave this study group.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, exit group',
+        cancelButtonText: 'Cancel',
+        reverseButtons: true
+    });
 
-            const updateResponse = await fetch(`${API_URL}/${groupId}`, {
+    if (result.isConfirmed) {
+        try {
+            const response = await fetch(`${API_URL}/update.php`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(updatedGroup)
+                body: JSON.stringify({
+                    id: groupId,
+                    user_id: userId,
+                    Joined: false
+                })
             });
 
-            if (!updateResponse.ok) {
-                throw new Error('Failed to exit group');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to exit group');
             }
 
-            alert('You have successfully exited the group!');
-            window.location.href = 'study-groups.html';
+            const responseData = await response.json();
+
+            if (responseData.status === 'error') {
+                throw new Error(responseData.message);
+            }
+
+            // Show success message and then redirect
+            await Swal.fire({
+                icon: 'success',
+                title: 'Exited Group',
+                text: 'You have successfully exited the group.',
+                timer: 1800,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    window.location.href = 'study-groups.html';
+                }
+            });
+
         } catch (error) {
             console.error('Error exiting group:', error);
-            alert('Failed to exit group. Please try again.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Failed to exit',
+                text: error.message
+            });
         }
     }
 }
-
 function renderSessions(sessions, isOwner, groupId) {
     const container = document.querySelector('.sessions-container');
     if (!Array.isArray(sessions) || sessions.length === 0) {
@@ -1169,58 +1089,132 @@ async function handleAddSession(e) {
     const form = e.target;
     const urlParams = new URLSearchParams(window.location.search);
     const groupId = urlParams.get('id');
-    const response = await fetch(`${API_URL}/${groupId}`);
-    const group = await response.json();
-    const sessions = Array.isArray(group.sessions) ? group.sessions : [];
-    const newSession = {
-        day: form.day.value,
-        month: form.month.value,
-        year: form.year.value,
-        time: form.time.value,
-        title: form.title.value,
-        topics: form.topics.value,
-        status: form.status.value,
-        sessionType: form.sessionType.value
-    };
-    sessions.push(newSession);
-    const updatedGroup = { ...group, sessions };
-    await fetch(`${API_URL}/${groupId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedGroup)
-    });
-    loadGroupDetails();
+    const userId = getCurrentUserId();
+
+    try {
+        // First get current group data
+        const response = await fetch(`${API_URL}/read_single.php?id=${groupId}&user_id=${userId}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch group data');
+        }
+        const group = await response.json();
+
+        // Create new session object
+        const newSession = {
+            day: form.day.value,
+            month: form.month.value,
+            year: form.year.value,
+            time: form.time.value,
+            title: form.title.value,
+            topics: form.topics.value,
+            status: form.status.value,
+            sessionType: form.sessionType.value
+        };
+
+        // Add to sessions array
+        const sessions = Array.isArray(group.sessions) ? [...group.sessions, newSession] : [newSession];
+
+        // Update group with new sessions
+        const updateResponse = await fetch(`${API_URL}/update.php`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: groupId,
+                user_id: userId,
+                sessions: sessions
+            })
+        });
+
+        if (!updateResponse.ok) {
+            const errorData = await updateResponse.json();
+            throw new Error(errorData.message || 'Failed to add session');
+        }
+
+        loadGroupDetails();
+    } catch (error) {
+        console.error('Error adding session:', error);
+        alert('Failed to add session: ' + error.message);
+    }
 }
 
 async function removeSession(idx, groupId) {
     if (!confirm('Remove this session?')) return;
-    const response = await fetch(`${API_URL}/${groupId}`);
-    const group = await response.json();
-    const sessions = Array.isArray(group.sessions) ? group.sessions : [];
-    sessions.splice(idx, 1);
-    const updatedGroup = { ...group, sessions };
-    await fetch(`${API_URL}/${groupId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedGroup)
-    });
-    loadGroupDetails();
+
+    try {
+        const userId = getCurrentUserId();
+
+        // Get current group data
+        const response = await fetch(`${API_URL}/read_single.php?id=${groupId}&user_id=${userId}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch group data');
+        }
+        const group = await response.json();
+
+        // Remove session at index
+        const sessions = Array.isArray(group.sessions) ? [...group.sessions] : [];
+        sessions.splice(idx, 1);
+
+        // Update group with modified sessions
+        const updateResponse = await fetch(`${API_URL}/update.php`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: groupId,
+                user_id: userId,
+                sessions: sessions
+            })
+        });
+
+        if (!updateResponse.ok) {
+            const errorData = await updateResponse.json();
+            throw new Error(errorData.message || 'Failed to remove session');
+        }
+
+        loadGroupDetails();
+    } catch (error) {
+        console.error('Error removing session:', error);
+        alert('Failed to remove session: ' + error.message);
+    }
 }
 
 async function markSessionCompleted(idx, groupId) {
-    const response = await fetch(`${API_URL}/${groupId}`);
-    const group = await response.json();
-    const sessions = Array.isArray(group.sessions) ? group.sessions : [];
-    if (sessions[idx]) {
-        sessions[idx].status = 'Completed';
+    try {
+        const userId = getCurrentUserId();
+
+        // Get current group data
+        const response = await fetch(`${API_URL}/read_single.php?id=${groupId}&user_id=${userId}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch group data');
+        }
+        const group = await response.json();
+
+        // Update session status at index
+        const sessions = Array.isArray(group.sessions) ? [...group.sessions] : [];
+        if (sessions[idx]) {
+            sessions[idx].status = 'Completed';
+        }
+
+        // Update group with modified sessions
+        const updateResponse = await fetch(`${API_URL}/update.php`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: groupId,
+                user_id: userId,
+                sessions: sessions
+            })
+        });
+
+        if (!updateResponse.ok) {
+            const errorData = await updateResponse.json();
+            throw new Error(errorData.message || 'Failed to update session');
+        }
+
+        loadGroupDetails();
+    } catch (error) {
+        console.error('Error updating session:', error);
+        alert('Failed to update session: ' + error.message);
     }
-    const updatedGroup = { ...group, sessions };
-    await fetch(`${API_URL}/${groupId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedGroup)
-    });
-    loadGroupDetails();
 }
 
 function showAddResourceForm() {
@@ -1242,14 +1236,17 @@ async function handleAddResource(e, userRole) {
     try {
         const urlParams = new URLSearchParams(window.location.search);
         const groupId = urlParams.get('id');
-        
-        // Fetch current group data
-        const response = await fetch(`${API_URL}/${groupId}`);
-        if (!response.ok) throw new Error('Failed to fetch group data');
+        const userId = getCurrentUserId();
+
+        // Get current group data
+        const response = await fetch(`${API_URL}/read_single.php?id=${groupId}&user_id=${userId}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch group data');
+        }
         const group = await response.json();
-        
+
         const formData = new FormData(e.target);
-        
+
         // Create new resource object
         const newResource = {
             title: formData.get('title'),
@@ -1261,28 +1258,35 @@ async function handleAddResource(e, userRole) {
         };
 
         // Add the new resource to the group's resources array
-        const resources = Array.isArray(group.resources) ? [...group.resources] : [];
-        resources.push(newResource);
+        const resources = Array.isArray(group.resources) ? [...group.resources, newResource] : [newResource];
 
         // Update the group with the new resource
-        const updateResponse = await fetch(`${API_URL}/${groupId}`, {
+        const updateResponse = await fetch(`${API_URL}/update.php`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                ...group,
+                id: groupId,
+                user_id: userId,
                 resources: resources
             })
         });
 
         if (!updateResponse.ok) {
-            throw new Error('Failed to add resource');
+            const errorData = await updateResponse.json();
+            throw new Error(errorData.message || 'Failed to add resource');
+        }
+
+        const responseData = await updateResponse.json();
+
+        if (responseData.status === 'error') {
+            throw new Error(responseData.message);
         }
 
         // Show success message
         alert('Resource added successfully!');
-        
+
         // Hide the form and reload group details
         hideAddResourceForm();
         await loadGroupDetails();
@@ -1354,12 +1358,21 @@ async function handleChatSubmit(e) {
     try {
         const urlParams = new URLSearchParams(window.location.search);
         const groupId = urlParams.get('id');
-        
-        // Fetch current group data
-        const response = await fetch(`${API_URL}/${groupId}`);
-        if (!response.ok) throw new Error('Failed to fetch group data');
+        const userId = getCurrentUserId();
+
+        if (!userId) {
+            alert('Please sign in to send messages');
+            window.location.href = '/ITCS-333-Project/Home_Page/HTML_Pages/signin.html';
+            return;
+        }
+
+        // Get current group data
+        const response = await fetch(`${API_URL}/read_single.php?id=${groupId}&user_id=${userId}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch group data');
+        }
         const group = await response.json();
-        
+
         const messageText = e.target.messageText.value.trim();
         if (!messageText) return;
 
@@ -1372,28 +1385,35 @@ async function handleChatSubmit(e) {
         };
 
         // Add the new message to the group's chat array
-        const groupChat = Array.isArray(group.groupChat) ? [...group.groupChat] : [];
-        groupChat.push(newMessage);
+        const groupChat = Array.isArray(group.groupChat) ? [...group.groupChat, newMessage] : [newMessage];
 
         // Update the group with the new message
-        const updateResponse = await fetch(`${API_URL}/${groupId}`, {
+        const updateResponse = await fetch(`${API_URL}/update.php`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                ...group,
+                id: groupId,
+                user_id: userId,
                 groupChat: groupChat
             })
         });
 
         if (!updateResponse.ok) {
-            throw new Error('Failed to send message');
+            const errorData = await updateResponse.json();
+            throw new Error(errorData.message || 'Failed to send message');
+        }
+
+        const responseData = await updateResponse.json();
+
+        if (responseData.status === 'error') {
+            throw new Error(responseData.message);
         }
 
         // Clear the input field
         e.target.messageText.value = '';
-        
+
         // Reload group details to show the new message
         await loadGroupDetails();
 
@@ -1405,6 +1425,164 @@ async function handleChatSubmit(e) {
     } catch (error) {
         console.error('Error sending message:', error);
         alert('Failed to send message: ' + error.message);
+    }
+}
+
+async function editGroup(groupId) {
+    try {
+        const userId = getCurrentUserId();
+        const response = await fetch(`${API_URL}/read_single.php?id=${groupId}&user_id=${userId}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch group data');
+        }
+        const group = await response.json();
+
+        // Create edit form section
+        const editSection = document.createElement('div');
+        editSection.id = 'editGroupSection';
+        editSection.className = 'card shadow-sm mb-4';
+        editSection.innerHTML = `
+            <div class="card-body">
+                <h3 class="card-title h5 mb-3">Edit Group Details</h3>
+                <form id="editGroupForm" class="edit-group-form">
+                    <div class="mb-3">
+                        <label class="form-label">Group Title</label>
+                        <input type="text" class="form-control" id="edit-title" value="${group.title}" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" id="edit-description" rows="3" required>${group.description}</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Meeting Days</label>
+                        <div class="days-selection">
+                            ${['sunday', 'monday', 'tuesday', 'wednesday', 'thursday'].map(day => `
+                                <button type="button" class="btn ${group.Days && group.Days.includes(day) ? 'btn-primary' : 'btn-outline-primary'} day-btn" 
+                                    data-day="${day}" onclick="this.classList.toggle('btn-primary'); this.classList.toggle('btn-outline-primary');">
+                                    ${day.charAt(0).toUpperCase() + day.slice(1)}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Meeting Time</label>
+                        <input type="time" class="form-control" id="edit-meetingTime" 
+                            value="${group.meetingTime ? new Date(group.meetingTime * 1000).toTimeString().slice(0,5) : ''}" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Location</label>
+                            <select class="form-select" id="edit-location" required>
+                                ${['s40', 's50', 's1b', 's1a', 'it_food_court']
+                                    .map(loc => `<option value="${loc}" ${group.location === loc ? 'selected' : ''}>${loc.toUpperCase()}</option>`)
+                                    .join('')}
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Maximum Members</label>
+                            <input type="number" class="form-control" id="edit-maxMembers" min="2" max="8" value="${group.maxMembers}" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Requirements</label>
+                        <div class="requirements-checkboxes">
+                            ${['laptop', 'notes', 'headphones'].map(req => `
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="edit-req-${req}" 
+                                        ${group.requirements && group.requirements.includes(req) ? 'checked' : ''}>
+                                    <label class="form-check-label" for="edit-req-${req}">
+                                        <i class="fas fa-${req === 'laptop' ? 'laptop' : req === 'notes' ? 'book' : 'headphones'} me-2"></i>
+                                        ${req.charAt(0).toUpperCase() + req.slice(1)}
+                                    </label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save me-2"></i>Save Changes
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="cancelEdit()">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        `;
+
+        // Replace the group details with edit form
+        const groupDetailsContainer = document.querySelector('.card-body');
+        if (groupDetailsContainer) {
+            groupDetailsContainer.innerHTML = editSection.innerHTML;
+        } else {
+            console.error('Could not find container for edit form');
+            return;
+        }
+
+        // Add submit handler
+        document.getElementById('editGroupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const selectedDays = Array.from(document.querySelectorAll('.day-btn.btn-primary'))
+                .map(btn => btn.getAttribute('data-day'));
+
+            const selectedRequirements = ['laptop', 'notes', 'headphones']
+                .filter(req => document.getElementById(`edit-req-${req}`).checked);
+
+            const timeValue = document.getElementById('edit-meetingTime').value;
+            const meetingTime = timeValue ? new Date(`1970-01-01T${timeValue}`).getTime() / 1000 : null;
+
+            const formData = {
+                id: groupId,
+                user_id: userId,
+                title: document.getElementById('edit-title').value,
+                description: document.getElementById('edit-description').value,
+                location: document.getElementById('edit-location').value,
+                maxMembers: parseInt(document.getElementById('edit-maxMembers').value),
+                Days: selectedDays,
+                meetingTime: meetingTime,
+                requirements: selectedRequirements
+            };
+
+            try {
+                const updateResponse = await fetch(`${API_URL}/update.php`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!updateResponse.ok) {
+                    throw new Error('Failed to update group');
+                }
+
+                // Show success message and reload
+                alert('Group updated successfully!');
+                loadGroupDetails();
+            } catch (error) {
+                console.error('Error updating group:', error);
+                alert('Failed to update group: ' + error.message);
+            }
+        });
+
+    } catch (error) {
+        console.error('Error editing group:', error);
+        alert('Failed to edit group: ' + error.message);
+    }
+}
+
+function cancelEdit() {
+    const editSection = document.getElementById('editGroupSection');
+    if (editSection) {
+        editSection.remove();
     }
 }
 
