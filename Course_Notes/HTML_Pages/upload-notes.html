@@ -34,6 +34,34 @@
       background-position: right calc(0.375em + 0.1875rem) center;
       background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
     }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .loading-spinner {
+      border: 4px solid rgba(0, 123, 255, 0.1);
+      border-left-color: #007bff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
   </style>
 </head>
 <body>
@@ -65,42 +93,43 @@
             <h2 class="h4 mb-0">Upload Course Notes</h2>
           </div>
           <div class="card-body">
-            <form id="uploadForm">
+            <form id="uploadNotesForm">
               <div class="mb-3">
-                <label for="course_code" class="form-label">Course Code <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="course_code" name="course_code" placeholder="e.g., CS101" required>
+                <label for="title" class="form-label">Notes Title <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="title" name="title" placeholder="e.g., Full Semester Notes, Midterm Study Guide" required>
               </div>
-              
               <div class="mb-3">
-                <label for="course_title" class="form-label">Course Name <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="course_title" name="course_title" placeholder="e.g., Introduction to Computer Science" required>
-              </div>
-              
-              <div class="mb-3">
-                <label for="course_category" class="form-label">Category <span class="text-danger">*</span></label>
-                <select class="form-control" id="course_category" name="course_category" required>
-                  <option value="" selected disabled>Select category</option>
-                  <option value="Computer Science">Computer Science</option>
+                <label for="college" class="form-label">College <span class="text-danger">*</span></label>
+                <select class="form-control" id="college" name="college" required>
+                  <option value="">Select College</option>
+                  <option value="Applied Studies">Applied Studies</option>
+                  <option value="Bahrain Teachers">Bahrain Teachers</option>
                   <option value="Engineering">Engineering</option>
-                  <option value="Medical">Medical</option>
-                  <option value="Business">Business</option>
+                  <option value="Information Technology">Information Technology</option>
                   <option value="Science">Science</option>
-                  <option value="Arts">Arts & Humanities</option>
+                  <option value="Arts">Arts</option>
+                  <option value="Business Administration">Business Administration</option>
+                  <option value="Health and Sport Sciences">Health and Sport Sciences</option>
+                  <option value="Law">Law</option>
                 </select>
               </div>
-              
               <div class="mb-3">
-                <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
-                <textarea class="form-control" id="description" name="description" rows="3" required 
-                          placeholder="Briefly describe what these notes cover"></textarea>
+                <label for="description" class="form-label">Short Description <span class="text-danger">*</span></label>
+                <textarea class="form-control" id="description" name="description" rows="2" required placeholder="Briefly describe what these notes cover"></textarea>
               </div>
-
+              <div class="mb-3">
+                <label for="long_description" class="form-label">Detailed Description</label>
+                <textarea class="form-control" id="long_description" name="long_description" rows="4" placeholder="Add more details about the notes (optional)"></textarea>
+              </div>
               <div class="mb-4">
-                <label for="file" class="form-label">Upload File <span class="text-danger">*</span></label>
-                <input class="form-control" type="file" id="file" name="file" required>
+                <label for="notesFile" class="form-label">Upload File <span class="text-danger">*</span></label>
+                <input class="form-control" type="file" id="notesFile" name="notesFile" required>
                 <div class="form-text">Accepted formats: PDF, DOCX, PPT, JPG, PNG (Max size: 10MB)</div>
               </div>
-              
+              <div class="mb-3">
+                <label for="uploader" class="form-label">Your Name (optional)</label>
+                <input type="text" class="form-control" id="uploader" name="uploader" placeholder="e.g., John Doe">
+              </div>
               <div class="d-flex justify-content-between mt-4">
                 <a href="course-notes.html" class="btn btn-secondary">
                   <i class="fas fa-arrow-left me-2"></i>Cancel
@@ -160,5 +189,11 @@
   </footer>
 
   <script src="../JS/upload-validation.js"></script>
+  <script src="../JS/upload-notes.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // We're removing this script block as the spinner logic is now handled in upload-validation.js
+    });
+  </script>
 </body>
 </html>
