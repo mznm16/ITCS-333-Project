@@ -100,6 +100,11 @@ async function fetchNoteAndComments() {
 
 function renderComments(comments) {
   const commentCount = comments.length;
+  // Update the comments counter in the UI
+  const commentCounter = document.getElementById('comments-count');
+  if (commentCounter) {
+    commentCounter.textContent = commentCount;
+  }
   console.log('Rendering', commentCount, 'comments');
 
   // Find the existing comments container that should be after the comment form
