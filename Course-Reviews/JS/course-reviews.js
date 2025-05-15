@@ -26,11 +26,11 @@ function setLoading(loading) {
     loadingOverlay.style.display = loading ? 'flex' : 'none';
 }
 
-// Load reviews from local db.json
+// Load reviews from PHP backend
 async function fetchReviews() {
     try {
         setLoading(true);
-        const response = await fetch('../JS/db.json');
+        const response = await fetch('https://2b911c75-2d5f-4b3a-b7ac-c4f37dc4f726-00-4nbzx33z7xnv.pike.replit.dev/get_reviews.php');
         allReviews = await response.json();
         displayReviews();
         setupPagination();
@@ -58,29 +58,36 @@ async function applyFiltersAndSort(reviews) {
     // Simulate network delay for smoother UI
     await new Promise(resolve => setTimeout(resolve, 300));
     
-    let filtered = [...reviews];
-
-    // Apply rating filters
+    let filtered = [...reviews];    // Apply rating filters with safety checks
     if (activeFilters.ratings.length > 0) {
-        filtered = filtered.filter(review => activeFilters.ratings.includes(review.stars.toString()));
-    }
-
-    // Apply sort
+        filtered = filtered.filter(review => {
+            const rating = Math.round(review.rating || 0);
+            return activeFilters.ratings.includes(rating.toString());
+        });
+    }    // Apply sort with safety checks
     if (activeSort) {
         filtered.sort((a, b) => {
+            // Ensure both objects have default values for comparison
+            const aName = (a && a.name) || '';
+            const bName = (b && b.name) || '';
+            const aRating = (a && a.rating) || 0;
+            const bRating = (b && b.rating) || 0;
+            const aDate = (a && a.created_at) || '1970-01-01';
+            const bDate = (b && b.created_at) || '1970-01-01';
+
             switch (activeSort) {
                 case 'rating-desc':
-                    return b.stars - a.stars;
+                    return bRating - aRating;
                 case 'rating-asc':
-                    return a.stars - b.stars;
+                    return aRating - bRating;
                 case 'date-desc':
-                    return new Date(b['review-date']) - new Date(a['review-date']);
+                    return new Date(bDate) - new Date(aDate);
                 case 'date-asc':
-                    return new Date(a['review-date']) - new Date(b['review-date']);
+                    return new Date(aDate) - new Date(bDate);
                 case 'name-asc':
-                    return a['course-title'].localeCompare(b['course-title']);
+                    return aName.localeCompare(bName);
                 case 'name-desc':
-                    return b['course-title'].localeCompare(a['course-title']);
+                    return bName.localeCompare(aName);
                 default:
                     return 0;
             }
@@ -98,12 +105,18 @@ async function filterReviews(searchTerm) {
     // Simulate network delay for smoother UI
     await new Promise(resolve => setTimeout(resolve, 300));
     
-    const searchResults = allReviews.filter(review => 
-        review['course-tag'].toLowerCase().includes(searchTerm) ||
-        review['course-title'].toLowerCase().includes(searchTerm) ||
-        review['dr-name'].toLowerCase().includes(searchTerm) ||
-        review['short-desc'].toLowerCase().includes(searchTerm)
-    );
+    const searchResults = allReviews.filter(review => {
+        // Add null checks for each property
+        const code = (review.code || '').toLowerCase();
+        const name = (review.name || '').toLowerCase();
+        const professor = (review.professor || '').toLowerCase();
+        const summary = (review.summary || '').toLowerCase();
+        
+        return code.includes(searchTerm) ||
+               name.includes(searchTerm) ||
+               professor.includes(searchTerm) ||
+               summary.includes(searchTerm);
+    });
     
     // Apply existing filters and sort to search results
     const processed = await applyFiltersAndSort(searchResults);
@@ -135,15 +148,15 @@ async function displayReviews(filteredReviews = null) {
         <article class="item-card">
             <div class="item-content">
                 <div class="item-meta">
-                    <span class="item-tag">${review['course-tag']}</span>
-                    <span class="item-date">${review['review-date']}</span>
+                    <span class="item-tag">${review.code}</span>
+                    <span class="item-date">${new Date(review.created_at).toLocaleDateString('en-US')}</span>
                 </div>
-                <h2 class="item-title">${review['course-title']}</h2>
-                <p class="item-desc">${review['short-desc']}</p>
+                <h2 class="item-title">${review.name}</h2>
+                <p class="item-desc">${review.summary}</p>
                 <div class="d-flex justify-content-between align-items-center mt-2">
                     <div>
-                        <span class="me-3">${createStarRating(review.stars)}</span>
-                        <span><i class="fas fa-user"></i> ${review['dr-name']}</span>
+                        <span class="me-3">${createStarRating(Math.round(review.rating))}</span>
+                        <span><i class="fas fa-user"></i> ${review.professor}</span>
                     </div>
                     <a href="view-review.html?id=${review.id}" class="module-link">Read Reviews <i class="fas fa-arrow-right"></i></a>
                 </div>

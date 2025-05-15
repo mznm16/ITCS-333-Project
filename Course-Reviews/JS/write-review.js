@@ -123,7 +123,7 @@ reviewTextarea.addEventListener('input', function() {
 });
 
 // Form submission handler
-form.addEventListener('submit', function(e) {
+form.addEventListener('submit', async function(e) {
     e.preventDefault();
     
     // Validate all fields
@@ -153,25 +153,77 @@ form.addEventListener('submit', function(e) {
             errorDiv.textContent = 'Please select a rating';
             ratingGroup.appendChild(errorDiv);
         }
+        return;
     }
     
     if (!validateMinLength(reviewTextarea.value, 100)) {
         showError(reviewTextarea, 'Review must be at least 100 characters long');
+        return;
     }
     
     // Check if all validations pass
     const isFormValid = Object.values(validationState).every(Boolean);
     
     if (isFormValid) {
-        // Form is valid, you can submit it here
-        alert('Review submitted successfully!');
-        form.reset();
-        // Reset validation states
-        document.querySelectorAll('.is-valid').forEach(element => {
-            element.classList.remove('is-valid');
-        });
-        Object.keys(validationState).forEach(key => {
-            validationState[key] = false;
-        });
+        try {
+            const reviewer = document.getElementById('anonymous').checked ? 'Anonymous' : prompt('Enter your name (or leave blank for Anonymous):', 'Anonymous') || 'Anonymous';
+            // Gather form data
+            const data = {
+                course_code: courseCodeInput.value,
+                course_name: courseNameInput.value,
+                professor: professorInput.value,
+                semester: semesterSelect.value,
+                reviewer: reviewer,
+                rating: parseFloat(document.querySelector('input[name="overallRating"]:checked').value),
+                difficulty: parseInt(document.getElementById('difficulty').value),
+                workload: parseInt(document.getElementById('workload').value),
+                summary: reviewTextarea.value.substring(0, 100) + '...',
+                details: reviewTextarea.value
+            };
+
+            console.log('Sending review data:', data);
+            
+            const response = await fetch('https://2b911c75-2d5f-4b3a-b7ac-c4f37dc4f726-00-4nbzx33z7xnv.pike.replit.dev/submit_review.php', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            
+            console.log('Response status:', response.status);
+            const responseText = await response.text();
+            console.log('Raw response:', responseText);
+            
+            let result;
+            try {
+                result = JSON.parse(responseText);
+            } catch (e) {
+                console.error('Failed to parse response:', e);
+                alert('Server returned invalid response. Please try again.');
+                return;
+            }
+            
+            console.log('Parsed response:', result);
+            
+            if (result.success) {
+                alert('Review submitted successfully!');
+                form.reset();
+                document.querySelectorAll('.is-valid').forEach(element => {
+                    element.classList.remove('is-valid');
+                });
+                Object.keys(validationState).forEach(key => {
+                    validationState[key] = false;
+                });
+            } else {
+                const errorMessage = result.error || result.mysql_error || 'Unknown error occurred';
+                console.error('Server error:', errorMessage);
+                alert(`Failed to submit review: ${errorMessage}`);
+            }
+        } catch (err) {
+            console.error('Error submitting review:', err);
+            alert('Network error while submitting review. Please check your connection and try again.');
+        }
     }
 });
